@@ -10,6 +10,9 @@ on:
 jobs:
   CI-CD-Backend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
 
     steps:
       - name: Git checkout
