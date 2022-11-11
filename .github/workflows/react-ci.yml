@@ -5,7 +5,7 @@ on:
     paths:
       - "frontend/**"
   pull_request:
-    branches: ["master"]
+    branches: ["main"]
 
 jobs:
   CI-CD-Frontend:
