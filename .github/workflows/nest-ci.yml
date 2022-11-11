@@ -1,0 +1,25 @@
+name: Nest CI
+
+on:
+  push:
+    paths:
+      - "backend/**"
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  CI-CD-Backend:
+    runs-on: self-hosted
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Install packages
+        run: yarn
+
+      - name: Test linting
+        run: yarn lint
+
+      - name: Test application
+        run: yarn test

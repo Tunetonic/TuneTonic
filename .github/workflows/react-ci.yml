@@ -1,0 +1,25 @@
+name: React CI
+
+on:
+  push:
+    paths:
+      - "frontend/**"
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  CI-CD-Frontend:
+    runs-on: self-hosted
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Install packages
+        run: yarn
+
+      - name: Build application
+        run: yarn build --if-present
+
+      - name: Test application
+        run: yarn test
