@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Lees de readme in de root folder!!</Text>
+      <Text>Lees de readme in de root folder!</Text>
       <StatusBar style="auto" />
     </View>
   );
