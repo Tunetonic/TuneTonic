@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "frontend/**"
+      - ".github/workflows/react-ci.yml"
   pull_request:
     branches: ["main"]
 
@@ -21,8 +22,5 @@ jobs:
       - name: Install packages
         run: yarn
 
-      - name: Build application
-        run: yarn build --if-present
-
-      - name: Test application
-        run: yarn test
+      # - name: Test application
+      #   run: yarn test

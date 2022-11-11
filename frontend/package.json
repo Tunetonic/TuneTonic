@@ -1,9 +1,10 @@
 {
   "name": "tunetonic",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "AppEntry.ts",
   "scripts": {
     "start": "expo start",
+    "test": "jest",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
@@ -14,13 +15,24 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
-    "react-native-web": "~0.18.9"
+    "react-native-web": "~0.18.9",
+    "react-test-renderer": "^18.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.70.6",
-    "typescript": "^4.6.3"
+    "@types/jest": "^29.2.2",
+    "@types/react-test-renderer": "^18.0.0",
+    "jest": "^26.6.3",
+    "typescript": "^4.6.3",
+    "jest-expo": "^47.0.1"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
+    ]
   },
   "private": true
 }

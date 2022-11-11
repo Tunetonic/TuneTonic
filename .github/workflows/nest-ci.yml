@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "backend/**"
+      - ".github/workflows/nest-ci.yml"
   pull_request:
     branches: ["main"]
 
