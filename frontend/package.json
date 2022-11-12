@@ -5,6 +5,7 @@
   "scripts": {
     "start": "expo start",
     "test": "jest",
+    "lint": "eslint --fix",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
@@ -20,13 +21,14 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@types/jest": "^29.2.2",
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.70.6",
-    "@types/jest": "^29.2.2",
     "@types/react-test-renderer": "^18.0.0",
+    "eslint": "^8.27.0",
     "jest": "^26.6.3",
-    "typescript": "^4.6.3",
-    "jest-expo": "^47.0.1"
+    "jest-expo": "^47.0.1",
+    "typescript": "^4.6.3"
   },
   "jest": {
     "preset": "jest-expo",
