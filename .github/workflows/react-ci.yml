@@ -6,7 +6,6 @@ on:
       - "frontend/**"
       - ".github/workflows/react-ci.yml"
   pull_request:
-    branches: ["main"]
 
 jobs:
   CI-CD-Frontend:

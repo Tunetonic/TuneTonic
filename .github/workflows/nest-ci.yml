@@ -6,7 +6,6 @@ on:
       - "backend/**"
       - ".github/workflows/nest-ci.yml"
   pull_request:
-    branches: ["main"]
 
 jobs:
   CI-CD-Backend:
