@@ -3,9 +3,10 @@ name: React CI
 on:
   push:
     paths:
-      - "frontend/**"
       - ".github/workflows/react-ci.yml"
   pull_request:
+    paths:
+      - "frontend/**"
 
 jobs:
   CI-CD-Frontend:
