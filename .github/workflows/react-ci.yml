@@ -18,12 +18,9 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
-        with:
-          repository: "TuneTonic"
 
       - name: Install packages
         run: yarn
 
       # - name: Test application
       #   run: yarn test
-# test pipeline
