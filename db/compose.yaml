@@ -1,0 +1,14 @@
+services:
+  mongo:
+    container_name: mongo
+    restart: always
+    image: mongo:4.2.0
+    volumes:
+      - ./data:/data/db
+    networks:
+      - nest-mongo
+    expose:
+      - 27017
+networks:
+  # react-nest:
+  # nest-mongo:
