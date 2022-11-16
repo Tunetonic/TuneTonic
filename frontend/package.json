@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "AppEntry.ts",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start -c",
     "test": "jest",
     "lint": "eslint --fix",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "qr": "expo start -c"
   },
   "dependencies": {
     "expo": "~47.0.3",
@@ -25,9 +26,11 @@
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.70.6",
     "@types/react-test-renderer": "^18.0.0",
+    "cypress": "^11.0.1",
     "eslint": "^8.27.0",
     "jest": "^26.6.3",
     "jest-expo": "^47.0.1",
+    "tailwindcss": "^3.2.4",
     "typescript": "^4.6.3"
   },
   "jest": {
