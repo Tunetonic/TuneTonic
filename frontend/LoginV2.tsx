@@ -1,11 +1,10 @@
 import {StatusBar} from "expo-status-bar";
-import React from "react";
-import {View, StyleSheet, KeyboardAvoidingView, Text} from "react-native";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
+import {KeyboardAvoidingView, StyleSheet, Text, View} from "react-native";
 import axios from "axios";
 import {Button} from "react-native-paper";
 // @ts-ignore
-import {ResponseType, useAuthRequest} from "expo-auth-session";
+import {Prompt, ResponseType, useAuthRequest} from "expo-auth-session";
 import {CLIENT_ID} from '@env'
 
 
@@ -33,15 +32,16 @@ const LoginScreen = ({navigation}) => {
                 "user-read-email",
                 "user-read-private",
             ],
-            usePKCE: false,
+            prompt: Prompt.SelectAccount,
+            usePKCE: true,
             redirectUri: "exp://192.168.2.8:19000",
         },
+
         discovery
     );
 
 
     useEffect(() => {
-        console.log(response?.type);
         if (response?.type === "success") {
             const {access_token} = response.params;
             setToken(access_token);
