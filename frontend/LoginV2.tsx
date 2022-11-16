@@ -3,9 +3,11 @@ import React, {useEffect, useState} from "react";
 import {KeyboardAvoidingView, StyleSheet, Text, View} from "react-native";
 import axios from "axios";
 import {Button} from "react-native-paper";
+import {Cookies, useCookies} from 'react-cookie';
+
 // @ts-ignore
 import {Prompt, ResponseType, useAuthRequest} from "expo-auth-session";
-import {CLIENT_ID} from '@env'
+// import {CLIENT_ID} from '@env'
 
 
 const discovery = {
@@ -17,11 +19,13 @@ const discovery = {
 
 // @ts-ignore
 const LoginScreen = ({navigation}) => {
+    const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
     const [token, setToken] = useState("");
+
     const [request, response, promptAsync] = useAuthRequest(
         {
             responseType: ResponseType.Token,
-            clientId: CLIENT_ID,
+            clientId: '00fa58c2bdea4728a5155c06ed7b0960',
             scopes: [
                 "user-read-currently-playing",
                 "user-read-recently-played",
@@ -59,6 +63,9 @@ const LoginScreen = ({navigation}) => {
                     },
                 }).then((response: any) => {
                 console.log(response)
+
+                // Can be obtained by: cookies.loginCookie
+                setCookie('loginCookie', token);
             })
                 .catch((error: { message: any; }) => {
                     console.log("error", error.message);
