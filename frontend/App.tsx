@@ -1,13 +1,12 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Provider as PaperProvider} from "react-native-paper";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import LoginV2 from "./Components/Login";
-import LoginGuard from "./Guards/LoginGuard";
 import {LoginContext} from './Context';
 import {useCookies} from "react-cookie";
-import {LandingPage} from "./Components/LandingPage";
-import Home from "./Components/Home";
+import {LandingPage} from "./Screens/LandingPage";
+import Home from "./Screens/Home";
+import LoginScreen from "./Screens/Login";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,26 +22,25 @@ const App = (): JSX.Element => {
         [isSignedIn]
     )
 
+
     return (
         <PaperProvider>
             <LoginContext.Provider value={appContextValue}>
                 <NavigationContainer>
-                    <Stack.Navigator>
+                    <Stack.Navigator initialRouteName="Home">
+                        <Stack.Screen name="Landingpage" component={LandingPage}/>
 
-                        <Stack.Screen
-                            name="Landingpage"
-                            component={LandingPage}
-                        />
-                        <Stack.Screen
-                            name="Login"
-                            component={LoginV2}/>
 
-                        <Stack.Screen
-                            name="Home"
-                            component={LoginGuard}
-                        />
+                        {!isSignedIn ? (
+                                <>
+                                    <Stack.Screen name="Login" component={LoginScreen}/>
+                                </>
+                            ) :
+                            (<Stack.Screen name="Home" component={Home}/>)
+                        }
                     </Stack.Navigator>
                 </NavigationContainer>
+
             </LoginContext.Provider>
         </PaperProvider>
     )

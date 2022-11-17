@@ -63,9 +63,7 @@ const LoginScreen = ({navigation}) => {
             setIsSignedIn(true);
             setTimeout(
                 () =>
-                    navigation.replace("Home", {
-                        token: token,
-                    }),
+                    navigation.navigate("Home"),
                 500
             );
         }
