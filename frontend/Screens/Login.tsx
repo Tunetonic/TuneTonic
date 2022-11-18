@@ -72,9 +72,7 @@ const LoginScreen = ({navigation}) => {
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
             <Image style={styles.image} source={require('../assets/tonic.png')}></Image>
             <StatusBar style="light"/>
-            <Text
-                style={styles.text}>
-                Discover new music with TuneTonic</Text>
+            <Text style={styles.text}>Discover new music with TuneTonic</Text>
             <Button
                 style={styles.button}
                 color='black'
@@ -91,19 +89,12 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
     text: {
-        position: "absolute",
         width: 327,
         height: 88,
-        left: 25,
-        top: 338,
-        fontStyle: 'normal',
         fontWeight: 'bold',
         fontSize: 34,
-        lineHeight: 44,
         textAlign: 'center',
-        letterSpacing: '0.1m',
         color: '#B3B3B3'
-
     },
     container: {
         flex: 1,
@@ -113,18 +104,10 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#1ED760',
         top:200,
-        width: 200,
-        marginTop: 200,
+        width: 250,
     },
-
     image: {
-        position: 'absolute',
         width: 321,
         height: 83,
-        left: 25,
-        top: 155,
-
     }
-
-
 });
