@@ -1,6 +1,6 @@
 import {StatusBar} from "expo-status-bar";
 import React, {useContext, useEffect, useState} from "react";
-import {KeyboardAvoidingView, StyleSheet, Text, View} from "react-native";
+import {Image, KeyboardAvoidingView, StyleSheet, Text, View} from "react-native";
 import axios from "axios";
 import {Button} from "react-native-paper";
 import {Cookies, useCookies} from 'react-cookie';
@@ -9,7 +9,6 @@ import {Cookies, useCookies} from 'react-cookie';
 import {Prompt, ResponseType, useAuthRequest} from "expo-auth-session";
 import {CLIENT_ID} from '@env';
 import {LoginContext} from "../Context";
-
 
 const discovery = {
     authorizationEndpoint:
@@ -71,10 +70,15 @@ const LoginScreen = ({navigation}) => {
 
     return (
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
+            <Image style={styles.image} source={require('../assets/tonic.png')}></Image>
             <StatusBar style="light"/>
             <Text
-                style={styles.text}>TuneTonic</Text>
-            <Button style={styles.button} onPress={() => {
+                style={styles.text}>
+                Discover new music with TuneTonic</Text>
+            <Button
+                style={styles.button}
+                color='black'
+                onPress={() => {
                 promptAsync().then(r => r);
             }}>Login with Spotify</Button>
             <View style={{height: 100}}/>
@@ -87,9 +91,19 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
     text: {
-        fontSize: 30,
-        fontWeight: "bold",
-        marginBottom: "20%",
+        position: "absolute",
+        width: 327,
+        height: 88,
+        left: 25,
+        top: 338,
+        fontStyle: 'normal',
+        fontWeight: 'bold',
+        fontSize: 34,
+        lineHeight: 44,
+        textAlign: 'center',
+        letterSpacing: '0.1m',
+        color: '#B3B3B3'
+
     },
     container: {
         flex: 1,
@@ -97,7 +111,20 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     button: {
+        backgroundColor: '#1ED760',
+        top:200,
         width: 200,
-        marginTop: 50,
+        marginTop: 200,
     },
+
+    image: {
+        position: 'absolute',
+        width: 321,
+        height: 83,
+        left: 25,
+        top: 155,
+
+    }
+
+
 });
