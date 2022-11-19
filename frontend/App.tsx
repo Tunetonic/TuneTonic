@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 const App = (): JSX.Element => {
   return (
     <View style={styles.container}>
-      <Text>new testasd!</Text>
+      <Text>Lees de readme in de root folder!</Text>
       <StatusBar style="auto" />
     </View>
   )
