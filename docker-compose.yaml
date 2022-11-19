@@ -1,12 +1,12 @@
 services:
   react_native:
     container_name: Frontend-React
-    image: paer12/tunetonic-frontend
+    build: frontend
     ports:
       - 19000:19000
   nest:
     container_name: Backend-Nest
-    image: paer12/tunetonic-backend-dev
+    build: backend
     ports:
       - 8080:8080
   mongo_db:
