@@ -4,7 +4,7 @@
   "main": "AppEntry.ts",
   "scripts": {
     "start": "expo start",
-    "dev": "expo start --lan",
+    "start:dev": "expo start --lan",
     "test": "jest",
     "lint": "eslint --fix",
     "android": "expo start --android",

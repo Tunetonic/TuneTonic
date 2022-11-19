@@ -4,8 +4,6 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install -g expo-cli
-
 RUN yarn
 
 COPY . .
