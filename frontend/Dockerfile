@@ -4,12 +4,14 @@ WORKDIR /app
 
 COPY package*.json ./
 
+RUN npm install -g expo-cli
+
 RUN yarn
 
 COPY . .
 
-ENV PORT=8080
+ENV PORT=19000
 
-EXPOSE 8080
+EXPOSE 19000
 
-CMD ["yarn", "start"]
+CMD ["yarn" , "run", "dev"]
