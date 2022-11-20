@@ -4,11 +4,19 @@ services:
     build: frontend
     ports:
       - 19000:19000
+    volumes:
+      - ./frontend:/home/app/frontend
+      - ./frontend/node_modules:/home/app/frontend/node_modules
   nest:
     container_name: Backend-Nest
-    build: backend
+    image: node:16-alpine
+    working_dir: /home/app/backend
+    command: yarn start:dev
     ports:
       - 8080:8080
+    volumes:
+      - ./backend:/home/app/backend
+      - ./backend/node_modules:/home/app/backend/node_modules
   mongo_db:
     container_name: Mongo
     environment:
@@ -32,4 +40,3 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongo_db
 volumes:
   db-data:
-    driver: local
