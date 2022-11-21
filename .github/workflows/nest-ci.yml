@@ -28,12 +28,7 @@ jobs:
       - name: Test application
         run: yarn test
 
-      - name: Snyk monitor
-        uses: actions/checkout@master
-        uses: snyk/actions/setup@master
-        uses: actions/setup-go@v1
-        with:
-          go-version: '1.13'
-        run: snyk test
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
