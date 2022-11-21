@@ -1,13 +1,11 @@
 import React, {useContext, useEffect} from "react";
 import {Alert, Button, Text, View} from "react-native";
-import {CLIENT_ID} from '@env'
 import {useCookies} from "react-cookie";
-import axios from "axios";
 import {LoginContext} from "../Context";
-import {useNavigation} from "@react-navigation/native";
 
 // @ts-ignore
 const Home = ({navigation}) => {
+
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
     // @ts-ignore
     const {setIsSignedIn} = useContext(LoginContext);
@@ -57,10 +55,9 @@ const Home = ({navigation}) => {
     // }, [])
 
     return <View>
-        <Text>you're logged in</Text>
+        <Text>you're logged in!</Text>
         <Button onPress={() => logOut()} title={'logOut'}/>
         <Button onPress={() => navigation.navigate('Landingpage')} title={'go back to landingPage'}/>
-
     </View>
 }
 export default Home;

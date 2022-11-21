@@ -1,12 +1,15 @@
 import React, {useEffect, useMemo} from 'react';
-import {Provider as PaperProvider} from "react-native-paper";
-import {NavigationContainer} from "@react-navigation/native";
+import {DarkTheme as PaperDarkTheme, Provider as PaperProvider} from "react-native-paper";
+import {NavigationContainer, DarkTheme as NavigationDarkTheme} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import merge from 'deepmerge';
+
 import {LoginContext} from './Context';
 import {useCookies} from "react-cookie";
-import {LandingPage} from "./Screens/LandingPage";
-import Home from "./Screens/Home";
+
+
 import LoginScreen from "./Screens/Login";
+import HomeTabs from './HomeTabs';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,21 +24,27 @@ const App = (): JSX.Element => {
         }),
         [isSignedIn]
     )
+    const CombinedDarkTheme = merge(PaperDarkTheme, NavigationDarkTheme);
+
+    const theme = {
+        ...CombinedDarkTheme,
+        "colors": {
+            ...CombinedDarkTheme.colors
+        }
+    }
 
     return (
-        <PaperProvider>
+        <PaperProvider theme={theme}>
             <LoginContext.Provider value={appContextValue}>
-                <NavigationContainer>
+                <NavigationContainer theme={theme}>
                     <Stack.Navigator initialRouteName="Home">
-                        <Stack.Screen name="Landingpage" component={LandingPage}/>
                         {!isSignedIn ? (
                             <Stack.Screen name="Login" component={LoginScreen}/>
                         ) :
-                            (<Stack.Screen name="Home" component={Home}/>)
+                            (<Stack.Screen name="Home" component={HomeTabs}/>)
                         }
                     </Stack.Navigator>
                 </NavigationContainer>
-
             </LoginContext.Provider>
         </PaperProvider>
     )

@@ -1,7 +1,6 @@
 import {StatusBar} from "expo-status-bar";
 import React, {useContext, useEffect, useState} from "react";
-import {Image, KeyboardAvoidingView, StyleSheet, Text, View} from "react-native";
-import axios from "axios";
+import {Image, KeyboardAvoidingView, StyleSheet, Text} from "react-native";
 import {Button} from "react-native-paper";
 import {Cookies, useCookies} from 'react-cookie';
 
@@ -77,7 +76,9 @@ const LoginScreen = ({navigation}) => {
                 style={styles.button}
                 color='black'
                 onPress={() => {
-                promptAsync().then(r => r);
+                    setIsSignedIn(true);
+                    navigation.navigate("Home")
+                // promptAsync().then(r => r);
             }}>Login with Spotify</Button>
         </KeyboardAvoidingView>
     );
