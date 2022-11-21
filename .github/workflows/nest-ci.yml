@@ -3,10 +3,10 @@ name: Nest CI
 on:
   push:
     paths:
-      - ".github/workflows/nest-ci.yml"
+      - '.github/workflows/nest-ci.yml'
   pull_request:
     paths:
-      - "backend/**"
+      - 'backend/**'
 
 jobs:
   CI-CD-Backend:
@@ -27,3 +27,13 @@ jobs:
 
       - name: Test application
         run: yarn test
+
+      - name: Snyk monitor
+      - uses: actions/checkout@master
+      - uses: snyk/actions/setup@master
+      - uses: actions/setup-go@v1
+        with:
+          go-version: '1.13'
+        run: snyk test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
