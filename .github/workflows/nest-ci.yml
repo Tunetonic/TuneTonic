@@ -3,8 +3,6 @@ name: Nest CI
 on:
   push:
     branches: ['main']
-    paths:
-      - '.github/workflows/nest-ci.yml'
   pull_request:
     paths:
       - 'backend/**'
