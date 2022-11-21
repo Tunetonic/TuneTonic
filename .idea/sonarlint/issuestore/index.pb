@@ -11,3 +11,5 @@ G
 frontend/types/env.d.ts,c\6\c68aa4b2ecb57bb39ce4514a643deec7d1eee000
 C
 frontend/Context.ts,4\0\406b743c07e72682682cf4b0fff47e65441e8ad8
+E
+frontend/.eslintrc.js,6\b\6bdf64946362147041f625ea863080b7caaf7045

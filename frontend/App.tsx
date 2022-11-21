@@ -7,6 +7,8 @@ import {useCookies} from "react-cookie";
 import {LandingPage} from "./Screens/LandingPage";
 import Home from "./Screens/Home";
 import LoginScreen from "./Screens/Login";
+import UserProfile from "./Screens/UserProfile";
+import Profile from "./Profile3/Profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +22,7 @@ const App = (): JSX.Element => {
             setIsSignedIn,
         }),
         [isSignedIn]
-    )
+    );
 
     return (
         <PaperProvider>
@@ -29,13 +31,17 @@ const App = (): JSX.Element => {
                     <Stack.Navigator initialRouteName="Home">
                         <Stack.Screen name="Landingpage" component={LandingPage}/>
                         {!isSignedIn ? (
-                            <Stack.Screen name="Login" component={LoginScreen}/>
-                        ) :
-                            (<Stack.Screen name="Home" component={Home}/>)
+                                <Stack.Screen name="Login" component={LoginScreen}/>
+                            ) :
+                            (<>
+                                    <Stack.Screen name="Home" component={Home}/>
+                                    <Stack.Screen name="User-profile" component={UserProfile}/>
+                                    <Stack.Screen name="profile3" component={Profile}/>
+                                </>
+                            )
                         }
                     </Stack.Navigator>
                 </NavigationContainer>
-
             </LoginContext.Provider>
         </PaperProvider>
     )

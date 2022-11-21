@@ -25,7 +25,6 @@ const LoginScreen = ({navigation}) => {
     // @ts-ignore
     const {setIsSignedIn} = useContext(LoginContext);
 
-
     const [request, response, promptAsync] = useAuthRequest(
         {
             responseType: ResponseType.Token,
@@ -44,10 +43,8 @@ const LoginScreen = ({navigation}) => {
             usePKCE: true,
             redirectUri: REDIRECT_URI,
         },
-
         discovery
     );
-
 
     useEffect(() => {
         if (response?.type === "success") {
@@ -56,34 +53,29 @@ const LoginScreen = ({navigation}) => {
         }
     },);
 
-    useEffect( () => {
+    useEffect(() => {
         if (token !== "") {
             setCookie('loginCookie', token);
-            const promise = new Promise((resolve, reject) => {
+            new Promise((resolve) => {
                 resolve(setIsSignedIn(true));
-            })
-            promise.then(() =>  navigation.navigate("Home"))
-
-
+            }).then(() => navigation.navigate("Home"));
         }
     });
 
     return (
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
-            <Image style={styles.image} source={require('../assets/tonic.png')}></Image>
+            <Image style={styles.image} source={require('../assets/tonic.png')}/>
             <StatusBar style="light"/>
             <Text style={styles.text}>Discover new music with TuneTonic</Text>
             <Button
                 style={styles.button}
                 color='black'
                 onPress={() => {
-                promptAsync().then(r => r);
-            }}>Login with Spotify</Button>
+                    promptAsync().then(r => r);
+                }}>Login with Spotify</Button>
         </KeyboardAvoidingView>
     );
 };
-
-
 export default LoginScreen;
 
 const styles = StyleSheet.create({
@@ -102,7 +94,7 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#1ED760',
-        top:200,
+        top: 200,
         width: 250,
     },
     image: {
