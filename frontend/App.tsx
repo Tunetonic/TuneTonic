@@ -22,15 +22,12 @@ const App = (): JSX.Element => {
         [isSignedIn]
     )
 
-
     return (
         <PaperProvider>
             <LoginContext.Provider value={appContextValue}>
                 <NavigationContainer>
                     <Stack.Navigator initialRouteName="Home">
                         <Stack.Screen name="Landingpage" component={LandingPage}/>
-
-
                         {!isSignedIn ? (
                                 <>
                                     <Stack.Screen name="Login" component={LoginScreen}/>

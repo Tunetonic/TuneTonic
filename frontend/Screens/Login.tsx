@@ -7,7 +7,7 @@ import {Cookies, useCookies} from 'react-cookie';
 
 // @ts-ignore
 import {Prompt, ResponseType, useAuthRequest} from "expo-auth-session";
-import {CLIENT_ID} from '@env';
+import {CLIENT_ID, REDIRECT_URI} from '@env';
 import {LoginContext} from "../Context";
 
 const discovery = {
@@ -42,7 +42,7 @@ const LoginScreen = ({navigation}) => {
             ],
             prompt: Prompt.SelectAccount,
             usePKCE: true,
-            redirectUri: "exp://192.168.2.8:19000",
+            redirectUri: REDIRECT_URI,
         },
 
         discovery
@@ -56,15 +56,15 @@ const LoginScreen = ({navigation}) => {
         }
     },);
 
-    useEffect(() => {
+    useEffect( () => {
         if (token !== "") {
             setCookie('loginCookie', token);
-            setIsSignedIn(true);
-            setTimeout(
-                () =>
-                    navigation.navigate("Home"),
-                500
-            );
+            const promise = new Promise((resolve, reject) => {
+                resolve(setIsSignedIn(true));
+            })
+            promise.then(() =>  navigation.navigate("Home"))
+
+
         }
     });
 
