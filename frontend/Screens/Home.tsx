@@ -60,6 +60,7 @@ const Home = ({navigation}) => {
         <Text>you're logged in</Text>
         <Button onPress={() => logOut()} title={'logOut'}/>
         <Button onPress={() => navigation.navigate('Landingpage')} title={'go back to landingPage'}/>
+        <Button onPress={() => navigation.navigate('Library')} title={'go to Library'}/>
 
     </View>
 }

@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {LoginContext} from './Context';
 import {useCookies} from "react-cookie";
 import {LandingPage} from "./Screens/LandingPage";
+import Library from "./Screens/Library";
 import Home from "./Screens/Home";
 import LoginScreen from "./Screens/Login";
 
@@ -33,6 +34,7 @@ const App = (): JSX.Element => {
                         ) :
                             (<Stack.Screen name="Home" component={Home}/>)
                         }
+                        <Stack.Screen name="Library" component={Library}/>
                     </Stack.Navigator>
                 </NavigationContainer>
 
