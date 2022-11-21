@@ -29,10 +29,8 @@ const App = (): JSX.Element => {
                     <Stack.Navigator initialRouteName="Home">
                         <Stack.Screen name="Landingpage" component={LandingPage}/>
                         {!isSignedIn ? (
-                                <>
-                                    <Stack.Screen name="Login" component={LoginScreen}/>
-                                </>
-                            ) :
+                            <Stack.Screen name="Login" component={LoginScreen}/>
+                        ) :
                             (<Stack.Screen name="Home" component={Home}/>)
                         }
                     </Stack.Navigator>

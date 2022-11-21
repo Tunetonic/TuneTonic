@@ -79,7 +79,6 @@ const LoginScreen = ({navigation}) => {
                 onPress={() => {
                 promptAsync().then(r => r);
             }}>Login with Spotify</Button>
-            <View style={{height: 100}}/>
         </KeyboardAvoidingView>
     );
 };
