@@ -11,7 +11,7 @@
 
     1. Clone the project
     2. Navigate in your terminal to the project
-    3. Run the command `yarn`
+    3. Run the command `npm i`
     4. Run the following command based on your os
         a. Windows: start.bat
         b. Mac/Linux: startmac.sh
