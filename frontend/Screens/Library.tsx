@@ -1,8 +1,8 @@
 
 import {StatusBar} from "expo-status-bar";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
-import {Image, ImageStore, KeyboardAvoidingView, StyleSheet, Text, ScrollView} from "react-native";
+import {Image, StyleSheet, ScrollView} from "react-native";
 import {Card} from "react-native-paper";
 
 // @ts-ignore
