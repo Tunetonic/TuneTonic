@@ -1,4 +1,12 @@
 services:
+  react_native:
+    container_name: Frontend-React
+    build: frontend
+    ports:
+      - 19000:19000
+    volumes:
+      - ./frontend:/home/app/frontend
+      - ./frontend/node_modules:/home/app/frontend/node_modules
   nest:
     container_name: Backend-Nest
     image: node:16-alpine
