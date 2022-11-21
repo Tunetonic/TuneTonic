@@ -76,9 +76,7 @@ const LoginScreen = ({navigation}) => {
                 style={styles.button}
                 color='black'
                 onPress={() => {
-                    setIsSignedIn(true);
-                    navigation.navigate("Home")
-                // promptAsync().then(r => r);
+                promptAsync().then(r => r);
             }}>Login with Spotify</Button>
         </KeyboardAvoidingView>
     );
