@@ -2,6 +2,7 @@ name: Nest CI
 
 on:
   push:
+    branches: ['main']
     paths:
       - '.github/workflows/nest-ci.yml'
   pull_request:
@@ -27,9 +28,3 @@ jobs:
 
       - name: Test application
         run: yarn test
-
-      - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
