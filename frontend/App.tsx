@@ -8,7 +8,6 @@ import {LandingPage} from "./Screens/LandingPage";
 import Home from "./Screens/Home";
 import LoginScreen from "./Screens/Login";
 import UserProfile from "./Screens/UserProfile";
-import Profile from "./Profile3/Profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,7 +35,6 @@ const App = (): JSX.Element => {
                             (<>
                                     <Stack.Screen name="Home" component={Home}/>
                                     <Stack.Screen name="User-profile" component={UserProfile}/>
-                                    <Stack.Screen name="profile3" component={Profile}/>
                                 </>
                             )
                         }

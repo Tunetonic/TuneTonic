@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import {Alert, Button, Text, View} from "react-native";
 import {useCookies} from "react-cookie";
 import {LoginContext} from "../Context";
@@ -34,6 +34,9 @@ const Home = ({navigation}) => {
         );
     }
 
+    useEffect(() => {        console.log(cookies.loginCookie);
+    }, [])
+
     // useEffect(() => {
     //     if (cookies.loginCookie !== '') {
     //         axios.get(
@@ -58,7 +61,6 @@ const Home = ({navigation}) => {
         <Button onPress={() => logOut()} title={'logOut'}/>
         <Button onPress={() => navigation.navigate('Landingpage')} title={'go back to landingPage'}/>
         <Button onPress={() => navigation.navigate('User-profile')} title={'go to user-profile'}/>
-        <Button onPress={() => navigation.navigate('profile3')} title={'go to profile'}/>
     </View>
 }
 export default Home;
