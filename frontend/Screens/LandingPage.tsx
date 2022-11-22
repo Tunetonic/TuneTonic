@@ -11,8 +11,6 @@ export const LandingPage = ({navigation}) => {
     // @ts-ignore
     const {isSignedIn} = useContext(LoginContext);
 
-
-
     return (
         <View>
             <Text>Landing Screen</Text>

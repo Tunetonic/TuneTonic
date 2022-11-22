@@ -1,12 +1,27 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Image, TouchableHighlight, StyleSheet } from "react-native";
+import { Appbar } from 'react-native-paper';
 
-const Library = (): JSX.Element => {
 
-    return <View>
-        <Text>Your Library</Text>
-    </View>
-
+const Library = ({navigation, route}): JSX.Element => {
+    return (
+        <Appbar.Header>
+            <TouchableHighlight onPress={() => navigation.navigate("Library", {screen: "profile"})}>
+                <Image
+                    source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+                    style={{ height: 50, width: 50 }}
+                />
+            </TouchableHighlight>
+            <Appbar.Content title={route.name} titleStyle={styles.title}/>
+            <Appbar.Action icon="cog-outline" onPress={() => navigation.navigate("Library", {screen: "settings"})} />
+        </Appbar.Header>
+    );
 }
+
+const styles = StyleSheet.create({
+    title: {
+        textAlign: 'center',
+    },
+});
 
 export default Library;

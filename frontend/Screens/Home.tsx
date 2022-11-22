@@ -4,7 +4,7 @@ import {useCookies} from "react-cookie";
 import {LoginContext} from "../Context";
 
 // @ts-ignore
-const Home = ({navigation}) => {
+const Home = ({navigation}): JSX.Element => {
 
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
     // @ts-ignore
@@ -54,10 +54,12 @@ const Home = ({navigation}) => {
     //     }
     // }, [])
 
-    return <View>
-        <Text>you're logged in!</Text>
-        <Button onPress={() => logOut()} title={'logOut'}/>
-        <Button onPress={() => navigation.navigate('Landingpage')} title={'go back to landingPage'}/>
-    </View>
+    return (
+        <View>
+            <Text>you're logged in!</Text>
+            <Button onPress={() => logOut()} title={'logOut'}/>
+            <Button onPress={() => navigation.navigate('Landingpage')} title={'go back to landingPage'}/>
+        </View>
+    );
 }
 export default Home;

@@ -1,4 +1,3 @@
-import {StatusBar} from "expo-status-bar";
 import React, {useContext, useEffect, useState} from "react";
 import {Image, KeyboardAvoidingView, StyleSheet, Text} from "react-native";
 import {Button} from "react-native-paper";
@@ -16,8 +15,7 @@ const discovery = {
         "https://accounts.spotify.com/api/token",
 };
 
-// @ts-ignore
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({navigation}): JSX.Element => {
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
     const [token, setToken] = useState("");
 
@@ -70,7 +68,6 @@ const LoginScreen = ({navigation}) => {
     return (
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
             <Image style={styles.image} source={require('../assets/tonic.png')}></Image>
-            <StatusBar style="light"/>
             <Text style={styles.text}>Discover new music with TuneTonic</Text>
             <Button
                 style={styles.button}
@@ -78,6 +75,7 @@ const LoginScreen = ({navigation}) => {
                 onPress={() => {
                 promptAsync().then(r => r);
             }}>Login with Spotify</Button>
+            <Text>{REDIRECT_URI}</Text>
         </KeyboardAvoidingView>
     );
 };
