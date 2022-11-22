@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 
 const LibraryStackNavigation = (): JSX.Element => {
     return (
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Navigator id="library-stack-navigator" screenOptions={{headerShown: false}}>
             <Stack.Screen
                 name='library'
                 component={Library}

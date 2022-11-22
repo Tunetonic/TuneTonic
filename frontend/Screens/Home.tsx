@@ -1,39 +1,11 @@
 import React, {useContext, useEffect} from "react";
-import {Alert, Button, Text, View} from "react-native";
+import {Alert, Button, View} from "react-native";
+import { Text } from "react-native-paper";
 import {useCookies} from "react-cookie";
 import {LoginContext} from "../Context";
 
 // @ts-ignore
 const Home = ({navigation}): JSX.Element => {
-
-    const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
-    // @ts-ignore
-    const {setIsSignedIn} = useContext(LoginContext);
-
-    const logOut = () => {
-        Alert.alert(
-            "Logout",
-            "Are you sure? You want to logout?",
-            [
-                {
-                    text: "Cancel",
-                    onPress: () => {
-                        return null;
-                    },
-                },
-                {
-                    text: "Confirm",
-                    onPress: () => {
-                        // @ts-ignore
-                        removeCookie('loginCookie');
-                        setIsSignedIn(false);
-                        navigation.navigate('Home')
-                    },
-                },
-            ],
-            {cancelable: false}
-        );
-    }
 
     // useEffect(() => {
     //     if (cookies.loginCookie !== '') {
@@ -57,8 +29,8 @@ const Home = ({navigation}): JSX.Element => {
     return (
         <View>
             <Text>you're logged in!</Text>
-            <Button onPress={() => logOut()} title={'logOut'}/>
-            <Button onPress={() => navigation.navigate('Landingpage')} title={'go back to landingPage'}/>
+            {/* <Button onPress={() => logOut()} title={'logOut'}/>
+            <Button onPress={() => navigation.navigate('Landingpage')} title={'go back to landingPage'}/> */}
         </View>
     );
 }

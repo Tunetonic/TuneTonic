@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Image, KeyboardAvoidingView, StyleSheet, Text} from "react-native";
-import {Button} from "react-native-paper";
+import {Image, KeyboardAvoidingView, StyleSheet} from "react-native";
+import {Button, Text} from "react-native-paper";
 import {Cookies, useCookies} from 'react-cookie';
 
 // @ts-ignore
@@ -59,7 +59,7 @@ const LoginScreen = ({navigation}): JSX.Element => {
             const promise = new Promise((resolve, reject) => {
                 resolve(setIsSignedIn(true));
             })
-            promise.then(() =>  navigation.navigate("Home"))
+            promise.then(() =>  navigation.navigate("home-tab-navigation"))
 
 
         }

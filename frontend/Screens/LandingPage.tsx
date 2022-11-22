@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from "react";
-import {Button, Card, TextInput} from "react-native-paper";
+import {Button, Card, TextInput, Text} from "react-native-paper";
 import {useCookies} from "react-cookie";
-import {Text, View} from "react-native";
+import {View} from "react-native";
 import {LoginContext} from "../Context";
 
 
@@ -15,9 +15,9 @@ export const LandingPage = ({navigation}) => {
         <View>
             <Text>Landing Screen</Text>
             {
-                !isSignedIn ? (<Button onPress={() => navigation.navigate('Login')}>Login</Button>)
+                !isSignedIn ? (<Button onPress={() => navigation.navigate('login')}>Login</Button>)
                     :
-                    (<Button onPress={() => navigation.navigate('Home')}>Home</Button>)
+                    (<Button onPress={() => navigation.navigate('home')}>Home</Button>)
             }
         </View>
 

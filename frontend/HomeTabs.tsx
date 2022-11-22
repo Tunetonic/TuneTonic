@@ -11,6 +11,7 @@ const Tab = createMaterialBottomTabNavigator();
 const HomeTabs = ({navigation}): JSX.Element => {
     return (
         <Tab.Navigator
+            id="bottom-tab-navigator"
             initialRouteName="home"
             barStyle={{ backgroundColor: 'black' }}
         >
@@ -34,9 +35,10 @@ const HomeTabs = ({navigation}): JSX.Element => {
             />
             <Tab.Group>
                 <Tab.Screen
-                    name="Library"
+                    name="library-stack-navigation"
                     component={LibraryStackNavigation}
                     options={{
+                        title: "your library",
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="folder-music" color={color} size={26} />
                         ),

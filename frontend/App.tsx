@@ -43,15 +43,12 @@ const App = (): JSX.Element => {
             <StatusBar animated={true} hidden={false} />
             <LoginContext.Provider value={appContextValue}>
                 <NavigationContainer theme={theme}>
-                    <Stack.Navigator initialRouteName="Home"
+                    <Stack.Navigator id="root-stack-navigator" initialRouteName="home-tab-navigation"
                         screenOptions={{
                             headerShown: false
                         }}>
-                        {!isSignedIn ? (
-                            <Stack.Screen name="Login" component={LoginScreen}/>
-                        ) : (
-                            <Stack.Screen name="Home" component={HomeTabs}/>
-                        )}
+                            <Stack.Screen name="login" component={LoginScreen}/>
+                            <Stack.Screen name="home-tab-navigation" component={HomeTabs}/>
                     </Stack.Navigator>
                 </NavigationContainer>
             </LoginContext.Provider>
