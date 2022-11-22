@@ -7,6 +7,7 @@ import {useCookies} from "react-cookie";
 import {LandingPage} from "./Screens/LandingPage";
 import Home from "./Screens/Home";
 import LoginScreen from "./Screens/Login";
+import OnboardingScreen from "./Screens/Onboarding";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +32,11 @@ const App = (): JSX.Element => {
                         {!isSignedIn ? (
                             <Stack.Screen name="Login" component={LoginScreen}/>
                         ) :
-                            (<Stack.Screen name="Home" component={Home}/>)
+                            (<>
+                                <Stack.Screen name="Home" component={Home}/>
+                            <Stack.Screen name="Onboarding" component={OnboardingScreen}/>
+                                </>
+                                )
                         }
                     </Stack.Navigator>
                 </NavigationContainer>
