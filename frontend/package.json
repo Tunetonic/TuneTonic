@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "AppEntry.ts",
   "scripts": {
-    "start": "expo start",
+    "start": "npx expo start",
+    "start:dev": "npx expo start --lan",
     "test": "jest",
     "lint": "eslint --fix",
     "android": "expo start --android",

@@ -2,11 +2,10 @@ name: Nest CI
 
 on:
   push:
-    paths:
-      - ".github/workflows/nest-ci.yml"
+    branches: ['main']
   pull_request:
     paths:
-      - "backend/**"
+      - 'backend/**'
 
 jobs:
   CI-CD-Backend:
