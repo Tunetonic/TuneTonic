@@ -3,6 +3,7 @@ import React from 'react';
 import Settings from './Screens/Settings';
 import Library from './Screens/Library';
 import Profile from './Screens/Profile';
+import Playlist from './Screens/Playlist';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,14 @@ const LibraryStackNavigation = (): JSX.Element => {
             <Stack.Screen
                 name='settings'
                 component={Settings}/>
+            <Stack.Screen
+                name='playlist'
+                component={Playlist}
+                options={{
+                    animation: 'fade_from_bottom',
+                    animationDuration: 150
+                }}
+            />
         </Stack.Navigator>
     );
 }

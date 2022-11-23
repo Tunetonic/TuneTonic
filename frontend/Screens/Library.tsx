@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
-import {Image, StyleSheet, TouchableHighlight, ScrollView, View} from "react-native";
-import { Appbar, Text, Card } from 'react-native-paper';
+import {Image, StyleSheet, TouchableHighlight, ScrollView, View, FlatList} from "react-native";
+import { Appbar, Text, Card, Button } from 'react-native-paper';
+import { capitalize } from '../helpers';
 
 const Library = ({navigation, route}): JSX.Element => {
 
@@ -28,15 +29,15 @@ const Library = ({navigation, route}): JSX.Element => {
     }
 
     return (
-        <View>
-            <Appbar.Header>
+        <>
+            <Appbar.Header style={styles.header}>
                 <TouchableHighlight onPress={() => navigation.navigate("library-stack-navigation", {screen: "profile"})}>
                     <Image
                         source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
                         style={{ height: 50, width: 50 }}
                     />
                 </TouchableHighlight>
-                <Appbar.Content title={route.name} titleStyle={styles.title}/>
+                <Appbar.Content title={capitalize(route.name)} titleStyle={styles.title}/>
                 <Appbar.Action icon="cog-outline" onPress={() => navigation.navigate("library-stack-navigation", {screen: "settings"})} />
             </Appbar.Header>
             <ScrollView>
@@ -46,14 +47,16 @@ const Library = ({navigation, route}): JSX.Element => {
                             <Card.Title 
                                 title={playlist.title}
                                 titleStyle={styles.cardTitle} 
-                                subtitle={playlist.tracks}
+                                subtitle={playlist.tracks + ' tracks'}
                                 subtitleStyle={styles.subtitle} 
-                                left={(props => <Image source={{uri: playlist.image}} style={styles.playlistImage}/>)}
+                                left={() => <Image source={{uri: playlist.image}} style={styles.playlistImage}/>}
+                                // TODO: inflate playlist screen with spotify tracks.
+                                // right={() => <Button mode="text" labelStyle={{ fontSize: 32 }} icon="arrow-right-drop-circle"onPress={() => navigation.navigate("playlist", {playlistId: playlist.title}) }></Button>}
                             />
                         </Card>
                 );})}
             </ScrollView>
-        </View>
+        </>
 
     );
 };
@@ -75,4 +78,9 @@ const styles = StyleSheet.create({
     subtitle: {
         marginLeft: 5
     },
+    header: {
+        marginTop: 10,
+        marginVertical: 10,
+        marginHorizontal: 10
+    }
 });
