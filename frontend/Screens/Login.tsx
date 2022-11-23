@@ -75,7 +75,6 @@ const LoginScreen = ({ navigation }): JSX.Element => {
                 onPress={() => {
                     promptAsync().then(r => r);
                 }}>Login with Spotify</Button>
-            <Text>{REDIRECT_URI}</Text>
         </KeyboardAvoidingView>
     );
 };

@@ -1,15 +1,15 @@
-import React, {useContext, useEffect} from "react";
-import {Button, Card, TextInput, Text} from "react-native-paper";
-import {useCookies} from "react-cookie";
-import {View} from "react-native";
-import {LoginContext} from "../Context";
+import React, { useContext, useEffect } from "react";
+import { Button, Card, TextInput, Text } from "react-native-paper";
+import { useCookies } from "react-cookie";
+import { View } from "react-native";
+import { LoginContext } from "../Context";
 
 
-// @ts-ignore
-export const LandingPage = ({navigation}) => {
+
+export const LandingPage = ({ navigation }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
-    // @ts-ignore
-    const {isSignedIn} = useContext(LoginContext);
+
+    const isSignedIn = useContext(LoginContext);
 
     return (
         <View>
