@@ -1,12 +1,10 @@
-
-import {StatusBar} from "expo-status-bar";
 import React, {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
-import {Image, StyleSheet, ScrollView} from "react-native";
-import {Card} from "react-native-paper";
+import {Image, StyleSheet, TouchableHighlight, ScrollView, View} from "react-native";
+import { Appbar, Text, Card } from 'react-native-paper';
 
-// @ts-ignore
-const Libary = () => {
+const Library = ({navigation, route}): JSX.Element => {
+
     const [cookies, removeCookie] = useCookies(['loginCookie']);
     const [data, setData] = useState([] as any);
 
@@ -15,10 +13,11 @@ const Libary = () => {
     },[])
 
     let playlistSearchApi = 'https://api.spotify.com/v1/me/playlists';
+
     const handleGetPlaylists = () => {
         fetch(playlistSearchApi, {
             method: 'GET',
-            headers: { 'Authorization': 'Bearer BQAPr37VRQxpQogH61aPywSJsZNVtRhthI1FdkZFJOTSLDzbO4mS6GeByT-AHJ3wZsrJiWd1PhzQBCgl-q-h0ssVhpoI-ySqnhPL5lYzV9xx_B9gnI0Dzm-X_-f9FQ3Nu7pxkQeaKu0b3RV6OhQWJ-RkpGAmXNUjNy2HkcPLU61ajIqBkLze0KQGJg' }
+            headers: { 'Authorization': 'Bearer ' + cookies.loginCookie }
           })
           .then(res => res.json())
           .then(data => {
@@ -29,35 +28,48 @@ const Libary = () => {
     }
 
     return (
-        <ScrollView style={styles.container}>
-            <StatusBar style="light"/>
-            {data.length > 0 && data.map((playlist: object, i: number) => {
-                return (
-                    <Card key={i}>
-                        <Card.Title 
-                            title={playlist.title}
-                            titleStyle={styles.title} 
-                            subtitle={playlist.tracks}
-                            subtitleStyle={styles.subtitle} 
-                            left={(props => <Image source={{uri: playlist.image}} style={styles.playlistImage}/>)}
-                        />
-                    </Card>
-            );})}
-        </ScrollView>
+        <View>
+            <Appbar.Header>
+                <TouchableHighlight onPress={() => navigation.navigate("library-stack-navigation", {screen: "profile"})}>
+                    <Image
+                        source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+                        style={{ height: 50, width: 50 }}
+                    />
+                </TouchableHighlight>
+                <Appbar.Content title={route.name} titleStyle={styles.title}/>
+                <Appbar.Action icon="cog-outline" onPress={() => navigation.navigate("library-stack-navigation", {screen: "settings"})} />
+            </Appbar.Header>
+            <ScrollView>
+                {data.length > 0 && data.map((playlist: object, i: number) => {
+                    return (
+                        <Card key={i}>
+                            <Card.Title 
+                                title={playlist.title}
+                                titleStyle={styles.cardTitle} 
+                                subtitle={playlist.tracks}
+                                subtitleStyle={styles.subtitle} 
+                                left={(props => <Image source={{uri: playlist.image}} style={styles.playlistImage}/>)}
+                            />
+                        </Card>
+                );})}
+            </ScrollView>
+        </View>
+
     );
 };
 
-export default Libary;
+export default Library;
 
 const styles = StyleSheet.create({
-    container: {
+    title: {
+        textAlign: 'center',
     },
     playlistImage: {
         width: 50,
         height: 50,
         borderRadius: 0
     },
-    title: {
+    cardTitle: {
         marginLeft: 5
     },
     subtitle: {
