@@ -1,12 +1,18 @@
-import React, {useEffect, useMemo} from 'react';
-import {Provider as PaperProvider} from "react-native-paper";
-import {NavigationContainer} from "@react-navigation/native";
+import React, { useMemo } from 'react';
+import {DarkTheme as PaperDarkTheme, DefaultTheme as PaperLightTheme, Provider as PaperProvider} from "react-native-paper";
+import {NavigationContainer, DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationLightTheme} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import * as NavigationBar from 'expo-navigation-bar';
+
+import merge from 'deepmerge';
+
 import {LoginContext} from './Context';
 import {useCookies} from "react-cookie";
-import {LandingPage} from "./Screens/LandingPage";
-import Home from "./Screens/Home";
+
+
 import LoginScreen from "./Screens/Login";
+import HomeTabs from './HomeTabs';
+import { StatusBar } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,21 +27,30 @@ const App = (): JSX.Element => {
         }),
         [isSignedIn]
     )
+    const CombinedDarkTheme = merge(PaperDarkTheme, NavigationDarkTheme);
+
+    const theme = {
+        ...CombinedDarkTheme,
+        "colors": {
+            ...CombinedDarkTheme.colors,
+            "primary": "#008080"
+        }
+    }
+    NavigationBar.setBackgroundColorAsync("black");
 
     return (
-        <PaperProvider>
+        <PaperProvider theme={theme}>
+            <StatusBar animated={true} hidden={false} />
             <LoginContext.Provider value={appContextValue}>
-                <NavigationContainer>
-                    <Stack.Navigator initialRouteName="Home">
-                        <Stack.Screen name="Landingpage" component={LandingPage}/>
-                        {!isSignedIn ? (
-                            <Stack.Screen name="Login" component={LoginScreen}/>
-                        ) :
-                            (<Stack.Screen name="Home" component={Home}/>)
-                        }
+                <NavigationContainer theme={theme}>
+                    <Stack.Navigator id="root-stack-navigator"
+                        screenOptions={{
+                            headerShown: false
+                        }}>
+                            <Stack.Screen name="login" component={LoginScreen}/>
+                            <Stack.Screen name="home-tab-navigation" component={HomeTabs}/>
                     </Stack.Navigator>
                 </NavigationContainer>
-
             </LoginContext.Provider>
         </PaperProvider>
     )
