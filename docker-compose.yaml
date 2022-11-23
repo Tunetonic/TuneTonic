@@ -1,34 +1,26 @@
 services:
-  nest:
-    container_name: Backend-Nest
-    image: node:16-alpine
-    working_dir: /home/app/backend
-    command: yarn start:dev
-    ports:
-      - 8080:8080
-    volumes:
-      - ./backend:/home/app/backend
-      - ./backend/node_modules:/home/app/backend/node_modules
-  mongo_db:
-    container_name: Mongo
+  # nest:
+  #   container_name: Backend-Nest
+  #   image: node:16-alpine
+  #   working_dir: /home/app/backend
+  #   command: yarn start:dev
+  #   ports:
+  #     - 8080:8080
+  #   volumes:
+  #     - ./backend:/home/app/backend
+  #     - ./backend/node_modules:/home/app/backend/node_modules
+  mysql:
+    container_name: Mysql
+    image: mysql
+    restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=rainbow
-      - MONGO_INITDB_ROOT_PASSWORD=unicorn
-    image: mongo:4.2.0
+      - MYSQL_DATABASE=tunetonic
+      - MYSQL_USERNAME=rainbow
+      - MYSQL_PASSWORD=unicorn
+      - MYSQL_ROOT_PASSWORD=unicorn
     ports:
-      - 27017:27017
+      - 3306:3306
     volumes:
-      - db-data:/data/db
-  mongo_express:
-    container_name: Mongo-Express
-    image: mongo-express
-    depends_on:
-      - mongo_db
-    ports:
-      - 8081:8081
-    environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=rainbow
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=unicorn
-      - ME_CONFIG_MONGODB_SERVER=mongo_db
+      - db-data:/var/lib/mysql
 volumes:
   db-data:
