@@ -1,11 +1,11 @@
-import React, {useContext, useEffect} from "react";
-import {Alert, Button, View} from "react-native";
+import React, { useContext, useEffect } from "react";
+import { Alert, Button, View } from "react-native";
 import { Text } from "react-native-paper";
-import {useCookies} from "react-cookie";
-import {LoginContext} from "../Context";
+import { useCookies } from "react-cookie";
+import { LoginContext } from "../Context";
 
-// @ts-ignore
-const Home = ({navigation}): JSX.Element => {
+
+const Home = ({ navigation }): JSX.Element => {
 
     // useEffect(() => {
     //     if (cookies.loginCookie !== '') {

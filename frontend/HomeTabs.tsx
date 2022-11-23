@@ -7,7 +7,6 @@ import LibraryStackNavigation from './LibraryStackNavigation';
 
 const Tab = createMaterialBottomTabNavigator();
 
-//@ts-ignore
 const HomeTabs = ({navigation}): JSX.Element => {
     return (
         <Tab.Navigator
@@ -33,18 +32,16 @@ const HomeTabs = ({navigation}): JSX.Element => {
                     ),
                 }}
             />
-            <Tab.Group>
-                <Tab.Screen
-                    name="library-stack-navigation"
-                    component={LibraryStackNavigation}
-                    options={{
-                        title: "your library",
-                        tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons name="folder-music" color={color} size={26} />
-                        ),
-                    }}
-                />
-            </Tab.Group>
+            <Tab.Screen
+                name="library-stack-navigation"
+                component={LibraryStackNavigation}
+                options={{
+                    title: "your library",
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="folder-music" color={color} size={26} />
+                    ),
+                }}
+            />
         </Tab.Navigator>
     );
 }
