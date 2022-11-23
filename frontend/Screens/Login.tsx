@@ -1,13 +1,12 @@
-import {StatusBar} from "expo-status-bar";
-import React, {useContext, useEffect, useState} from "react";
-import {Image, KeyboardAvoidingView, StyleSheet, Text} from "react-native";
-import {Button} from "react-native-paper";
-import {Cookies, useCookies} from 'react-cookie';
+import React, { useContext, useEffect, useState } from "react";
+import { Image, KeyboardAvoidingView, StyleSheet } from "react-native";
+import { Button, Text } from "react-native-paper";
+import { Cookies, useCookies } from 'react-cookie';
 
-// @ts-ignore
-import {Prompt, ResponseType, useAuthRequest} from "expo-auth-session";
-import {CLIENT_ID, REDIRECT_URI} from '@env';
-import {LoginContext} from "../Context";
+
+import { Prompt, ResponseType, useAuthRequest } from "expo-auth-session";
+import { CLIENT_ID, REDIRECT_URI } from '@env';
+import { LoginContext } from "../Context";
 
 const discovery = {
     authorizationEndpoint:
@@ -16,13 +15,12 @@ const discovery = {
         "https://accounts.spotify.com/api/token",
 };
 
-// @ts-ignore
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }): JSX.Element => {
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
     const [token, setToken] = useState("");
 
-    // @ts-ignore
-    const {setIsSignedIn} = useContext(LoginContext);
+
+    const { setIsSignedIn } = useContext(LoginContext);
 
 
     const [request, response, promptAsync] = useAuthRequest(
@@ -50,18 +48,18 @@ const LoginScreen = ({navigation}) => {
 
     useEffect(() => {
         if (response?.type === "success") {
-            const {access_token} = response.params;
+            const { access_token } = response.params;
             setToken(access_token);
         }
     },);
 
-    useEffect( () => {
+    useEffect(() => {
         if (token !== "") {
             setCookie('loginCookie', token);
             const promise = new Promise((resolve, reject) => {
                 resolve(setIsSignedIn(true));
             })
-            promise.then(() =>  navigation.navigate("Home"))
+            promise.then(() => navigation.navigate("home-tab-navigation"))
 
 
         }
@@ -70,16 +68,13 @@ const LoginScreen = ({navigation}) => {
     return (
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
             <Image style={styles.image} source={require('../assets/tonic.png')}></Image>
-            <StatusBar style="light"/>
             <Text style={styles.text}>Discover new music with TuneTonic</Text>
             <Button
                 style={styles.button}
                 color='black'
                 onPress={() => {
-                    setIsSignedIn(true);
-                    navigation.navigate("Home")
-                // promptAsync().then(r => r);
-            }}>Login with Spotify</Button>
+                    promptAsync().then(r => r);
+                }}>Login with Spotify</Button>
         </KeyboardAvoidingView>
     );
 };
@@ -103,7 +98,7 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#1ED760',
-        top:200,
+        top: 200,
         width: 250,
     },
     image: {

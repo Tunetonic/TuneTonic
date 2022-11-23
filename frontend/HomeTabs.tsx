@@ -3,23 +3,21 @@ import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Friends from './Screens/Friends';
 import Home from './Screens/Home';
-import Library from './Screens/Library';
+import LibraryStackNavigation from './LibraryStackNavigation';
 
 const Tab = createMaterialBottomTabNavigator();
 
-// FIXME: Home is shown in header all the time, either hide or dynamically change it.
-const HomeTabs = (): JSX.Element => {
+const HomeTabs = ({navigation}): JSX.Element => {
     return (
         <Tab.Navigator
+            id="bottom-tab-navigator"
             initialRouteName="home"
-            activeColor="#fff"
             barStyle={{ backgroundColor: 'black' }}
         >
             <Tab.Screen
                 name="home"
                 component={Home}
                 options={{
-                    tabBarLabel: 'Home',
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="home" color={color} size={26} />
                     ),
@@ -29,25 +27,23 @@ const HomeTabs = (): JSX.Element => {
                 name="friends"
                 component={Friends}
                 options={{
-                    tabBarLabel: 'Friends',
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="account-multiple" color={color} size={26} />
                     ),
                 }}
             />
             <Tab.Screen
-                name="your-libary"
-                component={Library}
+                name="library-stack-navigation"
+                component={LibraryStackNavigation}
                 options={{
-                    title: 'Awesome app',
-                    tabBarLabel: 'Your Library',
+                    title: "your library",
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="folder-music" color={color} size={26} />
                     ),
                 }}
             />
-      </Tab.Navigator>
+        </Tab.Navigator>
     );
-  }
+}
 
 export default HomeTabs

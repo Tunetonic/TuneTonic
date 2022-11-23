@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {FlatList, Image, StyleSheet, Text, View, } from "react-native";
-import {TextInput} from 'react-native-paper';
+import {FlatList, Image, StyleSheet, View, } from "react-native";
+import {TextInput, Text} from 'react-native-paper';
 
 
 const Friends = () => {
