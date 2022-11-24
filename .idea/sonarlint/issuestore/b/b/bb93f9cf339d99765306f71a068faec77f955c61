@@ -1,0 +1,10 @@
+
+Jtypescript:S1128")Remove this unused import of 'useEffect'.(ÚÜ¾¡üÿÿÿÿ
+@typescript:S1128"$Remove this unused import of 'Card'.(õÙÎÛ
+Etypescript:S1128")Remove this unused import of 'TextInput'.(õÙÎÛ
+Vtypescript:S1854
+"5Remove this useless assignment to variable "cookies".(Ÿ²ÈÃÿÿÿÿÿ
+Xtypescript:S1854
+"7Remove this useless assignment to variable "setCookie".(Ÿ²ÈÃÿÿÿÿÿ
+[typescript:S1854
+":Remove this useless assignment to variable "removeCookie".(Ÿ²ÈÃÿÿÿÿÿ

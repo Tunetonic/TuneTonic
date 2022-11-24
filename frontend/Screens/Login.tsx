@@ -29,7 +29,7 @@ const LoginScreen = ({navigation}) => {
     const [request, response, promptAsync] = useAuthRequest(
         {
             responseType: ResponseType.Token,
-            clientId: CLIENT_ID,
+            clientId: '8da0802fa73a4cae96798ca272f66881',
             scopes: [
                 "user-read-currently-playing",
                 "user-read-recently-played",
@@ -42,7 +42,7 @@ const LoginScreen = ({navigation}) => {
             ],
             prompt: Prompt.SelectAccount,
             usePKCE: true,
-            redirectUri: REDIRECT_URI,
+            redirectUri: 'exp://172.20.10.6:19000',
         },
 
         discovery
