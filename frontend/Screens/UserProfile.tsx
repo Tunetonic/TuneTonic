@@ -5,6 +5,7 @@ import {LoginContext} from "../Context";
 import {ScrollView, Text} from "react-native";
 import {View, Image, StyleSheet} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
+import {getUserInformations, getUserPlaylist} from "../services/UserProfileService";
 
 export type User = {
     country: string,
@@ -30,41 +31,10 @@ const UserProfile = () => {
 
     useEffect(() => {
         if (cookies.loginCookie !== '') {
-            axios.get(
-                "https://api.spotify.com/v1/me", {
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                        Authorization: "Bearer " + cookies.loginCookie,
-                    },
-                }).then((response: AxiosResponse<User>) => {
-                setUser(response.data);
-            })
-                .catch((error: { message: any; }) => {
-                    console.log("error", error.message);
-                    removeCookie('loginCookie');
-                    setIsSignedIn(false);
-                });
+            getUserInformations(cookies.loginCookie, setIsSignedIn, removeCookie, setUser)
 
-            axios.get(
-                "https://api.spotify.com/v1/me/playlists", {
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                        Authorization: "Bearer " + cookies.loginCookie,
-                    },
-                }).then((response) => {
-                setPlaylistItems(response.data.items);
-            })
-                .catch((error: { message: any; }) => {
-                    console.log("error", error.message);
-                    removeCookie('loginCookie');
-                    setIsSignedIn(false);
-                });
+            getUserPlaylist(cookies.loginCookie, setIsSignedIn, removeCookie, setPlaylistItems)
 
-            setTimeout(() => {
-                console.log(playlistItems)
-            }, 5000)
         }
 
     }, [])
@@ -91,7 +61,7 @@ const UserProfile = () => {
                 <ScrollView horizontal={true} style={styles.playlistView}>
                     {playlistItems.map(data => (
                         data.images.length > 0 &&
-                        <View style={styles.playlist}>
+                        <View key={data.id} style={styles.playlist}>
                             <Image style={styles.playlistLogo} source={{uri: data.images[0].url}}/>
                             <Text style={styles.text}>{data.name}</Text>
                             <Text style={styles.text}>{data.tracks.total} songs</Text>
