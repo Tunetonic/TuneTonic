@@ -39,12 +39,12 @@ const Friends = () => {
                 });
             setFilteredDataSource(newData);
             setSearch(text);
+
         } else {
             // Inserted text is blank
             // Update FilteredDataSource with masterDataSource
             setFilteredDataSource(masterDataSource);
             setSearch(text);
-            console.log(text)
         }
     };
 
@@ -88,7 +88,7 @@ const Friends = () => {
                 underlineColorAndroid="transparent"
                 placeholder="Search Here"
             />
-            <Text style={styles.count}>(Count) Results</Text>
+            <Text style={styles.count}>{Object.keys(filteredDataSource).length}: Results</Text>
             <FlatList
                 data={filteredDataSource}
                 style={styles.item}
