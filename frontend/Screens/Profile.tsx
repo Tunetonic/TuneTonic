@@ -20,6 +20,7 @@ const UserProfile = ({navigation, route}): JSX.Element => {
 
     useEffect(() => {
         if (cookies.loginCookie !== '') {
+            console.log(cookies.loginCookie)
             getUserInformations(cookies.loginCookie, setIsSignedIn, removeCookie, setUser)
 
             getUserPlaylist(cookies.loginCookie, setIsSignedIn, removeCookie, setPlaylistItems)

@@ -17,9 +17,9 @@ export class UserProfileService {
         //     this.httpService.get(
         //         "https://api.spotify.com/v1/me/playlists", {
         //             headers: {
-        //                 Accept: "application/json",
+        //                 "Accept": "application/json",
         //                 "Content-Type": "application/json",
-        //                 Authorization: token,
+        //                 "Authorization": token,
         //             }
         //         }
         //         ).subscribe((response) => {
@@ -33,19 +33,19 @@ export class UserProfileService {
 
 
         return await firstValueFrom(
-    this.httpService.get('https://api.spotify.com/v1/me/playlists', {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: token,
-        }
-    }).pipe(
-        map(response => response),
-        catchError((error) => {
-            console.log(error.response.data);
-            throw error.response.data;
-        }),
-    ),
-)
+            this.httpService.get('https://api.spotify.com/v1/me/playlists', {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": token,
+                }
+            }).pipe(
+                map(response => response.data),
+                catchError((error) => {
+                    console.log(error.response.data);
+                    throw error.response.data;
+                }),
+            ),
+        )
     }
 }
