@@ -7,23 +7,12 @@ const Friends = () => {
     const [search, setSearch] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
-    const data = [
-        {id: 1, image: 'https://reactnative.dev/img/tiny_logo.png', key: 'Devin'},
-        {id: 2, image: 'https://reactnative.dev/img/tiny_logo.png', key: 'Dan'},
-        {id: 3, image: 'https://reactnative.dev/img/tiny_logo.png', key: 'Dominic'},
-        {id: 4, image: 'https://reactnative.dev/img/tiny_logo.png', key: 'Jackson'},
-        {id: 5, image: 'https://reactnative.dev/img/tiny_logo.png', key: 'James'},
-        {id: 6, image: 'https://reactnative.dev/img/tiny_logo.png', key: 'Joel'},
-        {id: 7, image: 'https://reactnative.dev/img/tiny_logo.png', key: 'John'},
-        {id: 8, image: 'https://reactnative.dev/img/tiny_logo.png', key: 'Jillian'},
-        {id: 9, image: 'https://reactnative.dev/img/tiny_logo.png', key: 'Jimmy'},
-        {id: 10, image: 'https://reactnative.dev/img/tiny_logo.png', key: 'Julie'},
-    ];
-    // setFilteredDataSource(data);
-    // setMasterDataSource(data);
+
+    const jsonLink = 'https://my-json-server.typicode.com/bcengioglu/json-example/users';
+
 
     useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/posts')
+        fetch(jsonLink)
             .then((response) => response.json())
             .then((responseJson) => {
                 setFilteredDataSource(responseJson);
@@ -55,17 +44,18 @@ const Friends = () => {
             // Update FilteredDataSource with masterDataSource
             setFilteredDataSource(masterDataSource);
             setSearch(text);
+            console.log(text)
         }
     };
 
     const ItemView = ({item}) => {
+
         return (
             // Flat List Item
             <Text
                 style={styles.itemStyle}
                 onPress={() => getItem(item)}>
-                {item.id}
-                {'.'}
+                {<Image source={{ uri: item.image }} style={styles.tinyLogo} />}
                 {item.title.toUpperCase()}
             </Text>
         );
@@ -139,13 +129,18 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     textInputStyle: {
+        top:10,
         height: 40,
         borderWidth: 1,
         paddingLeft: 20,
         margin: 5,
         borderColor: '#009688',
         backgroundColor: '#FFFFFF',
+        color: '#070707FF'
     },
+    itemStyle: {
+
+    }
 });
 
 
