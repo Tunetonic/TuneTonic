@@ -3,7 +3,7 @@ import axios, {AxiosResponse} from "axios";
 import {SetStateAction} from "react";
 import { User } from "../types/user";
 
-export const getUserInformations = (token: string, setIsSignedIn: (arg0: boolean) => void, removeCookie: any, setUser: (arg0: User) => void) => {
+export const getUserInformation = (token: string, setIsSignedIn: (arg0: boolean) => void, removeCookie: any, setUser: (arg0: User) => void) => {
     axios.get(
         "https://api.spotify.com/v1/me", {
             headers: {

@@ -5,7 +5,7 @@ import {Appbar, Text} from "react-native-paper";
 import {LoginContext} from "../Context";
 import {View, ScrollView, Image, StyleSheet} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import {getUserInformations, getUserPlaylist} from "../services/UserProfileService";
+import {getUserInformation, getUserPlaylist} from "../services/UserProfileService";
 import { User } from "../types/user";
 import { CommonActions } from "@react-navigation/native";
 
@@ -20,9 +20,7 @@ const UserProfile = ({navigation, route}): JSX.Element => {
 
     useEffect(() => {
         if (cookies.loginCookie !== '') {
-            console.log(cookies.loginCookie)
-            getUserInformations(cookies.loginCookie, setIsSignedIn, removeCookie, setUser)
-
+            getUserInformation(cookies.loginCookie, setIsSignedIn, removeCookie, setUser)
             getUserPlaylist(cookies.loginCookie, setIsSignedIn, removeCookie, setPlaylistItems)
 
         }
