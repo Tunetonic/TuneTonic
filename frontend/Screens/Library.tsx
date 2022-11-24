@@ -46,7 +46,7 @@ const Library = ({navigation, route}): JSX.Element => {
     }
 
 
-    return (
+    return (<>
         <Appbar.Header style={styles.header}>
             <TouchableHighlight onPress={() => navigation.navigate("library-stack-navigation", {screen: "profile"})}>
                 <Image style={{height: 50, width: 50}} source={{uri: user?.images[0].url}}/>
@@ -70,7 +70,7 @@ const Library = ({navigation, route}): JSX.Element => {
                   </Card>
             );})}
         </ScrollView>
-    );
+    </>);
 };
 
 export default Library;
