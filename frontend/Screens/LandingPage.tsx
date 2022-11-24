@@ -4,8 +4,6 @@ import { useCookies } from "react-cookie";
 import { View } from "react-native";
 import { LoginContext } from "../Context";
 
-
-
 export const LandingPage = ({ navigation }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
 

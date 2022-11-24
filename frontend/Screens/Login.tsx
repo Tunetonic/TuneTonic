@@ -22,7 +22,6 @@ const LoginScreen = ({ navigation }): JSX.Element => {
 
     const { setIsSignedIn } = useContext(LoginContext);
 
-
     const [request, response, promptAsync] = useAuthRequest(
         {
             responseType: ResponseType.Token,
@@ -41,10 +40,8 @@ const LoginScreen = ({ navigation }): JSX.Element => {
             usePKCE: true,
             redirectUri: REDIRECT_URI,
         },
-
         discovery
     );
-
 
     useEffect(() => {
         if (response?.type === "success") {
@@ -56,18 +53,15 @@ const LoginScreen = ({ navigation }): JSX.Element => {
     useEffect(() => {
         if (token !== "") {
             setCookie('loginCookie', token);
-            const promise = new Promise((resolve, reject) => {
+            new Promise((resolve) => {
                 resolve(setIsSignedIn(true));
-            })
-            promise.then(() => navigation.navigate("home-tab-navigation"))
-
-
+            }).then(() => navigation.navigate("home-tab-navigation"));
         }
     });
 
     return (
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
-            <Image style={styles.image} source={require('../assets/tonic.png')}></Image>
+            <Image style={styles.image} source={require('../assets/tonic.png')} />
             <Text style={styles.text}>Discover new music with TuneTonic</Text>
             <Button
                 style={styles.button}
@@ -78,8 +72,6 @@ const LoginScreen = ({ navigation }): JSX.Element => {
         </KeyboardAvoidingView>
     );
 };
-
-
 export default LoginScreen;
 
 const styles = StyleSheet.create({

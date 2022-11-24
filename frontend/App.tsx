@@ -25,7 +25,7 @@ const App = (): JSX.Element => {
             setIsSignedIn,
         }),
         [isSignedIn]
-    )
+    );
     const CombinedDarkTheme = merge(PaperDarkTheme, NavigationDarkTheme);
 
     const theme = {
