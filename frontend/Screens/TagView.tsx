@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import axios from "axios";
 import {useCookies} from "react-cookie";
 import {Button} from "react-native-paper";
@@ -42,11 +42,12 @@ return selected.includes(data) ? 'green' : 'red'
 
     return <>
         <ScrollView>
-            <View style={styles.constainer}>
-
+            <View  style={styles.constainer}>
+                <Text style={{fontSize: 26, fontWeight: 'bold', textAlign: 'center', color: '#FFFFFF', marginLeft: 30}}>What genres do you like?</Text>
+                <Text style={{fontSize: 14, color: '#BDBCBD', textAlign: 'center', margin: 20, marginLeft: 30}}>Click on the genres you listen or like the most.</Text>
 
                 {genres.map(data => (
-                    <Button onPress={() => veranderKleur(data)} style={[styles.tag, {borderColor: chooseColor(data)}]}>
+                    <Button color={'white'} onPress={() => veranderKleur(data)} style={[styles.tag, {borderColor: chooseColor(data)}]}>
                         {/*<Text style={styles.text}>{data}</Text>*/}
                         {data}
                     </Button>
@@ -60,6 +61,9 @@ return selected.includes(data) ? 'green' : 'red'
 
 const styles = StyleSheet.create({
     constainer: {
+        margin: 20,
+        marginBottom: 90,
+        marginTop: 90,
         flexDirection: "row",
         display: 'flex',
         flexWrap: 'wrap',
@@ -71,7 +75,7 @@ const styles = StyleSheet.create({
         height: 50,
         backgroundColor: '#fff',
         borderRadius: 8,
-        margin: 5,
+        // margin: 5,
         padding: 10,
     },
 
@@ -80,9 +84,10 @@ const styles = StyleSheet.create({
         borderColor: "black",
         borderRadius: 25,
         borderWidth: 1,
-        backgroundColor: '#A3EBD5',
+        backgroundColor: '#47D7AC',
         borderStyle: "solid",
-        margin: 5
+        margin: 5,
+
     },
     text: {
         margin: 5,

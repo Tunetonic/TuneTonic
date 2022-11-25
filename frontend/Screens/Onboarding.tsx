@@ -1,6 +1,6 @@
 import React from 'react';
 import Onboarding from 'react-native-onboarding-swiper';
-import {Image, Text, View} from 'react-native';
+import {Button, Image, Text, View} from 'react-native';
 import MyTagInput from "./TagView";
 import TagView from "./TagView";
 
@@ -45,16 +45,14 @@ const OnboardingScreen = () => {
                     title: ' ',
                     subtitle: ' ',
                     image:
-                        <><TagView/>
+                    <TagView></TagView>
 
-
-                        </>,
                 },
             ]}
         />
 
 
-        <TagView/>
+    {/*    <TagView/>*/}
     </>
 }
 
