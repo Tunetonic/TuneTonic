@@ -33,6 +33,8 @@ const App = (): JSX.Element => {
         ...CombinedDarkTheme,
         "colors": {
             ...CombinedDarkTheme.colors,
+            "background": "#222023",
+            "accent": "#BDBCBD",
             "primary": "#008080"
         }
     }

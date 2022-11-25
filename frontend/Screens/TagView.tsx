@@ -32,12 +32,8 @@ const [selectedItem, setSelectedItem] = useState<string>('')
         // setSelectedItem(event);
     }
 
-  // @ts-ignore
     const chooseColor = (data: string): string => {
-    console.log(data)
-
-
-return selected.includes(data) ? 'green' : 'red'
+        return selected.includes(data) ? 'green' : 'red'
     }
 
     return <>
@@ -46,13 +42,11 @@ return selected.includes(data) ? 'green' : 'red'
                 <Text style={{fontSize: 26, fontWeight: 'bold', textAlign: 'center', color: '#FFFFFF', marginLeft: 30}}>What genres do you like?</Text>
                 <Text style={{fontSize: 14, color: '#BDBCBD', textAlign: 'center', margin: 20, marginLeft: 30}}>Click on the genres you listen or like the most.</Text>
 
-                {genres.map(data => (
-                    <Button color={'white'} onPress={() => veranderKleur(data)} style={[styles.tag, {borderColor: chooseColor(data)}]}>
-                        {/*<Text style={styles.text}>{data}</Text>*/}
-                        {data}
+                {genres.map(genre => (
+                    <Button key={genre} color={'white'} onPress={() => veranderKleur(genre)} style={[styles.tag, {borderColor: chooseColor(genre)}]}>
+                        {genre}
                     </Button>
                 ))}
-
             </View>
         </ScrollView>
     </>
