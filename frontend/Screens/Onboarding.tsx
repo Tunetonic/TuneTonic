@@ -1,15 +1,10 @@
 import React from 'react';
 import Onboarding from 'react-native-onboarding-swiper';
-import {Button, Image, Text, View} from 'react-native';
-import MyTagInput from "./TagView";
+import {Image, StyleSheet, Text} from 'react-native';
 import TagView from "./TagView";
 
 
 const OnboardingScreen = () => {
-
-    const selected = ['Swift', 'Kotlin']
-    const tags = ['Swift', 'Kotlin', 'C#', 'Haskell', 'Java']
-
 
     return <>
         <Onboarding
@@ -19,25 +14,20 @@ const OnboardingScreen = () => {
                     title: ' ',
                     subtitle: ' ',
                     image:
-                        <><Text style={{fontSize: 26, fontWeight: 'bold', color: '#FFFFFF'}}>Welcome to Tune
-                            Tonic</Text>
-                            <Text style={{fontSize: 14, color: '#BDBCBD', textAlign: 'center', margin: 20}}>The music
+                        <><Text style={styles.title}>Welcome to Tune Tonic</Text>
+                            <Text style={styles.text}>The music
                                 app to discover new music and share them with your friends!</Text>
-                            <Image source={require('../Images/Headphone.png')} style={{
-                                width: 302, height: 346
-                            }}/></>,
+                            <Image source={require('../Images/Headphone.png')} style={styles.image}/></>,
                 },
                 {
                     backgroundColor: '#222023',
                     title: ' ',
                     subtitle: ' ',
                     image:
-                        <><Text style={{fontSize: 26, fontWeight: 'bold', color: '#FFFFFF'}}>Discover new music</Text>
-                            <Text style={{fontSize: 14, color: '#BDBCBD', textAlign: 'center', margin: 20}}>Do you love
+                        <><Text style={styles.title}>Discover new music</Text>
+                            <Text style={styles.text}>Do you love
                                 music? Do you want to expand your horizon? Than this is the app for you.</Text>
-                            <Image source={require('../Images/MusicNotes.png')} style={{
-                                width: 302, height: 346
-                            }}/>
+                            <Image source={require('../Images/MusicNotes.png')} style={styles.image}/>
 
                         </>,
                 }, {
@@ -45,15 +35,31 @@ const OnboardingScreen = () => {
                     title: ' ',
                     subtitle: ' ',
                     image:
-                    <TagView></TagView>
-
+                        <TagView></TagView>
                 },
             ]}
         />
 
-
-    {/*    <TagView/>*/}
     </>
 }
+
+const styles = StyleSheet.create({
+    image:{
+        width: 302,
+        height: 346
+    },
+    text: {
+        fontSize: 14,
+        color: '#BDBCBD',
+        textAlign: 'center',
+        margin: 20
+    },
+    title: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        color: '#FFFFFF'
+    }
+
+})
 
 export default OnboardingScreen
