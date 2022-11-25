@@ -55,7 +55,7 @@ const LoginScreen = ({ navigation }): JSX.Element => {
             setCookie('loginCookie', token);
             new Promise((resolve) => {
                 resolve(setIsSignedIn(true));
-            }).then(() => navigation.navigate("home-tab-navigation"));
+            }).then(() => navigation.navigate("onboarding"));
         }
     });
 

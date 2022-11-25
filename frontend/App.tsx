@@ -10,6 +10,7 @@ import {LoginContext} from './Context';
 import {useCookies} from "react-cookie";
 
 import LoginScreen from "./Screens/Login";
+import OnboardingScreen from "./Screens/Onboarding";
 import HomeTabs from './HomeTabs';
 import { StatusBar } from 'react-native';
 
@@ -32,6 +33,8 @@ const App = (): JSX.Element => {
         ...CombinedDarkTheme,
         "colors": {
             ...CombinedDarkTheme.colors,
+            "background": "#222023",
+            "accent": "#BDBCBD",
             "primary": "#008080"
         }
     }
@@ -47,6 +50,7 @@ const App = (): JSX.Element => {
                             headerShown: false
                         }}>
                             <Stack.Screen name="login" component={LoginScreen}/>
+                            <Stack.Screen name="onboarding" component={OnboardingScreen}/>
                             <Stack.Screen name="home-tab-navigation" component={HomeTabs}/>
                     </Stack.Navigator>
                 </NavigationContainer>
