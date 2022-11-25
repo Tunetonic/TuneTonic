@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "AppEntry.ts",
   "scripts": {
-    "start": "expo start",
+    "start": "npx expo start",
+    "start:dev": "npx expo start --lan",
     "test": "jest",
     "lint": "eslint --fix",
     "android": "expo start --android",
@@ -11,6 +12,9 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.4.0",
+    "@react-navigation/material-bottom-tabs": "^6.2.4",
+    "@react-navigation/material-top-tabs": "^6.3.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
     "@types/react-native-tags": "^2.2.1",
@@ -20,8 +24,11 @@
     "expo-application": "^5.0.1",
     "expo-auth-session": "~3.7.2",
     "expo-constants": "^14.0.2",
+    "expo-linear-gradient": "~12.0.1",
+    "expo-navigation-bar": "~2.0.1",
     "expo-random": "~13.0.0",
     "expo-status-bar": "~1.4.2",
+    "prop-types": "^15.8.1",
     "react": "18.1.0",
     "react-cookie": "^4.1.1",
     "react-dom": "18.1.0",
@@ -35,6 +42,8 @@
     "react-native-tag-group": "^1.0.2",
     "react-native-tag-select": "^2.0.0",
     "react-native-tags": "^2.2.1",
+    "react-native-tab-view": "^3.3.0",
+    "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.9",
     "react-test-renderer": "18.1.0"
   },
@@ -44,6 +53,7 @@
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.70.6",
     "@types/react-native-onboarding-swiper": "^1.1.4",
+    "@types/react-native-vector-icons": "^6.4.12",
     "@types/react-test-renderer": "^18.0.0",
     "eslint": "^8.27.0",
     "jest": "^26.6.3",

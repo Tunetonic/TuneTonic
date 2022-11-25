@@ -3,9 +3,9 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "strict": true,
+    "skipLibCheck": true,
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["./src/types"]
   }
 }
-
