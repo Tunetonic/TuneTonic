@@ -1,18 +1,16 @@
 import React, {useEffect, useState} from "react";
-import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ScrollView, StyleSheet, Text, View} from "react-native";
 import axios from "axios";
 import {useCookies} from "react-cookie";
 import {Button} from "react-native-paper";
 
 const TagView = () => {
-    const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
-    const [genres, setGenres] = useState<string[]>([]);
-
-    const [selected, setSelected] = useState<string[]>([]);
-const [selectedItem, setSelectedItem] = useState<string>('')
+    const [cookies] = useCookies(['loginCookie']);
+    const [genres, setGenres] = useState<any[]>([]);
 
 
     useEffect(() => {
+
         axios.get('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
             headers: {
                 Accept: " application/json",
@@ -20,31 +18,32 @@ const [selectedItem, setSelectedItem] = useState<string>('')
                 Authorization: "Bearer " + cookies.loginCookie
             }
         }).then(data => {
-            setGenres(data.data.genres);
+            setGenres(data.data.genres.map(obj => ({obj, Active: 'false'})));
         })
+
     }, [])
 
 
-    const veranderKleur = (event: any) => {
-        selected.push(event);
-        setSelected(selected);
-
-        // setSelectedItem(event);
-    }
-
-    const chooseColor = (data: string): string => {
-        return selected.includes(data) ? 'green' : 'red'
-    }
+    const todoClicked = (e) => {
+        setGenres(
+            genres.map((todo) =>
+                todo.obj === e.obj
+                    ? { ...todo, Active: !todo.Active }
+                    : todo
+            )
+        );
+    };
 
     return <>
         <ScrollView>
-            <View  style={styles.constainer}>
-                <Text style={{fontSize: 26, fontWeight: 'bold', textAlign: 'center', color: '#FFFFFF', marginLeft: 30}}>What genres do you like?</Text>
-                <Text style={{fontSize: 14, color: '#BDBCBD', textAlign: 'center', margin: 20, marginLeft: 30}}>Click on the genres you listen or like the most.</Text>
+            <View style={styles.container}>
+                <Text style={styles.title}>What genres do you like?</Text>
+                <Text style={styles.text}>Click on the genres you listen or like the most.</Text>
 
-                {genres.map(genre => (
-                    <Button key={genre} color={'white'} onPress={() => veranderKleur(genre)} style={[styles.tag, {borderColor: chooseColor(genre)}]}>
-                        {genre}
+                {genres.map(data => (
+                    <Button key={data.obj} color={data.Active  ? 'white' : 'white'} onPress={() => todoClicked(data)}
+                            style={[styles.tag, {backgroundColor: data.Active  ? '#222023' : '#1ed760', borderColor: data.Active  ? '#1ed760' : '#1ed760'}]}>
+                        {data.obj}
                     </Button>
                 ))}
             </View>
@@ -54,7 +53,7 @@ const [selectedItem, setSelectedItem] = useState<string>('')
 
 
 const styles = StyleSheet.create({
-    constainer: {
+    container: {
         margin: 20,
         marginBottom: 90,
         marginTop: 90,
@@ -69,7 +68,6 @@ const styles = StyleSheet.create({
         height: 50,
         backgroundColor: '#fff',
         borderRadius: 8,
-        // margin: 5,
         padding: 10,
     },
 
@@ -84,10 +82,18 @@ const styles = StyleSheet.create({
 
     },
     text: {
-        margin: 5,
-        textAlign: "center",
-        color: 'white'
-
+        fontSize: 14,
+        color: '#BDBCBD',
+        textAlign: 'center',
+        margin: 20,
+        marginLeft: 30
+    },
+    title:{
+        fontSize: 26,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#FFFFFF',
+        marginLeft: 30
     }
 
 

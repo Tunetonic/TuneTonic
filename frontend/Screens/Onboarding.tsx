@@ -1,6 +1,6 @@
 import React from 'react';
 import Onboarding from 'react-native-onboarding-swiper';
-import {Image} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import TagView from "./TagView";
 
@@ -8,6 +8,24 @@ import TagView from "./TagView";
 const OnboardingScreen = ({navigation}) => {
     const theme = useTheme();
 
+    const styles = StyleSheet.create({
+        image:{
+            width: 302,
+            height: 346
+        },
+        text: {
+            fontSize: 14,
+            color: theme.colors.accent,
+            textAlign: 'center',
+            margin: 20
+        },
+        title: {
+            fontSize: 26,
+            fontWeight: 'bold',
+        }
+    
+    })
+    
     return (
         <Onboarding
             pages={[
@@ -16,13 +34,11 @@ const OnboardingScreen = ({navigation}) => {
                     title: '',
                     subtitle: '',
                     image: <>
-                        <Text style={{fontSize: 26, fontWeight: 'bold'}}>Welcome to TuneTonic</Text>
-                        <Text style={{fontSize: 14, color: theme.colors.accent, textAlign: 'center', margin: 20}}>
+                        <Text style={styles.title}>Welcome to TuneTonic</Text>
+                        <Text style={styles.text}>
                             The music app to discover new music and share them with your friends!
                         </Text>
-                        <Image source={require('../Images/Headphone.png')} style={{
-                            width: 302, height: 346
-                        }}/>
+                        <Image source={require('../Images/Headphone.png')} style={styles.image}/>
                     </>,
                 },
                 {
@@ -30,13 +46,11 @@ const OnboardingScreen = ({navigation}) => {
                     title: ' ',
                     subtitle: ' ',
                     image: <>
-                        <Text style={{fontSize: 26, fontWeight: 'bold'}}>Discover new music</Text>
-                        <Text style={{fontSize: 14, color: theme.colors.accent, textAlign: 'center', margin: 20}}>
+                        <Text style={styles.title}>Discover new music</Text>
+                        <Text style={styles.text}>
                             Do you love music? Do you want to expand your horizon? Than this is the app for you.
                         </Text>
-                        <Image source={require('../Images/MusicNotes.png')} style={{
-                            width: 302, height: 346
-                        }}/>
+                        <Image source={require('../Images/MusicNotes.png')} style={styles.image}/>
                     </>,
                 }, {
                     backgroundColor: theme.colors.background,
@@ -50,5 +64,7 @@ const OnboardingScreen = ({navigation}) => {
         />
     );
 }
+
+
 
 export default OnboardingScreen
