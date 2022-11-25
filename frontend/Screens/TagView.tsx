@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ScrollView, StyleSheet, Text, View} from "react-native";
 import axios from "axios";
 import {useCookies} from "react-cookie";
 import {Button} from "react-native-paper";
-import {white} from "react-native-paper/lib/typescript/styles/colors";
 
 const TagView = () => {
-    const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
+    const [cookies] = useCookies(['loginCookie']);
     const [genres, setGenres] = useState<any[]>([]);
 
 
@@ -33,8 +32,6 @@ const TagView = () => {
                     : todo
             )
         );
-
-        console.log(genres);
     };
 
 
@@ -73,7 +70,6 @@ const styles = StyleSheet.create({
         height: 50,
         backgroundColor: '#fff',
         borderRadius: 8,
-        // margin: 5,
         padding: 10,
     },
 
