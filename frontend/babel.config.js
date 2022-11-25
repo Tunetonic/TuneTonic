@@ -9,7 +9,7 @@ module.exports = function(api) {
         "moduleName": "@env",
         "path": ".env",
         "blacklist": null,
-        "whitelist": ['CLIENT_ID', 'REDIRECT_URI'],
+        "whitelist": ['CLIENT_ID', 'REDIRECT_URI', 'NEST_URI'],
         "safe": false,
         "allowUndefined": true
       }]

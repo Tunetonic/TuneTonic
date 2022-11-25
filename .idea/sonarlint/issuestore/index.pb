@@ -11,3 +11,13 @@ G
 frontend/types/env.d.ts,c\6\c68aa4b2ecb57bb39ce4514a643deec7d1eee000
 C
 frontend/Context.ts,4\0\406b743c07e72682682cf4b0fff47e65441e8ad8
+P
+ frontend/Screens/LandingPage.tsx,b\b\bb93f9cf339d99765306f71a068faec77f955c61
+D
+backend/.eslintrc.js,b\8\b80093bbef83ae263d653a563cb1452b74d0f7ce
+J
+backend/src/app.service.ts,9\e\9ef58633bc96ae3f244453aea404b9ae23c813fc
+E
+frontend/.eslintrc.js,6\b\6bdf64946362147041f625ea863080b7caaf7045
+@
+frontend/App.tsx,9\e\9e478f98f33a0befe65add8bb49d793f240cf806
