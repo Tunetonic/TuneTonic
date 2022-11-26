@@ -24,4 +24,3 @@ module.exports = {
     semi: [1, "never"],
     },
   };
-  
