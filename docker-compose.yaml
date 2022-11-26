@@ -1,14 +1,14 @@
 services:
-  # nest:
-  #   container_name: Backend-Nest
-  #   image: node:16-alpine
-  #   working_dir: /home/app/backend
-  #   command: yarn start:dev
-  #   ports:
-  #     - 8080:8080
-  #   volumes:
-  #     - ./backend:/home/app/backend
-  #     - ./backend/node_modules:/home/app/backend/node_modules
+  nest:
+    container_name: Backend-Nest
+    image: node:16-alpine
+    working_dir: /home/app/backend
+    command: yarn start:dev
+    ports:
+      - 8080:8080
+    volumes:
+      - ./backend:/home/app/backend
+      - ./backend/node_modules:/home/app/backend/node_modules
   mysql:
     container_name: Mysql
     image: mysql
