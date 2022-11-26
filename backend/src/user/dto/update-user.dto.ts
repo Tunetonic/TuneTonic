@@ -1,3 +1,3 @@
 import { User } from '../user.entity'
 
-export interface UpdateUserDTO extends Partial<Omit<User, 'id'>> {}
+export type UpdateUserDTO = Partial<Omit<User, 'id'>>
