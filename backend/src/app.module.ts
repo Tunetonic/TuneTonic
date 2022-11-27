@@ -10,4 +10,5 @@ import { UserProfileService } from './userProfile/UserProfile.service'
   controllers: [AppController, UserProfileController],
   providers: [AppService, UserProfileService],
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -6,7 +6,6 @@ import {StyleSheet, View} from "react-native";
 import {Appbar, Dialog, Paragraph, Portal, Button, Card, Switch} from "react-native-paper";
 import { LoginContext } from "../Context";
 
-// @ts-ignore
 const Settings = ({navigation, route}): JSX.Element => {
 
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
@@ -30,7 +29,6 @@ const Settings = ({navigation, route}): JSX.Element => {
             routes: [{name: 'login'}]
         })
     }
-
 
     return (
         <View>
