@@ -1,4 +1,4 @@
-import { CommonActions, StackActions } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
 import React, { useContext } from "react";
 import { useCookies } from "react-cookie";
 import {StyleSheet, View} from "react-native";
@@ -12,7 +12,7 @@ const Settings = ({navigation, route}): JSX.Element => {
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
     let setIsSignedIn = useContext(LoginContext);
     const [visible, setVisible] = React.useState(false);
-    const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+    const [isSwitchOn, setIsSwitchOn] = React.useState(true);
 
     const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
@@ -39,60 +39,42 @@ const Settings = ({navigation, route}): JSX.Element => {
                 <Appbar.Content title={route.name}/>
             </Appbar.Header>
 
-            <Card style={styles.card}>
-                <Card.Content>
-                    <Card.Title
-                        title={'Preferences'}
-                        right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right" onPress={() => navigation.navigate() }>
-
-                        </Button>}
-                    />
-                </Card.Content>
+            <Card style={styles.card} onPress={() => navigation.navigate("library")} mode="outlined">
+                <Card.Title
+                    title='Change genres'
+                    right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right"></Button>}
+                />
             </Card>
-            <Card style={styles.card}>
-                <Card.Content>
-                    <Card.Title
-                        title={'Delete account'}
-                        right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right" onPress={() => navigation.navigate() }>
-
-                        </Button>}
-                    />
-                </Card.Content>
+            <Card style={styles.card} onPress={() => navigation.navigate("library")} mode="outlined">
+                <Card.Title
+                    title='Delete account'
+                    right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right"></Button>}
+                />
             </Card>
-            <Card style={styles.card}>
-                <Card.Content>
-                    <Card.Title
-                        title={'Change theme'}
-                        right={() =>  <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />}
-                    />
-                </Card.Content>
+            <Card style={styles.card}  mode="outlined">
+                <Card.Title
+                    title='Darkmode'
+                    right={() => <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />}
+                />
             </Card>
-            <Card style={styles.card}>
-                <Card.Content>
-                    <Card.Title
-                        title={'Logout'}
-                        right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right" onPress={showDialog}>
-
-                        </Button>}
-                    />
-                </Card.Content>
-
-                <Portal>
-                    <Dialog visible={visible} onDismiss={hideDialog} dismissable={false}>
-                        <Dialog.Title>Logout</Dialog.Title>
-                        <Dialog.Content>
-                            <Paragraph>You are about to log out.</Paragraph>
-                        </Dialog.Content>
-                        <Dialog.Actions>
-                            <Button onPress={hideDialog}>Cancel</Button>
-                            <Button onPress={() => logOut()}>Confirm</Button>
-                        </Dialog.Actions>
-                    </Dialog>
-                </Portal>
+            <Card style={styles.card} onPress={showDialog} mode="outlined">
+                <Card.Title
+                    title={'Logout'}
+                    right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right"></Button>}
+                />
             </Card>
-
-
-
+            <Portal>
+                <Dialog visible={visible} onDismiss={hideDialog} dismissable={false}>
+                    <Dialog.Title>Logout</Dialog.Title>
+                    <Dialog.Content>
+                        <Paragraph>You are about to log out.</Paragraph>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button onPress={hideDialog}>Cancel</Button>
+                        <Button onPress={() => logOut()}>Confirm</Button>
+                    </Dialog.Actions>
+                </Dialog>
+            </Portal>
         </View>
     );
 }
