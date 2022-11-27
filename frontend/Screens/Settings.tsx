@@ -3,14 +3,18 @@ import React, { useContext } from "react";
 import { useCookies } from "react-cookie";
 import {StyleSheet, View} from "react-native";
 
-import {Appbar, Dialog, Paragraph, Portal, Button, Card, Title} from "react-native-paper";
+import {Appbar, Dialog, Paragraph, Portal, Button, Card, Switch} from "react-native-paper";
 import { LoginContext } from "../Context";
 
+// @ts-ignore
 const Settings = ({navigation, route}): JSX.Element => {
 
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
     let setIsSignedIn = useContext(LoginContext);
     const [visible, setVisible] = React.useState(false);
+    const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+
+    const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
     const showDialog = () => setVisible(true);
   
@@ -27,7 +31,7 @@ const Settings = ({navigation, route}): JSX.Element => {
         })
     }
 
-    
+
     return (
         <View>
             <Appbar.Header>
@@ -39,7 +43,9 @@ const Settings = ({navigation, route}): JSX.Element => {
                 <Card.Content>
                     <Card.Title
                         title={'Preferences'}
-                        right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right" onPress={() => navigation.navigate() }></Button>}
+                        right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right" onPress={() => navigation.navigate() }>
+
+                        </Button>}
                     />
                 </Card.Content>
             </Card>
@@ -47,7 +53,17 @@ const Settings = ({navigation, route}): JSX.Element => {
                 <Card.Content>
                     <Card.Title
                         title={'Delete account'}
-                        right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right" onPress={() => navigation.navigate() }></Button>}
+                        right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right" onPress={() => navigation.navigate() }>
+
+                        </Button>}
+                    />
+                </Card.Content>
+            </Card>
+            <Card style={styles.card}>
+                <Card.Content>
+                    <Card.Title
+                        title={'Change theme'}
+                        right={() =>  <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />}
                     />
                 </Card.Content>
             </Card>
@@ -55,7 +71,9 @@ const Settings = ({navigation, route}): JSX.Element => {
                 <Card.Content>
                     <Card.Title
                         title={'Logout'}
-                        right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right" onPress={showDialog}></Button>}
+                        right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right" onPress={showDialog}>
+
+                        </Button>}
                     />
                 </Card.Content>
 
