@@ -15,7 +15,6 @@ const UserProfile = ({navigation, route}): JSX.Element => {
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
     const [user, setUser] = useState<User>();
     const [playlistItems, setPlaylistItems] = useState<any[]>([]);
-    // @ts-ignore
     const {setIsSignedIn} = useContext(LoginContext);
 
     useEffect(() => {

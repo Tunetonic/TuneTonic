@@ -1,9 +1,9 @@
-import { CommonActions, StackActions } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
 import React, { useContext } from "react";
 import { useCookies } from "react-cookie";
-import { View } from "react-native";
+import {StyleSheet, View} from "react-native";
 
-import { Appbar, Dialog, Paragraph, Portal, Button } from "react-native-paper";
+import {Appbar, Dialog, Paragraph, Portal, Button, Card, Switch} from "react-native-paper";
 import { LoginContext } from "../Context";
 
 const Settings = ({navigation, route}): JSX.Element => {
@@ -11,6 +11,9 @@ const Settings = ({navigation, route}): JSX.Element => {
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
     let setIsSignedIn = useContext(LoginContext);
     const [visible, setVisible] = React.useState(false);
+    const [isSwitchOn, setIsSwitchOn] = React.useState(true);
+
+    const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
     const showDialog = () => setVisible(true);
   
@@ -27,7 +30,6 @@ const Settings = ({navigation, route}): JSX.Element => {
         })
     }
 
-    
     return (
         <View>
             <Appbar.Header>
@@ -35,8 +37,30 @@ const Settings = ({navigation, route}): JSX.Element => {
                 <Appbar.Content title={route.name}/>
             </Appbar.Header>
 
-            <Button mode="contained" onPress={showDialog}>Logout</Button>
-
+            <Card style={styles.card} onPress={() => navigation.navigate("library")} mode="outlined">
+                <Card.Title
+                    title='Change genres'
+                    right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right"></Button>}
+                />
+            </Card>
+            <Card style={styles.card} onPress={() => navigation.navigate("library")} mode="outlined">
+                <Card.Title
+                    title='Delete account'
+                    right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right"></Button>}
+                />
+            </Card>
+            <Card style={styles.card}  mode="outlined">
+                <Card.Title
+                    title='Darkmode'
+                    right={() => <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />}
+                />
+            </Card>
+            <Card style={styles.card} onPress={showDialog} mode="outlined">
+                <Card.Title
+                    title={'Logout'}
+                    right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right"></Button>}
+                />
+            </Card>
             <Portal>
                 <Dialog visible={visible} onDismiss={hideDialog} dismissable={false}>
                     <Dialog.Title>Logout</Dialog.Title>
@@ -52,4 +76,11 @@ const Settings = ({navigation, route}): JSX.Element => {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    card: {
+        backgroundColor: 'black'
+    },
+});
+
 export default Settings;

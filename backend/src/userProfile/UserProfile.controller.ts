@@ -1,6 +1,6 @@
-import {UserProfileService} from "./UserProfile.service";
-import {Controller, Get} from "@nestjs/common";
-import { Headers } from '@nestjs/common';
+import { UserProfileService } from './UserProfile.service'
+import { Controller, Get } from '@nestjs/common'
+import { Headers } from '@nestjs/common'
 
 
 @Controller('userProfile')

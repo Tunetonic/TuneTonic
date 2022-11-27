@@ -8,8 +8,7 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class UserProfileService {
 
-    constructor(private readonly httpService: HttpService) {
-    }
+    constructor(private readonly httpService: HttpService) {}
 
     async userPLaylists(token: string): Promise<any> {
 
