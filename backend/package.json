@@ -19,13 +19,15 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/axios": "^1.0.0",
     "@nestjs/common": "^9.2.0",
     "@nestjs/config": "^2.2.0",
-    "@nestjs/axios": "^1.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
+    "dotenv": "^16.0.3",
     "mysql2": "^2.3.3",
+    "path": "^0.12.7",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.5.5",
     "typeorm": "^0.3.10"
