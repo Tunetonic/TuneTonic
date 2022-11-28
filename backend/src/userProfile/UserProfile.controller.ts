@@ -8,6 +8,6 @@ export class UserProfileController {
 
   @Get()
   async GetPLaylists(@Headers('Authorization') token): Promise<any> {
-    return await this.userProfileService.userPLaylists(token)
+    return await this.userProfileService.userPlaylists(token)
   }
 }

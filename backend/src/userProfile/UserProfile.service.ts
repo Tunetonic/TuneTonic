@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators'
 export class UserProfileService {
   constructor(private readonly httpService: HttpService) {}
 
-  async userPLaylists(token: string): Promise<any> {
+  async userPlaylists(token: string): Promise<any> {
     // return new Promise((resolve, reject) => {
     //     this.httpService.get(
     //         "https://api.spotify.com/v1/me/playlists", {

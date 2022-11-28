@@ -4,7 +4,7 @@ import { AppService } from './app.service'
 @Controller()
 export class AppController {
   @Get()
-  getHello() {
+  getHello(): string {
     return 'hello'
   }
 }
