@@ -38,7 +38,7 @@ const LoginScreen = ({ navigation }): JSX.Element => {
             ],
             prompt: Prompt.SelectAccount,
             usePKCE: true,
-            redirectUri: REDIRECT_URI,
+            redirectUri: 'exp://192.168.1.11:19000',
         },
         discovery
     );

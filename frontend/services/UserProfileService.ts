@@ -57,7 +57,7 @@ export const getUserPlaylist = (token: string, setIsSignedIn: (arg0: boolean) =>
     //     }
     // }, [])
 
-    axios.get(`${NEST_URI}/userProfile`, {
+    axios.get(`http://192.168.1.11:3000/userProfile`, {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
