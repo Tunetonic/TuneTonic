@@ -4,7 +4,9 @@ import axios from 'axios'
 import { Button } from 'react-native-paper'
 import { getAsyncItem } from '../services/async-storage.service'
 
-// TODO fix this shit
+const spotifySeedLink =
+  'https://api.spotify.com/v1/recommendations/available-genre-seeds'
+
 const TagView = () => {
   const [genres, setGenres] = useState<any[]>([])
 
@@ -12,7 +14,7 @@ const TagView = () => {
     if (!accessToken) return
 
     axios
-      .get('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
+      .get(spotifySeedLink, {
         headers: {
           Accept: ' application/json',
           'Content-type': 'application/json',

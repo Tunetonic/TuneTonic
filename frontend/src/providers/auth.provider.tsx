@@ -62,14 +62,13 @@ const AuthProvider = (props: PropsWithChildren) => {
       .then((response: AxiosResponse<User>) => {
         setUser(response.data)
       })
-      .catch((error: { message: string }) => {
-        console.log('error:getUserInformations', error.message)
+      .catch((error) => {
+        console.error(error)
 
         logout()
       })
   }
 
-  // dispose
   useEffect(() => {
     if (user && user?.id > 0) {
       setAuthenticated(true)
