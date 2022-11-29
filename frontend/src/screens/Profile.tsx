@@ -1,38 +1,34 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { Appbar, Text } from 'react-native-paper'
-import { LoginContext } from '../Context'
+import { LoginContext } from '../../Context'
 import { View, ScrollView, Image, StyleSheet } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import {
-  getUserInformation,
-  getUserPlaylist,
-} from '../services/UserProfileService'
-import { User } from '../types/user'
+import { getUserPlaylist } from '../services/UserProfileService'
+import { User } from '../interfaces/user'
 import { CommonActions } from '@react-navigation/native'
 
 const UserProfile = ({ navigation, route }): JSX.Element => {
-  const [cookies, setCookie, removeCookie] = useCookies(['loginCookie'])
   const [user, setUser] = useState<User>()
   const [playlistItems, setPlaylistItems] = useState<any[]>([])
-  const { setIsSignedIn } = useContext(LoginContext)
+  // const { setIsSignedIn } = useContext(LoginContext)
 
-  useEffect(() => {
-    if (cookies.loginCookie !== '') {
-      getUserInformation(
-        cookies.loginCookie,
-        setIsSignedIn,
-        removeCookie,
-        setUser,
-      )
-      getUserPlaylist(
-        cookies.loginCookie,
-        setIsSignedIn,
-        removeCookie,
-        setPlaylistItems,
-      )
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (cookies.loginCookie !== '') {
+  //     getUserInformation(
+  //       cookies.loginCookie,
+  //       setIsSignedIn,
+  //       removeCookie,
+  //       setUser,
+  //     )
+  //     getUserPlaylist(
+  //       cookies.loginCookie,
+  //       setIsSignedIn,
+  //       removeCookie,
+  //       setPlaylistItems,
+  //     )
+  //   }
+  // }, [])
 
   return (
     <>

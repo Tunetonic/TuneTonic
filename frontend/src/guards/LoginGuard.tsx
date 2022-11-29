@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { LoginContext } from '../Context'
+import { LoginContext } from '../../Context'
 import Home from '../screens/Home'
 
 const LoginGuard = ({ navigation }) => {

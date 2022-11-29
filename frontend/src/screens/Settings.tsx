@@ -6,11 +6,11 @@ import { CommonActions } from '@react-navigation/native'
 import { View, StyleSheet } from 'react-native'
 
 import { Appbar, Dialog, Paragraph, Portal, Button } from 'react-native-paper'
-import { LoginContext } from '../Context'
+import { LoginContext } from '../../Context'
+import { authContext } from '../providers/auth.provider'
 
 const Settings = ({ navigation, route }): JSX.Element => {
-  const [cookies, setCookie, removeCookie] = useCookies(['loginCookie'])
-  let setIsSignedIn = useContext(LoginContext)
+  const { logout } = useContext(authContext)
   const [visible, setVisible] = React.useState(false)
   const [isSwitchOn, setIsSwitchOn] = React.useState(true)
 
@@ -20,18 +20,18 @@ const Settings = ({ navigation, route }): JSX.Element => {
 
   const hideDialog = () => setVisible(false)
 
-  const logOut = (): void => {
-    removeCookie('loginCookie')
-    setIsSignedIn = false
-    setVisible(false)
-    // reset the complete navigator state.
-    navigation
-      .getParent()
-      .getParent()
-      .reset({
-        index: 0,
-        routes: [{ name: 'login' }],
-      })
+  const handleLogOut = (): void => {
+    logout().then(() => {
+      setVisible(false)
+      // reset the complete navigator state.
+      navigation
+        .getParent()
+        .getParent()
+        .reset({
+          index: 0,
+          routes: [{ name: 'login' }],
+        })
+    })
   }
 
   return (
@@ -57,7 +57,7 @@ const Settings = ({ navigation, route }): JSX.Element => {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Cancel</Button>
-            <Button onPress={() => logOut()}>Confirm</Button>
+            <Button onPress={handleLogOut}>Confirm</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
