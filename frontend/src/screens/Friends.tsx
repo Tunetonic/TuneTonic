@@ -2,10 +2,22 @@ import React, { useState, useEffect } from 'react'
 import { FlatList, Image, StyleSheet, View } from 'react-native'
 import { TextInput, Text } from 'react-native-paper'
 
+interface FriendsProps {
+  id: number
+  title: string
+  image: string
+}
+
 const Friends = () => {
   const [search, setSearch] = useState('')
-  const [filteredDataSource, setFilteredDataSource] = useState([])
-  const [masterDataSource, setMasterDataSource] = useState([])
+
+  const [masterDataSource, setMasterDataSource] = useState<
+    FriendsProps[] | null
+  >(null)
+
+  const [filteredDataSource, setFilteredDataSource] = useState<FriendsProps[]>(
+    [],
+  )
 
   const jsonLink =
     'https://my-json-server.typicode.com/bcengioglu/json-example/users'
@@ -22,28 +34,17 @@ const Friends = () => {
       })
   }, [])
 
-  const searchFilterFunction = (text: React.SetStateAction<string>) => {
-    // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource
-      // Update FilteredDataSource
-      const newData = masterDataSource.filter(function (item) {
-        const itemData = item.title
-          ? item.title.toUpperCase()
-          : ''.toUpperCase()
-        const textData = text.toUpperCase()
-        return itemData.indexOf(textData) > -1
-      })
-      setFilteredDataSource(newData)
-      setSearch(text)
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource)
-      setSearch(text)
-    }
+  const handleSearchFilter = (text: string) => {
+    return setFilteredDataSource(
+      masterDataSource
+        ? masterDataSource.filter((e) => e.title.includes(text))
+        : [],
+    )
   }
+
+  useEffect(() => {
+    handleSearchFilter(search)
+  }, [search])
 
   const ItemView = ({ item }) => {
     return (
@@ -69,15 +70,16 @@ const Friends = () => {
   }
 
   const getItem = (item: { id: string; title: string }) => {
+    const { id, title } = item
     // Function for click on an item
-    alert('Id : ' + item.id + ' Title : ' + item.title)
+    alert(`Id : ${id} Title : ${title}`)
   }
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.textInputStyle}
-        onChangeText={(text) => searchFilterFunction(text)}
+        onChangeText={(text) => setSearch(text)}
         value={search}
         underlineColorAndroid="transparent"
         placeholder="Search Here"

@@ -2,30 +2,29 @@ import { AxiosResponse } from 'axios'
 import { AuthSessionResult } from 'expo-auth-session'
 import React, {
   createContext,
-  Dispatch,
   PropsWithChildren,
-  SetStateAction,
   useEffect,
   useState,
 } from 'react'
-import { useCookies } from 'react-cookie'
 import { User } from '../interfaces/user'
 import { getUserInformation } from '../services/UserProfileService'
+import {
+  removeAsyncItem,
+  setAsyncItem,
+} from '../services/async-storage.service'
 
 interface AuthContextInterface {
   user: User | null
-  isLoggedIn: boolean
+  authenticated: boolean
 
-  setIsLoggedIn: Dispatch<SetStateAction<boolean>>
   login: (response: AuthSessionResult) => Promise<void>
   logout: () => Promise<void>
 }
 
 const defaultValues: AuthContextInterface = {
   user: null,
-  isLoggedIn: false,
+  authenticated: false,
 
-  setIsLoggedIn: () => false,
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
 }
@@ -33,8 +32,7 @@ const defaultValues: AuthContextInterface = {
 const authContext = createContext<AuthContextInterface>(defaultValues)
 
 const AuthProvider = (props: PropsWithChildren) => {
-  const [cookies, setCookie, removeCookie] = useCookies(['loginCookie'])
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+  const [authenticated, setAuthenticated] = useState<boolean>(false)
   const [user, setUser] = useState<User | null>(null)
 
   const login = async (response: AuthSessionResult): Promise<void> => {
@@ -44,27 +42,24 @@ const AuthProvider = (props: PropsWithChildren) => {
       const { access_token } = response.params
 
       if (access_token) {
-        await setCookie('loginCookie', access_token, { path: '/' })
-        console.log('after set cookie', cookies)
-        console.log('auth token exist: ', !!access_token)
+        setAsyncItem('access_token', access_token)
+
+        fetchUserInformation(access_token)
       }
     }
   }
 
-  // ik ga nu inloggen
-
   const logout = async (): Promise<void> => {
-    removeCookie('loginCookie')
-    setIsLoggedIn(false)
+    removeAsyncItem('access_token')
+    setAuthenticated(false)
     setUser(null)
   }
 
-  const fetchUserInformation = (loginCookie: string) => {
-    if (!loginCookie) return
+  const fetchUserInformation = (accessToken: string) => {
+    if (!accessToken) return
 
-    getUserInformation(loginCookie)
+    getUserInformation(accessToken)
       .then((response: AxiosResponse<User>) => {
-        console.log('good api call')
         setUser(response.data)
       })
       .catch((error: { message: string }) => {
@@ -74,19 +69,23 @@ const AuthProvider = (props: PropsWithChildren) => {
       })
   }
 
+  // dispose
   useEffect(() => {
-    const { loginCookie } = cookies
-
-    setIsLoggedIn(cookies.loginCookie !== undefined)
-
-    fetchUserInformation(loginCookie)
-
-    user && console.log(user)
-  }, [cookies.loginCookie])
+    if (user && user?.id > 0) {
+      setAuthenticated(true)
+    } else {
+      setAuthenticated(false)
+    }
+  }, [user?.id])
 
   return (
     <authContext.Provider
-      value={{ user, isLoggedIn, setIsLoggedIn, login, logout }}
+      value={{
+        user,
+        authenticated,
+        login,
+        logout,
+      }}
     >
       {props.children}
     </authContext.Provider>

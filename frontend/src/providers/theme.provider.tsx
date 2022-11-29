@@ -1,13 +1,6 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  useEffect,
-  useState,
-} from 'react'
+import React, { createContext, PropsWithChildren } from 'react'
 import merge from 'deepmerge'
-
-import { DarkTheme as PaperDarkTheme, Theme } from 'react-native-paper'
-
+import { DarkTheme as PaperDarkTheme } from 'react-native-paper'
 import { DarkTheme as NavigationDarkTheme } from '@react-navigation/native'
 
 interface ThemeContextInterface {

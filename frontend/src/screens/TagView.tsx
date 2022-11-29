@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import axios from 'axios'
-import { useCookies } from 'react-cookie'
 import { Button } from 'react-native-paper'
+import { getAsyncItem } from '../services/async-storage.service'
 
+// TODO fix this shit
 const TagView = () => {
-  const [cookies] = useCookies(['loginCookie'])
   const [genres, setGenres] = useState<any[]>([])
 
-  useEffect(() => {
+  const fetchGenres = (accessToken: string | null): void => {
+    if (!accessToken) return
+
     axios
       .get('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
         headers: {
           Accept: ' application/json',
           'Content-type': 'application/json',
-          Authorization: 'Bearer ' + cookies.loginCookie,
+          Authorization: 'Bearer ' + accessToken,
         },
       })
       .then((data) => {
         setGenres(data.data.genres.map((obj) => ({ obj, Active: 'false' })))
       })
-  }, [])
+      .catch(console.error)
+  }
 
   const todoClicked = (e) => {
     setGenres(
@@ -29,6 +32,14 @@ const TagView = () => {
       ),
     )
   }
+
+  useEffect(() => {
+    getAsyncItem('access_token')
+      .then((token) => {
+        fetchGenres(token)
+      })
+      .catch(console.error)
+  }, [])
 
   return (
     <>

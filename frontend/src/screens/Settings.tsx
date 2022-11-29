@@ -1,12 +1,10 @@
 import React, { useContext } from 'react'
-import { useCookies } from 'react-cookie'
 
 import { CommonActions } from '@react-navigation/native'
 
 import { View, StyleSheet } from 'react-native'
 
 import { Appbar, Dialog, Paragraph, Portal, Button } from 'react-native-paper'
-import { LoginContext } from '../../Context'
 import { authContext } from '../providers/auth.provider'
 
 const Settings = ({ navigation, route }): JSX.Element => {

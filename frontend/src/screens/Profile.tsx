@@ -1,34 +1,25 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useCookies } from 'react-cookie'
 import { Appbar, Text } from 'react-native-paper'
-import { LoginContext } from '../../Context'
 import { View, ScrollView, Image, StyleSheet } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { getUserPlaylist } from '../services/UserProfileService'
-import { User } from '../interfaces/user'
+import { getUserProfile } from '../services/UserProfileService'
 import { CommonActions } from '@react-navigation/native'
+import { authContext } from '../providers/auth.provider'
+import { getAsyncItem } from '../services/async-storage.service'
 
 const UserProfile = ({ navigation, route }): JSX.Element => {
-  const [user, setUser] = useState<User>()
   const [playlistItems, setPlaylistItems] = useState<any[]>([])
-  // const { setIsSignedIn } = useContext(LoginContext)
+  const { user, authenticated } = useContext(authContext)
 
-  // useEffect(() => {
-  //   if (cookies.loginCookie !== '') {
-  //     getUserInformation(
-  //       cookies.loginCookie,
-  //       setIsSignedIn,
-  //       removeCookie,
-  //       setUser,
-  //     )
-  //     getUserPlaylist(
-  //       cookies.loginCookie,
-  //       setIsSignedIn,
-  //       removeCookie,
-  //       setPlaylistItems,
-  //     )
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (authenticated) {
+      getAsyncItem('access_token')
+        .then((token) => {
+          getUserProfile(token as string, setPlaylistItems)
+        })
+        .catch(console.error)
+    }
+  }, [])
 
   return (
     <>

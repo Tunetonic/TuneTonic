@@ -1,69 +1,43 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useCookies } from 'react-cookie'
-import {
-  View,
-  Image,
-  TouchableHighlight,
-  StyleSheet,
-  ScrollView,
-  FlatList,
-} from 'react-native'
-import { Appbar, Text, Card, Button } from 'react-native-paper'
+import { Image, TouchableHighlight, StyleSheet, ScrollView } from 'react-native'
+import { Appbar, Card } from 'react-native-paper'
 
-import { User } from '../interfaces/user'
 import { capitalize } from '../../helpers'
 import { authContext } from '../providers/auth.provider'
+import { authFetch } from '../services/fetch.service'
+
+interface PlaylistProps {
+  title: string
+  tracks: number
+  image: string
+}
 
 const Library = ({ navigation, route }): JSX.Element => {
-  // TODO: make user info global since its used library and user profile.
-  // need to move user information logic to a global store such as asyncStorage
-  // (https://reactnative.dev/docs/asyncstorage)
-
-  const [cookies, setCookie, removeCookie] = useCookies(['loginCookie'])
-  const [user, setUser] = useState<User>()
-  const [data, setData] = useState([] as any)
-  // const { setIsSignedIn } = useContext(authContext)
-
-  useEffect(() => {
-    handleGetPlaylists()
-  }, [])
-
-  // useEffect(() => {
-  //   if (cookies.loginCookie !== '') {
-  //     getUserInformation(
-  //       cookies.loginCookie,
-  //       setIsSignedIn,
-  //       removeCookie,
-  //       setUser,
-  //     )
-  //   }
-  // })
+  const [playlistItems, setPlaylistItems] = useState<PlaylistProps[]>([])
+  const { user } = useContext(authContext)
 
   let playlistSearchApi = 'https://api.spotify.com/v1/me/playlists'
 
   const handleGetPlaylists = () => {
-    fetch(playlistSearchApi, {
-      method: 'GET',
-      headers: { Authorization: 'Bearer ' + cookies.loginCookie },
-    })
+    if (!user?.id) return
+
+    authFetch(playlistSearchApi)
       .then((res) => res.json())
       .then((data) => {
-        let result: any[] = []
-        data.items.map(
-          (obj: {
-            name: any
-            tracks: { total: any }
-            images: { url: any }[]
-          }) =>
-            result.push({
-              title: obj.name,
-              tracks: obj.tracks.total,
-              image: obj.images[0].url,
-            }),
+        setPlaylistItems(
+          data.items.map((item) => ({
+            title: item.name,
+            image: item.images[0].url,
+            tracks: item.tracks.total,
+          })),
         )
-        setData(result)
       })
+      .catch(console.error)
   }
+
+  useEffect(() => {
+    handleGetPlaylists()
+  }, [user])
 
   return (
     <>
@@ -93,9 +67,9 @@ const Library = ({ navigation, route }): JSX.Element => {
           }
         />
       </Appbar.Header>
-      {/* <ScrollView>
-        {data.length > 0 &&
-          data.map((playlist: object, i: number) => {
+      <ScrollView>
+        {playlistItems.length > 0 &&
+          playlistItems.map((playlist, i: number) => {
             return (
               <Card key={i}>
                 <Card.Title
@@ -115,7 +89,7 @@ const Library = ({ navigation, route }): JSX.Element => {
               </Card>
             )
           })}
-      </ScrollView> */}
+      </ScrollView>
     </>
   )
 }

@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Image, KeyboardAvoidingView, StyleSheet } from 'react-native'
 import { Button, Text } from 'react-native-paper'
-import { Cookies, useCookies } from 'react-cookie'
 
 import { Prompt, ResponseType, useAuthRequest } from 'expo-auth-session'
 import { CLIENT_ID, REDIRECT_URI } from '@env'
-import { LoginContext } from '../../Context'
 import { authContext } from '../providers/auth.provider'
 
 const discovery = {
@@ -14,8 +12,6 @@ const discovery = {
 }
 
 const LoginScreen = ({ navigation }): JSX.Element => {
-  const [cookies, setCookie, removeCookie] = useCookies(['loginCookie'])
-
   const { login } = useContext(authContext)
 
   const [_, response, promptAsync] = useAuthRequest(
