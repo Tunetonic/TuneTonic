@@ -7,7 +7,7 @@ import { UserProfileController } from './userProfile/UserProfile.controller'
 import { UserProfileService } from './userProfile/UserProfile.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
-import path from 'path'
+import * as path from 'path'
 
 @Module({
   imports: [
