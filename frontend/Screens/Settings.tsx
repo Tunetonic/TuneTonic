@@ -5,7 +5,7 @@ import { CommonActions } from '@react-navigation/native'
 
 import { View, StyleSheet } from 'react-native'
 
-import { Appbar, Dialog, Paragraph, Portal, Button } from 'react-native-paper'
+import { Appbar, Dialog, Paragraph, Portal, Button, Card, Switch } from 'react-native-paper'
 import { LoginContext } from '../Context'
 
 const Settings = ({ navigation, route }): JSX.Element => {
@@ -45,10 +45,30 @@ const Settings = ({ navigation, route }): JSX.Element => {
         <Appbar.Content title={route.name} />
       </Appbar.Header>
 
-      <Button mode="contained" onPress={showDialog}>
-        Logout
-      </Button>
-
+      <Card style={styles.card} onPress={() => navigation.navigate("library")} mode="outlined">
+        <Card.Title
+          title='Change genres'
+          right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right"></Button>}
+        />
+      </Card>
+      <Card style={styles.card} onPress={() => navigation.navigate("library")} mode="outlined">
+        <Card.Title
+          title='Delete account'
+          right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right"></Button>}
+          />
+      </Card>
+      <Card style={styles.card}  mode="outlined">
+        <Card.Title
+          title='Darkmode'
+          right={() => <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />}
+        />
+      </Card>
+      <Card style={styles.card} onPress={showDialog} mode="outlined">
+        <Card.Title
+          title={'Logout'}
+          right={() => <Button mode="text" labelStyle={{ fontSize: 32, color: "white"}} icon="chevron-right"></Button>}
+        />
+      </Card>
       <Portal>
         <Dialog visible={visible} onDismiss={hideDialog} dismissable={false}>
           <Dialog.Title>Logout</Dialog.Title>
@@ -67,7 +87,7 @@ const Settings = ({ navigation, route }): JSX.Element => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'black',
+    // backgroundColor: 'black',
   },
 })
 
