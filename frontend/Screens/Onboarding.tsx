@@ -39,7 +39,7 @@ const OnboardingScreen = ({ navigation }): JSX.Element => {
                 friends!
               </Text>
               <Image
-                source={require('../images/Headphone.png')}
+                source={require('../images/headphone.png')}
                 style={styles.image}
               />
             </>
@@ -57,7 +57,7 @@ const OnboardingScreen = ({ navigation }): JSX.Element => {
                 is the app for you.
               </Text>
               <Image
-                source={require('../images/MusicNotes.png')}
+                source={require('../images/musicNotes.png')}
                 style={styles.image}
               />
             </>

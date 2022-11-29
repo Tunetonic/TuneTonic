@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-// import axios, {AxiosResponse} from "axios";
 import { Appbar, Text } from 'react-native-paper'
 import { LoginContext } from '../Context'
 import { View, ScrollView, Image, StyleSheet } from 'react-native'
@@ -117,16 +116,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'black',
     height: 1000,
-    // flexDirection: 'row'
   },
   parentContainer: {
     height: 1000,
   },
   firstChild: {
     height: 140,
-    // borderColor: 'white',
-    // borderBottomWidth: 1,
-    // borderTopWidth: 1
   },
   text: { color: 'white' },
   headerText: {
