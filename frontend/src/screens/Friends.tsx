@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FlatList, Image, StyleSheet, View } from 'react-native'
-import { TextInput, Text } from 'react-native-paper'
+import { TextInput, Text, DataTable, Button } from 'react-native-paper'
 
 interface FriendsProps {
   id: number
@@ -48,11 +48,28 @@ const Friends = () => {
 
   const ItemView = ({ item }) => {
     return (
-      // Flat List Item
-      <Text style={styles.itemStyle} onPress={() => getItem(item)}>
-        {<Image source={{ uri: item.image }} style={styles.tinyLogo} />}
-        {item.title.toUpperCase()}
-      </Text>
+        <DataTable>
+          <DataTable.Row style={styles.row} onPress={() => getItem(item)}>
+            <DataTable.Cell>
+              {<Image source={{ uri: item.image }} style={{width: 50, height: 50}} />}
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.text}>
+                {item.title.toUpperCase()}
+              </Text>
+            </DataTable.Cell>
+              <Button
+                  style={styles.icon}
+                  children={undefined}
+                  mode="text"
+                  labelStyle={{ fontSize: 32, color: 'white' }}
+                  icon="delete"
+              ></Button>
+            <DataTable.Cell>
+
+            </DataTable.Cell>
+          </DataTable.Row>
+        </DataTable>
     )
   }
 
@@ -89,7 +106,6 @@ const Friends = () => {
       </Text>
       <FlatList
         data={filteredDataSource}
-        style={styles.item}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={ItemSeparatorView}
         renderItem={ItemView}
@@ -103,23 +119,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 22,
   },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    fontWeight: 'bold',
-    height: 44,
-    color: '#efefef',
-  },
-
-  tinyLogo: {
-    width: 50,
-    height: 50,
-    margin: 5,
-    resizeMode: 'contain',
-  },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    height: 70,
   },
   count: {
     color: '#efefef',
@@ -137,7 +138,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     color: '#070707FF',
   },
-  itemStyle: {},
+  icon: {
+    top: 18,
+    left: 75
+  },
+  text: {
+    color: '#FFFFFF',
+  }
 })
 
 export default Friends
