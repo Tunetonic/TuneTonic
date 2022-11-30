@@ -1,9 +1,7 @@
-import {Injectable} from '@nestjs/common';
-import {HttpService} from "@nestjs/axios";
-import {catchError, firstValueFrom} from "rxjs";
-import { map } from 'rxjs/operators';
-
-
+import { Injectable } from '@nestjs/common'
+import { HttpService } from '@nestjs/axios'
+import { catchError, firstValueFrom } from 'rxjs'
+import { map } from 'rxjs/operators'
 
 @Injectable()
 export class UserProfileService {

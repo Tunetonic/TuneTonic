@@ -1,3 +1,4 @@
+import { UserModule } from './user/user.module'
 import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -5,23 +6,28 @@ import { HttpModule } from '@nestjs/axios'
 import { UserProfileController } from './userProfile/UserProfile.controller'
 import { UserProfileService } from './userProfile/UserProfile.service'
 import {TypeOrmModule} from '@nestjs/typeorm'
-import {User} from './typeorm/entities/User'
-import { UsersController } from './users/users.controller'
-import { UsersService } from './users/users.service'
+import { ConfigModule } from '@nestjs/config'
+import * as path from 'path'
+
 
 @Module({
-  imports: [HttpModule,
-     TypeOrmModule.forFeature([User]),
-  TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: '',
-    password: '',
-    database: 'TuneTonic',
-    entities: [User],
-    // synchronize: true
-  }),
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: path.resolve(process.cwd(), '.env.development'),
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      entities: [__dirname + '/**/*.entity.{js,ts}'],
+      synchronize: true,
+    }),
+    UserModule,
+    HttpModule,
   ],
   controllers: [AppController, UserProfileController, UsersController],
   providers: [AppService, UserProfileService, UsersService],
