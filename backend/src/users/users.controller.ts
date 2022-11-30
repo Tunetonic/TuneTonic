@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Headers } from '@nestjs/common';
-import { UserProfileService } from 'src/userProfile/UserProfile.service';
+import { UserProfileService } from '../userProfile/UserProfile.service';
 import { UsersService } from './users.service';
 
 @Controller('users')
