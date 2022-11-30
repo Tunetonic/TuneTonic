@@ -1,12 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Image, KeyboardAvoidingView, StyleSheet } from "react-native";
-import { Button, Text } from "react-native-paper";
-import { Cookies, useCookies } from 'react-cookie';
+import React, {useContext, useEffect, useState} from "react";
+import {Image, KeyboardAvoidingView, StyleSheet} from "react-native";
+import {Button, Text} from "react-native-paper";
+import {Cookies, useCookies} from 'react-cookie';
 
 
-import { Prompt, ResponseType, useAuthRequest } from "expo-auth-session";
-import { CLIENT_ID, REDIRECT_URI } from '@env';
-import { LoginContext } from "../Context";
+import {Prompt, ResponseType, useAuthRequest} from "expo-auth-session";
+import {CLIENT_ID, REDIRECT_URI} from '@env';
+import {LoginContext} from "../Context";
+import {registerUser} from "../services/LoginService";
 
 const discovery = {
     authorizationEndpoint:
@@ -15,12 +16,12 @@ const discovery = {
         "https://accounts.spotify.com/api/token",
 };
 
-const LoginScreen = ({ navigation }): JSX.Element => {
+const LoginScreen = ({navigation}): JSX.Element => {
     const [cookies, setCookie, removeCookie] = useCookies(['loginCookie']);
     const [token, setToken] = useState("");
 
 
-    const { setIsSignedIn } = useContext(LoginContext);
+    const {setIsSignedIn} = useContext(LoginContext);
 
     const [request, response, promptAsync] = useAuthRequest(
         {
@@ -38,15 +39,14 @@ const LoginScreen = ({ navigation }): JSX.Element => {
             ],
             prompt: Prompt.SelectAccount,
             usePKCE: true,
-            redirectUri: 'exp://192.168.1.105:19000',
+            redirectUri: REDIRECT_URI,
         },
         discovery
     );
 
     useEffect(() => {
         if (response?.type === "success") {
-            const { access_token } = response.params;
-            console.log(access_token);
+            const {access_token} = response.params;
             setToken(access_token);
         }
     },);
@@ -54,15 +54,20 @@ const LoginScreen = ({ navigation }): JSX.Element => {
     useEffect(() => {
         if (token !== "") {
             setCookie('loginCookie', token);
-            new Promise((resolve) => {
-                resolve(setIsSignedIn(true));
-            }).then(() => navigation.navigate("onboarding"));
+            setIsSignedIn(true);
+
+            registerUser(token).then((response) => {
+                response.data ? navigation.navigate("home-tab-navigation") : navigation.navigate("onboarding");
+            })
+                .catch((error: { message: any; }) => {
+                    console.log("error:user registration", error.message);
+                });
         }
     });
 
     return (
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
-            <Image style={styles.image} source={require('../assets/tonic.png')} />
+            <Image style={styles.image} source={require('../assets/tonic.png')}/>
             <Text style={styles.text}>Discover new music with TuneTonic</Text>
             <Button
                 style={styles.button}

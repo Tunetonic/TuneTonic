@@ -5,7 +5,7 @@ import { User } from "../types/user";
 
 export const getUserInformation = (token: string, setIsSignedIn: (arg0: boolean) => void, removeCookie: any, setUser: (arg0: User) => void) => {
     axios.get(
-        "http://192.168.1.105:3000/userProfile/userInformations", {
+        NEST_URI + "/userInformations", {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export const getUserInformation = (token: string, setIsSignedIn: (arg0: boolean)
 }
 
 export const getUserPlaylist = (token: string, setIsSignedIn: (arg0: boolean) => void, removeCookie: any, setPlaylistItems: { (value: SetStateAction<any[]>): void; (arg0: any): void; }) => {
-    axios.get(`http://192.168.1.105:3000/userProfile`, {
+    axios.get(NEST_URI + 'userProfile', {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",

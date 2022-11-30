@@ -14,13 +14,13 @@ import { UsersService } from './users/users.service'
      TypeOrmModule.forFeature([User]),
   TypeOrmModule.forRoot({
     type: 'mysql',
-    host: '',
+    host: 'localhost',
     port: 3306,
     username: '',
     password: '',
-    database: '',
+    database: 'TuneTonic',
     entities: [User],
-    synchronize: true
+    // synchronize: true
   }),
   ],
   controllers: [AppController, UserProfileController, UsersController],
