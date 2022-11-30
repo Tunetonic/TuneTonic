@@ -5,7 +5,7 @@ import { User } from "../types/user";
 
 export const getUserInformation = (token: string, setIsSignedIn: (arg0: boolean) => void, removeCookie: any, setUser: (arg0: User) => void) => {
     axios.get(
-        "https://api.spotify.com/v1/me", {
+        "http://192.168.1.105:3000/userProfile/userInformations", {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -22,6 +22,21 @@ export const getUserInformation = (token: string, setIsSignedIn: (arg0: boolean)
 }
 
 export const getUserPlaylist = (token: string, setIsSignedIn: (arg0: boolean) => void, removeCookie: any, setPlaylistItems: { (value: SetStateAction<any[]>): void; (arg0: any): void; }) => {
+    axios.get(`http://192.168.1.105:3000/userProfile`, {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token,
+        }
+    }).then((response) => {
+        setPlaylistItems(response.data.items);
+    })
+        .catch((error) => {
+            console.log("error", error);
+            removeCookie('loginCookie');
+            setIsSignedIn(false);
+        });
+
     // axios.get(
     //     "https://api.spotify.com/v1/me/playlists", {
     //         headers: {
@@ -57,18 +72,5 @@ export const getUserPlaylist = (token: string, setIsSignedIn: (arg0: boolean) =>
     //     }
     // }, [])
 
-    axios.get(`http://192.168.1.11:3000/userProfile`, {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token,
-        }
-    }).then((response) => {
-        setPlaylistItems(response.data.items);
-        })
-        .catch((error) => {
-            console.log("error", error);
-            removeCookie('loginCookie');
-            setIsSignedIn(false);
-        });
+
 }

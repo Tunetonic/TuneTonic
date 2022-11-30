@@ -38,7 +38,7 @@ const LoginScreen = ({ navigation }): JSX.Element => {
             ],
             prompt: Prompt.SelectAccount,
             usePKCE: true,
-            redirectUri: 'exp://192.168.1.11:19000',
+            redirectUri: 'exp://192.168.1.105:19000',
         },
         discovery
     );
@@ -46,6 +46,7 @@ const LoginScreen = ({ navigation }): JSX.Element => {
     useEffect(() => {
         if (response?.type === "success") {
             const { access_token } = response.params;
+            console.log(access_token);
             setToken(access_token);
         }
     },);

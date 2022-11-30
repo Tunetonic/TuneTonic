@@ -21,9 +21,7 @@ const UserProfile = ({navigation, route}): JSX.Element => {
         if (cookies.loginCookie !== '') {
             getUserInformation(cookies.loginCookie, setIsSignedIn, removeCookie, setUser)
             getUserPlaylist(cookies.loginCookie, setIsSignedIn, removeCookie, setPlaylistItems)
-
         }
-
     }, [])
 
     return (<>

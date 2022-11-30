@@ -1,6 +1,5 @@
 import { UserProfileService } from './UserProfile.service'
-import { Controller, Get } from '@nestjs/common'
-import { Headers } from '@nestjs/common'
+import { Controller, Get, Headers } from '@nestjs/common'
 
 
 @Controller('userProfile')
@@ -10,5 +9,11 @@ export class UserProfileController {
     @Get()
     async GetPLaylists(@Headers('Authorization') token): Promise<any> {
         return await this.userProfileService.userPLaylists(token);
+    }
+
+
+    @Get('/userInformations')
+    async getUserInformations(@Headers('Authorization') token): Promise<any> {
+        return await this.userProfileService.userInformations(token);
     }
 }
