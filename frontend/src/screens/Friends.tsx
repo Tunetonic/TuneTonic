@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { FlatList, Image, StyleSheet, View } from 'react-native'
-import { TextInput, Text, DataTable, Button } from 'react-native-paper'
+import { Text, DataTable, ActivityIndicator, Searchbar } from 'react-native-paper'
+import { capitalize } from '../../helpers'
 
 interface FriendsProps {
   id: number
@@ -10,14 +11,10 @@ interface FriendsProps {
 
 const Friends = () => {
   const [search, setSearch] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [masterDataSource, setMasterDataSource] = useState<FriendsProps[] | null>(null)
 
-  const [masterDataSource, setMasterDataSource] = useState<
-    FriendsProps[] | null
-  >(null)
-
-  const [filteredDataSource, setFilteredDataSource] = useState<FriendsProps[]>(
-    [],
-  )
+  const [filteredDataSource, setFilteredDataSource] = useState<FriendsProps[]>([])
 
   const jsonLink =
     'https://my-json-server.typicode.com/bcengioglu/json-example/users'
@@ -26,6 +23,7 @@ const Friends = () => {
     fetch(jsonLink)
       .then((response) => response.json())
       .then((responseJson) => {
+        setLoading(false)
         setFilteredDataSource(responseJson)
         setMasterDataSource(responseJson)
       })
@@ -48,41 +46,27 @@ const Friends = () => {
 
   const ItemView = ({ item }) => {
     return (
-        <DataTable>
-          <DataTable.Row style={styles.row} onPress={() => getItem(item)}>
-            <DataTable.Cell>
-              {<Image source={{ uri: item.image }} style={{width: 50, height: 50}} />}
-            </DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.text}>
-                {item.title.toUpperCase()}
-              </Text>
-            </DataTable.Cell>
-              <Button
-                  style={styles.icon}
-                  children={undefined}
-                  mode="text"
-                  labelStyle={{ fontSize: 32, color: 'white' }}
-                  icon="delete"
-              ></Button>
-            <DataTable.Cell>
-
-            </DataTable.Cell>
-          </DataTable.Row>
-        </DataTable>
-    )
-  }
-
-  const ItemSeparatorView = () => {
-    return (
-      // Flat List Item Separator
-      <View
-        style={{
-          height: 0.5,
-          width: '100%',
-          backgroundColor: '#C8C8C8',
-        }}
-      />
+      <DataTable>
+      <DataTable.Row style={styles.row} onPress={() => getItem(item)}>
+        <DataTable.Cell>
+          <Image source={{ uri: item.image }} style={{width: 30, height: 30}} />
+        </DataTable.Cell>
+        <DataTable.Cell>
+          <Text>
+            {capitalize(item.title)}
+          </Text>
+        </DataTable.Cell>
+        <DataTable.Cell style={{ justifyContent: 'flex-end' }}>
+          {/* TODO: implement action functionality for each item. */}
+          {/* <Button
+                style={styles.icon}
+                mode="text"
+                labelStyle={{ fontSize: 32, color: 'white' }}
+                icon="delete"
+            ></Button> */}
+        </DataTable.Cell>
+      </DataTable.Row>
+      </DataTable>
     )
   }
 
@@ -92,24 +76,33 @@ const Friends = () => {
     alert(`Id : ${id} Title : ${title}`)
   }
 
+  let content: React.ReactElement;
+
+    if (loading) {
+      content = <ActivityIndicator animating={true} style={{ marginTop: 20}} size='large' />
+    } else {
+      content = (<>
+        <Text style={styles.count}>
+          {Object.keys(filteredDataSource).length}: Results
+        </Text>
+        <FlatList
+          style={styles.container}
+          data={filteredDataSource}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={ItemView}
+        />
+      </>)
+    }
+  
+
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.textInputStyle}
+      <Searchbar
+        placeholder="Search Here"
         onChangeText={(text) => setSearch(text)}
         value={search}
-        underlineColorAndroid="transparent"
-        placeholder="Search Here"
       />
-      <Text style={styles.count}>
-        {Object.keys(filteredDataSource).length}: Results
-      </Text>
-      <FlatList
-        data={filteredDataSource}
-        keyExtractor={(item, index) => index.toString()}
-        ItemSeparatorComponent={ItemSeparatorView}
-        renderItem={ItemView}
-      />
+      {content}
     </View>
   )
 }
@@ -117,7 +110,6 @@ const Friends = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
   },
   row: {
     height: 70,
@@ -125,22 +117,8 @@ const styles = StyleSheet.create({
   count: {
     color: '#efefef',
     padding: 10,
-    left: 210,
+    textAlign: 'right',
     fontSize: 18,
-  },
-  textInputStyle: {
-    top: 10,
-    height: 40,
-    borderWidth: 1,
-    paddingLeft: 20,
-    margin: 5,
-    borderColor: '#009688',
-    backgroundColor: '#FFFFFF',
-    color: '#070707FF',
-  },
-  icon: {
-    top: 18,
-    left: 75
   },
   text: {
     color: '#FFFFFF',
