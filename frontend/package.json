@@ -4,7 +4,7 @@
   "main": "AppEntry.ts",
   "scripts": {
     "start": "npx expo start",
-    "start:dev": "npx expo start --lan",
+    "start:dev": "npx expo start --lan -c",
     "test": "jest",
     "lint": "eslint --fix",
     "android": "expo run:android",
