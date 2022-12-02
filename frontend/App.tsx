@@ -1,73 +1,45 @@
-import React, { useMemo } from 'react'
-import {
-  DarkTheme as PaperDarkTheme,
-  DefaultTheme as PaperLightTheme,
-  Provider as PaperProvider,
-} from 'react-native-paper'
-import {
-  NavigationContainer,
-  DarkTheme as NavigationDarkTheme,
-  DefaultTheme as NavigationLightTheme,
-} from '@react-navigation/native'
+import React, { useContext, useMemo } from 'react'
+import { Provider as PaperProvider } from 'react-native-paper'
+import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as NavigationBar from 'expo-navigation-bar'
 
-import merge from 'deepmerge'
-
-import { LoginContext } from './Context'
-import { useCookies } from 'react-cookie'
-
-import LoginScreen from './screens/Login'
-import OnboardingScreen from './screens/Onboarding'
-import HomeTabs from './HomeTabs'
-import { StatusBar } from 'react-native'
+import LoginScreen from './src/screens/Login'
+import OnboardingScreen from './src/screens/Onboarding'
+import HomeTabs from './src/components/HomeTabs'
+import { Platform, StatusBar } from 'react-native'
+import { themeContext, ThemeProvider } from './src/providers/theme.provider'
+import { AuthProvider } from './src/providers/auth.provider'
 
 const Stack = createNativeStackNavigator()
 
 const App = (): JSX.Element => {
-  const [cookies, removeCookie] = useCookies(['loginCookie'])
-  const [isSignedIn, setIsSignedIn] = React.useState(
-    cookies.loginCookie !== undefined,
-  )
+  const { theme } = useContext(themeContext)
 
-  const appContextValue = useMemo(
-    () => ({
-      isSignedIn,
-      setIsSignedIn,
-    }),
-    [isSignedIn],
-  )
-  const CombinedDarkTheme = merge(PaperDarkTheme, NavigationDarkTheme)
-
-  const theme = {
-    ...CombinedDarkTheme,
-    colors: {
-      ...CombinedDarkTheme.colors,
-      background: '#222023',
-      accent: '#BDBCBD',
-      primary: '#008080',
-    },
+  if (Platform.OS === 'android') {
+    NavigationBar.setBackgroundColorAsync('black')
   }
-  NavigationBar.setBackgroundColorAsync('black')
 
   return (
-    <PaperProvider theme={theme}>
-      <StatusBar animated={true} hidden={false} />
-      <LoginContext.Provider value={appContextValue}>
-        <NavigationContainer theme={theme}>
-          <Stack.Navigator
-            id="root-stack-navigator"
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name="login" component={LoginScreen} />
-            <Stack.Screen name="onboarding" component={OnboardingScreen} />
-            <Stack.Screen name="home-tab-navigation" component={HomeTabs} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </LoginContext.Provider>
-    </PaperProvider>
+    <ThemeProvider>
+      <PaperProvider theme={theme}>
+        <StatusBar animated={true} hidden={false} />
+        <AuthProvider>
+          <NavigationContainer theme={theme}>
+            <Stack.Navigator
+              id="root-stack-navigator"
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name="login" component={LoginScreen} />
+              <Stack.Screen name="onboarding" component={OnboardingScreen} />
+              <Stack.Screen name="home-tab-navigation" component={HomeTabs} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </AuthProvider>
+      </PaperProvider>
+    </ThemeProvider>
   )
 }
 

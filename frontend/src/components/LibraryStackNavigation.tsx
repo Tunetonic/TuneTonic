@@ -1,9 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import Settings from './screens/Settings'
-import Library from './screens/Library'
-import Profile from './screens/Profile'
-import Playlist from './screens/Playlist'
+import Library from '../screens/Library'
+import Playlist from '../screens/Playlist'
+import Profile from '../screens/Profile'
+import Settings from '../screens/Settings'
 
 const Stack = createNativeStackNavigator()
 

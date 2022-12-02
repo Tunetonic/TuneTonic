@@ -57,7 +57,7 @@ const OnboardingScreen = ({ navigation }): JSX.Element => {
                 is the app for you.
               </Text>
               <Image
-                source={require('../images/musicNotes.png')}
+                source={require('../images/music-notes.png')}
                 style={styles.image}
               />
             </>

@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Image, KeyboardAvoidingView, StyleSheet } from 'react-native'
 import { Button, Text } from 'react-native-paper'
-import { Cookies, useCookies } from 'react-cookie'
 
 import { Prompt, ResponseType, useAuthRequest } from 'expo-auth-session'
 import { CLIENT_ID, REDIRECT_URI } from '@env'
-import { LoginContext } from '../Context'
+import { authContext } from '../providers/auth.provider'
 
 const discovery = {
   authorizationEndpoint: 'https://accounts.spotify.com/authorize',
@@ -13,12 +12,9 @@ const discovery = {
 }
 
 const LoginScreen = ({ navigation }): JSX.Element => {
-  const [cookies, setCookie, removeCookie] = useCookies(['loginCookie'])
-  const [token, setToken] = useState('')
+  const { login } = useContext(authContext)
 
-  const { setIsSignedIn } = useContext(LoginContext)
-
-  const [request, response, promptAsync] = useAuthRequest(
+  const [_, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
       clientId: CLIENT_ID,
@@ -41,23 +37,13 @@ const LoginScreen = ({ navigation }): JSX.Element => {
 
   useEffect(() => {
     if (response?.type === 'success') {
-      const { access_token } = response.params
-      setToken(access_token)
+      login(response).then(() => navigation.navigate('onboarding'))
     }
-  })
-
-  useEffect(() => {
-    if (token !== '') {
-      setCookie('loginCookie', token)
-      new Promise((resolve) => {
-        resolve(setIsSignedIn(true))
-      }).then(() => navigation.navigate('onboarding'))
-    }
-  })
+  }, [response?.type])
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <Image style={styles.image} source={require('../assets/tonic.png')} />
+      <Image style={styles.image} source={require('../../assets/tonic.png')} />
       <Text style={styles.text}>Discover new music with TuneTonic</Text>
       <Button
         style={styles.button}
