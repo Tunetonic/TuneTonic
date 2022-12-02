@@ -1,10 +1,11 @@
-import { removeAsyncItem } from './async-storage.service'
 import { NEST_URI } from '@env'
 import axios, { AxiosResponse } from 'axios'
-import { Dispatch, SetStateAction } from 'react'
+import { SetStateAction } from 'react'
+import { DatabaseUser } from '../interfaces/db-user'
+import { authPost } from './fetch.service'
 
-export const getUserInformation = async (token: string) => {
-  return await axios.get('https://api.spotify.com/v1/me', {
+export const getUserInformation = async (token: string): Promise<AxiosResponse<any, any>> => {
+  return await axios.get(`${NEST_URI}/user`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -68,4 +69,9 @@ export const getUserProfile = (
       console.error(error, 'error of userprofile')
       // removeAsyncItem('access_token')
     })
+}
+
+export const saveUser = (userBody: DatabaseUser) => {
+  const postUrl = `${NEST_URI}/user`
+  authPost(postUrl, userBody)
 }

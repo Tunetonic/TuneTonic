@@ -36,9 +36,7 @@ const LoginScreen = ({ navigation }): JSX.Element => {
   )
 
   useEffect(() => {
-    if (response?.type === 'success') {
       login(response).then(() => navigation.navigate('onboarding'))
-    }
   }, [response?.type])
 
   return (

@@ -6,8 +6,8 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { User } from '../interfaces/user'
-import { getUserInformation } from '../services/UserProfileService'
+import { User } from '../interfaces/spotify-user'
+import { getUserInformation, saveUser } from '../services/user.service'
 import {
   removeAsyncItem,
   setAsyncItem,
@@ -17,7 +17,7 @@ interface AuthContextInterface {
   user: User | null
   authenticated: boolean
 
-  login: (response: AuthSessionResult) => Promise<void>
+  login: (response: AuthSessionResult | null) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -35,16 +35,21 @@ const AuthProvider = (props: PropsWithChildren) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false)
   const [user, setUser] = useState<User | null>(null)
 
-  const login = async (response: AuthSessionResult): Promise<void> => {
+  const login = async (response: AuthSessionResult | null): Promise<void> => {
+    if (!response) return
+    
     const success = response?.type === 'success'
-
+    
     if (success) {
       const { access_token } = response.params
 
       if (access_token) {
-        setAsyncItem('access_token', access_token)
+        await setAsyncItem('access_token', access_token)
+        await fetchUserInformation(access_token)
 
-        fetchUserInformation(access_token)
+        if (user?.id) {
+          await saveUser({id: user?.id, isOnboarded: false})
+        }
       }
     }
   }
@@ -70,12 +75,12 @@ const AuthProvider = (props: PropsWithChildren) => {
   }
 
   useEffect(() => {
-    if (user && user?.id > 0) {
+    if (user) {
       setAuthenticated(true)
     } else {
       setAuthenticated(false)
     }
-  }, [user?.id])
+  }, [user])
 
   return (
     <authContext.Provider
