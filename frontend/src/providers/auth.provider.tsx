@@ -14,7 +14,6 @@ import {
 
 interface AuthContextInterface {
   user: User | null
-  authenticated: boolean
 
   login: (response: AuthSessionResult) => Promise<void>
   logout: () => Promise<void>
@@ -22,7 +21,6 @@ interface AuthContextInterface {
 
 const defaultValues: AuthContextInterface = {
   user: null,
-  authenticated: false,
 
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
@@ -31,7 +29,6 @@ const defaultValues: AuthContextInterface = {
 const authContext = createContext<AuthContextInterface>(defaultValues)
 
 const AuthProvider = (props: PropsWithChildren) => {
-  const [authenticated, setAuthenticated] = useState<boolean>(false)
   const [user, setUser] = useState<User | null>(null)
 
   const login = async (response: AuthSessionResult): Promise<void> => {
@@ -54,23 +51,13 @@ const AuthProvider = (props: PropsWithChildren) => {
 
   const logout = async (): Promise<void> => {
     removeAsyncItem('access_token')
-    setAuthenticated(false)
     setUser(null)
   }
-
-  useEffect(() => {
-    if (user) {
-      setAuthenticated(true)
-    } else {
-      setAuthenticated(false)
-    }
-  }, [user])
 
   return (
     <authContext.Provider
       value={{
         user,
-        authenticated,
         login,
         logout,
       }}

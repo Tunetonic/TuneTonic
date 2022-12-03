@@ -6,9 +6,4 @@ export class AppController {
   getHello(): string {
     return 'hello'
   }
-
-  @Get('object')
-  getObject(): any {
-    return { type: 'string', message: 'test object' }
-  }
 }

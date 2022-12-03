@@ -9,10 +9,10 @@ import { playlistItemMapper, PlaylistProps } from '../util/playlist.util'
 
 const UserProfile = ({ navigation, route }): JSX.Element => {
   const [playlistItems, setPlaylistItems] = useState<PlaylistProps[]>([])
-  const { user, authenticated } = useContext(authContext)
+  const { user } = useContext(authContext)
 
   useEffect(() => {
-    if (authenticated) {
+    if (user) {
       getUserPlaylist().then((data) =>
         setPlaylistItems(playlistItemMapper(data.items)),
       )
