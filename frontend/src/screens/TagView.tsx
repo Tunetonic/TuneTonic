@@ -1,46 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import axios from 'axios'
 import { Button } from 'react-native-paper'
-import { getAsyncItem } from '../services/async-storage.service'
+import { getGenreSeeds } from '../services/genre.service'
 
-const spotifySeedLink =
-  'https://api.spotify.com/v1/recommendations/available-genre-seeds'
+interface Tag {
+  tagName: string
+  isActive: boolean
+}
 
 const TagView = () => {
-  const [genres, setGenres] = useState<any[]>([])
+  const [genres, setGenres] = useState<Tag[]>([])
 
-  const fetchGenres = (accessToken: string | null): void => {
-    if (!accessToken) return
-
-    axios
-      .get(spotifySeedLink, {
-        headers: {
-          Accept: ' application/json',
-          'Content-type': 'application/json',
-          Authorization: 'Bearer ' + accessToken,
-        },
-      })
-      .then((data) => {
-        setGenres(data.data.genres.map((obj) => ({ obj, Active: 'false' })))
-      })
-      .catch(console.error)
+  const fetchGenres = (): void => {
+    getGenreSeeds().then((res) =>
+      setGenres(
+        res.genres.map((genre) => ({ tagName: genre, isActive: false })),
+      ),
+    )
   }
 
-  const todoClicked = (e) => {
+  const todoClicked = (e: Tag) => {
     setGenres(
       genres.map((todo) =>
-        todo.obj === e.obj ? { ...todo, Active: !todo.Active } : todo,
+        todo.tagName === e.tagName
+          ? { ...todo, isActive: !todo.isActive }
+          : todo,
       ),
     )
   }
 
   useEffect(() => {
-    getAsyncItem('access_token')
-      .then((token) => {
-        fetchGenres(token)
-      })
-      .catch(console.error)
+    fetchGenres()
   }, [])
 
   return (
@@ -54,18 +44,18 @@ const TagView = () => {
 
           {genres.map((data) => (
             <Button
-              key={data.obj}
-              color={data.Active ? 'white' : 'white'}
+              key={data.tagName}
+              color={data.isActive ? 'white' : 'white'}
               onPress={() => todoClicked(data)}
               style={[
                 styles.tag,
                 {
-                  backgroundColor: data.Active ? '#222023' : '#1ed760',
-                  borderColor: data.Active ? '#1ed760' : '#1ed760',
+                  backgroundColor: data.isActive ? '#222023' : '#1ed760',
+                  borderColor: data.isActive ? '#1ed760' : '#1ed760',
                 },
               ]}
             >
-              {data.obj}
+              {data.tagName}
             </Button>
           ))}
         </View>

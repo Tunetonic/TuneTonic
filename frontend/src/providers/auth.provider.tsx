@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios'
 import { AuthSessionResult } from 'expo-auth-session'
 import React, {
   createContext,
@@ -7,7 +6,7 @@ import React, {
   useState,
 } from 'react'
 import { User } from '../interfaces/spotify-user'
-import { getUserInformation, saveUser } from '../services/user.service'
+import { getSpotifyUser, saveUser } from '../services/user.service'
 import {
   removeAsyncItem,
   setAsyncItem,
@@ -17,7 +16,7 @@ interface AuthContextInterface {
   user: User | null
   authenticated: boolean
 
-  login: (response: AuthSessionResult | null) => Promise<void>
+  login: (response: AuthSessionResult) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -35,22 +34,21 @@ const AuthProvider = (props: PropsWithChildren) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false)
   const [user, setUser] = useState<User | null>(null)
 
-  const login = async (response: AuthSessionResult | null): Promise<void> => {
-    if (!response) return
-    
+  const login = async (response: AuthSessionResult): Promise<void> => {
     const success = response?.type === 'success'
-    
-    if (success) {
-      const { access_token } = response.params
 
-      if (access_token) {
-        await setAsyncItem('access_token', access_token)
-        await fetchUserInformation(access_token)
+    if (!success) return
 
-        if (user?.id) {
-          await saveUser({id: user?.id, isOnboarded: false})
-        }
-      }
+    const { access_token } = response.params
+
+    if (!access_token) return
+
+    await setAsyncItem('access_token', access_token)
+
+    getSpotifyUser().then(setUser).catch(console.error)
+
+    if (user?.id) {
+      await saveUser({ id: user?.id, isOnboarded: false })
     }
   }
 
@@ -58,20 +56,6 @@ const AuthProvider = (props: PropsWithChildren) => {
     removeAsyncItem('access_token')
     setAuthenticated(false)
     setUser(null)
-  }
-
-  const fetchUserInformation = (accessToken: string) => {
-    if (!accessToken) return
-
-    getUserInformation(accessToken)
-      .then((response: AxiosResponse<User>) => {
-        setUser(response.data)
-      })
-      .catch((error) => {
-        console.error(error)
-
-        logout()
-      })
   }
 
   useEffect(() => {

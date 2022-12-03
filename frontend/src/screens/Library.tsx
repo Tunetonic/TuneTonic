@@ -4,40 +4,24 @@ import { Appbar, Card } from 'react-native-paper'
 
 import { capitalize } from '../../helpers'
 import { authContext } from '../providers/auth.provider'
-import { authFetch } from '../services/fetch.service'
-
-interface PlaylistProps {
-  title: string
-  tracks: number
-  image: string
-}
+import { getUserPlaylist } from '../services/user.service'
+import { playlistItemMapper, PlaylistProps } from '../util/playlist.util'
 
 const Library = ({ navigation, route }): JSX.Element => {
   const [playlistItems, setPlaylistItems] = useState<PlaylistProps[]>([])
   const { user } = useContext(authContext)
 
-  let playlistSearchApi = 'https://api.spotify.com/v1/me/playlists'
-
   const handleGetPlaylists = () => {
     if (!user?.id) return
 
-    authFetch(playlistSearchApi)
-      .then((res) => res.json())
-      .then((data) => {
-        setPlaylistItems(
-          data.items.map((item) => ({
-            title: item.name,
-            image: item.images[0].url,
-            tracks: item.tracks.total,
-          })),
-        )
-      })
+    getUserPlaylist()
+      .then((data) => setPlaylistItems(playlistItemMapper(data.items)))
       .catch(console.error)
   }
 
   useEffect(() => {
     handleGetPlaylists()
-  }, [user])
+  }, [])
 
   return (
     <>
@@ -73,9 +57,9 @@ const Library = ({ navigation, route }): JSX.Element => {
             return (
               <Card key={i}>
                 <Card.Title
-                  title={playlist.title}
+                  title={playlist.name}
                   titleStyle={styles.cardTitle}
-                  subtitle={playlist.tracks + ' tracks'}
+                  subtitle={playlist.totalTracks + ' tracks'}
                   subtitleStyle={styles.subtitle}
                   left={() => (
                     <Image

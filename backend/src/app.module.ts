@@ -3,11 +3,10 @@ import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { HttpModule } from '@nestjs/axios'
-import { UserProfileController } from './userProfile/UserProfile.controller'
-import { UserProfileService } from './userProfile/UserProfile.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
 import * as path from 'path'
+import { SpotifyModule } from './spotify/spotify.module'
 
 @Module({
   imports: [
@@ -25,10 +24,11 @@ import * as path from 'path'
       entities: [__dirname + '/**/*.entity.{js,ts}'],
       synchronize: true,
     }),
-    UserModule,
     HttpModule,
+    UserModule,
+    SpotifyModule,
   ],
-  controllers: [AppController, UserProfileController],
-  providers: [AppService, UserProfileService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

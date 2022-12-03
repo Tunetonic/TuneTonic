@@ -2,22 +2,20 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Appbar, Text } from 'react-native-paper'
 import { View, ScrollView, Image, StyleSheet } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { getUserProfile } from '../services/user.service'
+import { getUserPlaylist } from '../services/user.service'
 import { CommonActions } from '@react-navigation/native'
 import { authContext } from '../providers/auth.provider'
-import { getAsyncItem } from '../services/async-storage.service'
+import { playlistItemMapper, PlaylistProps } from '../util/playlist.util'
 
 const UserProfile = ({ navigation, route }): JSX.Element => {
-  const [playlistItems, setPlaylistItems] = useState<any[]>([])
+  const [playlistItems, setPlaylistItems] = useState<PlaylistProps[]>([])
   const { user, authenticated } = useContext(authContext)
 
   useEffect(() => {
     if (authenticated) {
-      getAsyncItem('access_token')
-        .then((token) => {
-          getUserProfile(token as string, setPlaylistItems)
-        })
-        .catch(console.error)
+      getUserPlaylist().then((data) =>
+        setPlaylistItems(playlistItemMapper(data.items)),
+      )
     }
   }, [])
 
@@ -58,14 +56,14 @@ const UserProfile = ({ navigation, route }): JSX.Element => {
           <ScrollView horizontal={true} style={styles.playlistView}>
             {playlistItems.map(
               (data) =>
-                data.images.length > 0 && (
+                !!data.image && (
                   <View key={data.id} style={styles.playlist}>
                     <Image
                       style={styles.playlistLogo}
-                      source={{ uri: data.images[0].url }}
+                      source={{ uri: data.image }}
                     />
                     <Text style={styles.text}>{data.name}</Text>
-                    <Text style={styles.text}>{data.tracks.total} songs</Text>
+                    <Text style={styles.text}>{data.totalTracks} songs</Text>
                   </View>
                 ),
             )}
