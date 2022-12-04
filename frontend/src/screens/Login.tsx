@@ -3,8 +3,9 @@ import { Image, KeyboardAvoidingView, StyleSheet } from 'react-native'
 import { Button, Text } from 'react-native-paper'
 
 import { Prompt, ResponseType, useAuthRequest } from 'expo-auth-session'
-import { CLIENT_ID, REDIRECT_URI } from '@env'
+import { CLIENT_ID, NEST_URI, REDIRECT_URI } from '@env'
 import { authContext } from '../providers/auth.provider'
+import { getUserPlaylist } from '../services/user.service'
 
 const discovery = {
   authorizationEndpoint: 'https://accounts.spotify.com/authorize',
@@ -14,7 +15,7 @@ const discovery = {
 const LoginScreen = ({ navigation }): JSX.Element => {
   const { login } = useContext(authContext)
 
-  const [_, response, promptAsync] = useAuthRequest(
+  const [req, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
       clientId: CLIENT_ID,
@@ -36,10 +37,12 @@ const LoginScreen = ({ navigation }): JSX.Element => {
   )
 
   useEffect(() => {
-    if (response?.type === 'success') {
-      login(response).then(() => navigation.navigate('onboarding'))
+    if (response && response?.type === 'success') {
+      login(response)
+        .then(() => navigation.navigate('onboarding'))
+        .catch(console.error)
     }
-  }, [response?.type])
+  }, [response])
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>

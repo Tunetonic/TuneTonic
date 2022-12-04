@@ -4,12 +4,12 @@ import { View } from 'react-native'
 import { authContext } from '../providers/auth.provider'
 
 export const LandingPage = ({ navigation }) => {
-  const { authenticated } = useContext(authContext)
+  const { user } = useContext(authContext)
 
   return (
     <View>
       <Text>Landing Screen</Text>
-      {!authenticated ? (
+      {!user ? (
         <Button onPress={() => navigation.navigate('login')}>Login</Button>
       ) : (
         <Button onPress={() => navigation.navigate('home')}>Home</Button>

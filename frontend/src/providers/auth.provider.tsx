@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios'
 import { AuthSessionResult } from 'expo-auth-session'
 import React, {
   createContext,
@@ -6,8 +5,8 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { User } from '../interfaces/user'
-import { getUserInformation } from '../services/UserProfileService'
+import { User } from '../interfaces/spotify-user'
+import { getSpotifyUser, saveUser } from '../services/user.service'
 import {
   removeAsyncItem,
   setAsyncItem,
@@ -15,7 +14,6 @@ import {
 
 interface AuthContextInterface {
   user: User | null
-  authenticated: boolean
 
   login: (response: AuthSessionResult) => Promise<void>
   logout: () => Promise<void>
@@ -23,7 +21,6 @@ interface AuthContextInterface {
 
 const defaultValues: AuthContextInterface = {
   user: null,
-  authenticated: false,
 
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
@@ -32,56 +29,35 @@ const defaultValues: AuthContextInterface = {
 const authContext = createContext<AuthContextInterface>(defaultValues)
 
 const AuthProvider = (props: PropsWithChildren) => {
-  const [authenticated, setAuthenticated] = useState<boolean>(false)
   const [user, setUser] = useState<User | null>(null)
 
   const login = async (response: AuthSessionResult): Promise<void> => {
     const success = response?.type === 'success'
 
-    if (success) {
-      const { access_token } = response.params
+    if (!success) return
 
-      if (access_token) {
-        setAsyncItem('access_token', access_token)
+    const { access_token } = response.params
 
-        fetchUserInformation(access_token)
-      }
+    if (!access_token) return
+
+    await setAsyncItem('access_token', access_token)
+
+    getSpotifyUser().then(setUser).catch(console.error)
+
+    if (user?.id) {
+      await saveUser({ id: user?.id, isOnboarded: false })
     }
   }
 
   const logout = async (): Promise<void> => {
     removeAsyncItem('access_token')
-    setAuthenticated(false)
     setUser(null)
   }
-
-  const fetchUserInformation = (accessToken: string) => {
-    if (!accessToken) return
-
-    getUserInformation(accessToken)
-      .then((response: AxiosResponse<User>) => {
-        setUser(response.data)
-      })
-      .catch((error) => {
-        console.error(error)
-
-        logout()
-      })
-  }
-
-  useEffect(() => {
-    if (user && user?.id > 0) {
-      setAuthenticated(true)
-    } else {
-      setAuthenticated(false)
-    }
-  }, [user?.id])
 
   return (
     <authContext.Provider
       value={{
         user,
-        authenticated,
         login,
         logout,
       }}

@@ -3,9 +3,9 @@ import { authContext } from '../providers/auth.provider'
 import Home from '../screens/Home'
 
 const LoginGuard = ({ navigation }) => {
-  const { authenticated } = useContext(authContext)
+  const { user } = useContext(authContext)
 
-  if (authenticated === false) {
+  if (!user) {
     navigation.navigate('Login')
   }
 
