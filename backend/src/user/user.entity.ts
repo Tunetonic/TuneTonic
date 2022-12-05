@@ -1,14 +1,13 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm'
 
 @Entity('user')
 export class User {
-
   @PrimaryColumn()
   id: string
 
-  @Column({default: false})
+  @Column({ default: false })
   isBoarded: boolean
 
-  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-  created_at?: Date;
+  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  created_at?: Date
 }
