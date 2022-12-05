@@ -4,6 +4,7 @@ import Settings from './screens/Settings'
 import Library from './screens/Library'
 import Profile from './screens/Profile'
 import Playlist from './screens/Playlist'
+import Admin from './Screens/Admin'
 
 const Stack = createNativeStackNavigator()
 
@@ -16,6 +17,7 @@ const LibraryStackNavigation = (): JSX.Element => {
       <Stack.Screen name="library" component={Library} />
       <Stack.Screen name="profile" component={Profile} />
       <Stack.Screen name="settings" component={Settings} />
+      <Stack.Screen name="admin" component={Admin} />
       <Stack.Screen
         name="playlist"
         component={Playlist}
