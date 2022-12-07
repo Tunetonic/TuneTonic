@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
-import { LoginContext } from '../Context'
+import { authContext } from '../providers/auth.provider'
 import Home from '../screens/Home'
 
 const LoginGuard = ({ navigation }) => {
-  const { isSignedIn } = useContext(LoginContext)
+  const { user } = useContext(authContext)
 
-  if (isSignedIn === false) {
+  if (!user) {
     navigation.navigate('Login')
   }
 

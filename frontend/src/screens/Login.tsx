@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Image, KeyboardAvoidingView, StyleSheet } from 'react-native'
 import { Button, Text } from 'react-native-paper'
-import { Cookies, useCookies } from 'react-cookie'
 
 import { Prompt, ResponseType, useAuthRequest } from 'expo-auth-session'
-import { CLIENT_ID, REDIRECT_URI } from '@env'
-import { LoginContext } from '../Context'
+import { CLIENT_ID, NEST_URI, REDIRECT_URI } from '@env'
+import { authContext } from '../providers/auth.provider'
+import { getUserPlaylist } from '../services/user.service'
 
 const discovery = {
   authorizationEndpoint: 'https://accounts.spotify.com/authorize',
@@ -13,12 +13,9 @@ const discovery = {
 }
 
 const LoginScreen = ({ navigation }): JSX.Element => {
-  const [cookies, setCookie, removeCookie] = useCookies(['loginCookie'])
-  const [token, setToken] = useState('')
+  const { login } = useContext(authContext)
 
-  const { setIsSignedIn } = useContext(LoginContext)
-
-  const [request, response, promptAsync] = useAuthRequest(
+  const [req, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
       clientId: CLIENT_ID,
@@ -40,24 +37,16 @@ const LoginScreen = ({ navigation }): JSX.Element => {
   )
 
   useEffect(() => {
-    if (response?.type === 'success') {
-      const { access_token } = response.params
-      setToken(access_token)
+    if (response && response?.type === 'success') {
+      login(response)
+        .then(() => navigation.navigate('onboarding'))
+        .catch(console.error)
     }
-  })
-
-  useEffect(() => {
-    if (token !== '') {
-      setCookie('loginCookie', token)
-      new Promise((resolve) => {
-        resolve(setIsSignedIn(true))
-      }).then(() => navigation.navigate('onboarding'))
-    }
-  })
+  }, [response])
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <Image style={styles.image} source={require('../assets/tonic.png')} />
+      <Image style={styles.image} source={require('../../assets/tonic.png')} />
       <Text style={styles.text}>Discover new music with TuneTonic</Text>
       <Button
         style={styles.button}
