@@ -11,7 +11,7 @@ export const getDatabaseUser = async (id: number): Promise<any> => {
 }
 
 /**
- * Do we get the spotify user from spotify authentication?
+ * TODO: Do we get the spotify user from spotify authentication?
  * @returns
  */
 export const getSpotifyUser = async (): Promise<any> => {
@@ -19,12 +19,16 @@ export const getSpotifyUser = async (): Promise<any> => {
 }
 
 /**
- * Don't we already get all this information from authenticating in spotify.
- * Do we really need to make an request?
+ * TODO: Don't we already get all this information from authenticating in spotify.
+ *       Do we really need to make an request?
  * @param setPlaylistItems
  */
 export const getUserPlaylist = async (): Promise<any> => {
-  return await authFetch(`${NEST_URI}/spotify/playlist`)
+  return await authFetch(`${NEST_URI}/spotify/playlists`)
+}
+
+export const getPlaylist = async (id: string): Promise<Response> => {
+  return await authFetch(`${NEST_URI}/spotify/playlist/${id}`)
 }
 
 /**

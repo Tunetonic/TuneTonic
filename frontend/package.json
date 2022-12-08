@@ -46,7 +46,8 @@
     "react-native-tags": "^2.2.1",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.9",
-    "react-test-renderer": "18.1.0"
+    "react-test-renderer": "18.1.0",
+    "expo-av": "~13.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

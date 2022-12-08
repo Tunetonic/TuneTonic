@@ -7,6 +7,7 @@ import { catchError, firstValueFrom, map } from 'rxjs'
 
 @Injectable()
 export class SpotifyService {
+
   constructor(
     private readonly httpService: HttpService,
     private readonly userService: UserService,
@@ -53,6 +54,27 @@ export class SpotifyService {
     return await firstValueFrom(
       this.httpService
         .get<SpotifyPlaylist[]>(spotifyUrl, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        })
+        .pipe(
+          map((response) => response.data),
+          catchError((error) => {
+            throw error.response.data
+          }),
+        ),
+    )
+  }
+
+  async getPlaylist(id: string, token: string): Promise<any> {
+    const spotifyUrl = `https://api.spotify.com/v1/playlists/${id}/tracks`
+
+    return await firstValueFrom(
+      this.httpService
+        .get(spotifyUrl, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
