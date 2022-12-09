@@ -2,60 +2,63 @@ import React, { useContext, useEffect, useState } from "react";
 import { View, Image, StyleSheet, ScrollView } from "react-native";
 import { Text, TextInput, Card, IconButton } from 'react-native-paper';
 
+interface UserProps {
+    id: number
+    name: string
+    image: string
+}
+
+let dummy = [
+    {
+        id: 1,
+        name: "Hoi",
+        image: "https://picsum.photos/700"
+    },
+    {
+        id: 1,
+        name: "Hoi",
+        image: "https://picsum.photos/700"
+    },
+    {
+        id: 1,
+        name: "Hoi",
+        image: "https://picsum.photos/700"
+    },
+]
 
 const Admin = (): JSX.Element => {
+    const [search, setSearch] = useState('')
+    const [loading, setLoading] = useState(true)
+    const [filteredDataSource, setFilteredDataSource] = useState<UserProps[]>(dummy)
+    const [masterDataSource, setMasterDataSource] = useState<UserProps[] | null>(dummy)
 
-    let data = [
-        {
-            userId: 1,
-            name: "Hoi",
-            image: "https://picsum.photos/700"
-        },
-        {
-            userId: 1,
-            name: "Hoi",
-            image: "https://picsum.photos/700"
-        },
-        {
-            userId: 1,
-            name: "Hoi",
-            image: "https://picsum.photos/700"
-        },
-        {
-            userId: 1,
-            name: "Hoi",
-            image: "https://picsum.photos/700"
-        },
-        {
-            name: "Hoi",
-            image: "https://picsum.photos/700"
-        },
-        {
-            userId: 1,
-            name: "Hoi",
-            image: "https://picsum.photos/700"
-        },   
-    ]
+    useEffect(() => {
+        handleSearchFilter(search)
+      }, [search])
 
-    const deleteUser = (userId: number) => {
+    const handleSearchFilter = (text: string) => {
+        return setFilteredDataSource(
+          masterDataSource
+            ? masterDataSource.filter((e) => e.name.includes(text))
+            : [],
+        )
+      }
 
-    }
+    const deleteUser = (userId: number) => {}
 
     return (<>
         <View style={styles.container}>
         <TextInput
             style={styles.textInputStyle}
-            // onChangeText={(text) => searchFilterFunction(text)}
-            // value={search}
-            underlineColorAndroid="transparent"
+            onChangeText={(text) => setSearch(text)}
+            value={search}
             placeholder="Search"
         />
         <Text style={styles.count}>
-            {/* {Object.keys(filteredDataSource).length} */}
-            5 Results
+            {Object.keys(filteredDataSource).length} Results
         </Text>
             <ScrollView>
-            {data.length > 0 && data.map((user: object, i: number) => {
+            {filteredDataSource.length > 0 && filteredDataSource.map((user: object, i: number) => {
             return (
                 <Card key={i} style={styles.card}>
                     <Card.Title 
