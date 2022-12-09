@@ -14,6 +14,16 @@ export class SpotifyController {
     return this.spotifyService.getUserFromSpotify(token)
   }
 
+  /**
+   * Role: admin
+   */
+  @Get('/users')
+  getSpotifyUsers(
+    @Headers('Authorization') token: string,
+  ): Promise<SpotifyUser[]> {
+    return this.spotifyService.getUsersFromSpotify(token)
+  }
+
   @Get('/playlist')
   async getPlaylists(
     @Headers('Authorization') token,

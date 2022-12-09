@@ -1,36 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, Image, StyleSheet, ScrollView } from "react-native";
 import { Text, TextInput, Card, IconButton } from 'react-native-paper';
+import { getSpotifyUsers } from "../services/user.service";
+import { userItemMapper, UserProps } from "../util/user.util";
 
-interface UserProps {
-    id: number
-    name: string
-    image: string
-}
-
-let dummy = [
-    {
-        id: 1,
-        name: "Hoi",
-        image: "https://picsum.photos/700"
-    },
-    {
-        id: 1,
-        name: "Hoi",
-        image: "https://picsum.photos/700"
-    },
-    {
-        id: 1,
-        name: "Hoi",
-        image: "https://picsum.photos/700"
-    },
-]
 
 const Admin = (): JSX.Element => {
     const [search, setSearch] = useState('')
     const [loading, setLoading] = useState(true)
-    const [filteredDataSource, setFilteredDataSource] = useState<UserProps[]>(dummy)
-    const [masterDataSource, setMasterDataSource] = useState<UserProps[] | null>(dummy)
+    const [filteredDataSource, setFilteredDataSource] = useState<UserProps[]>([])
+    const [masterDataSource, setMasterDataSource] = useState<UserProps[] | null>([])
+
+    useEffect(() => {
+        getSpotifyUsers()
+        .then((data) => {
+            setMasterDataSource(userItemMapper(data))
+            setFilteredDataSource(userItemMapper(data))
+        })
+        .catch(console.error)
+    }, []);
 
     useEffect(() => {
         handleSearchFilter(search)
@@ -44,7 +32,7 @@ const Admin = (): JSX.Element => {
         )
       }
 
-    const deleteUser = (userId: number) => {}
+    const deleteUser = (userId: string) => {}
 
     return (<>
         <View style={styles.container}>
@@ -58,14 +46,14 @@ const Admin = (): JSX.Element => {
             {Object.keys(filteredDataSource).length} Results
         </Text>
             <ScrollView>
-            {filteredDataSource.length > 0 && filteredDataSource.map((user: object, i: number) => {
+            {filteredDataSource.length > 0 && filteredDataSource.map((user: UserProps, i: number) => {
             return (
-                <Card key={i} style={styles.card}>
+                <Card key={i} style={styles.card} onPress={() => console.log(user.image)}>
                     <Card.Title 
                         title={user.name}
                         titleStyle={styles.cardTitle} 
                         left={() => <Image source={{uri: user.image}} style={styles.userImage}/>}
-                        right={() => <IconButton icon="delete" size={26} style={styles.deleteIcon} onPress={() => deleteUser(user.userId)}/>}
+                        right={() => <IconButton icon="delete" size={26} style={styles.deleteIcon} onPress={() => deleteUser(user.id)}/>}
                         />
                     </Card>
                 );})}

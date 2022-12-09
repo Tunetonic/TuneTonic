@@ -48,14 +48,15 @@ export class SpotifyService {
     return user
   }
 
-  async getUsersFromSpotify(token: string) {
+  async getUsersFromSpotify(token: string): Promise<SpotifyUser[]> {
     const spotifyUrl = 'https://api.spotify.com/v1/users/'
 
     const databaseUsers: User[] = await this.userService.findAllUsers()
+    const ids: string[] = databaseUsers.map((x) => x.id)
+    const spotifyUsers = []
 
     if (databaseUsers.length > 0) {
-      const spotifyUsers = []
-      for (const id in databaseUsers) {
+      for (const id of ids) {
         const user: SpotifyUser = await firstValueFrom(
           this.httpService
             .get<SpotifyUser>(spotifyUrl + id, {
@@ -75,11 +76,9 @@ export class SpotifyService {
 
         spotifyUsers.push(user)
       }
-
-      return spotifyUsers
     }
 
-    return NotFoundException
+    return spotifyUsers
   }
 
   async getUserPlaylists(token: string): Promise<SpotifyPlaylist[]> {

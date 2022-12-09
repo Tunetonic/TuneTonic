@@ -18,6 +18,10 @@ export const getSpotifyUser = async (): Promise<any> => {
   return await authFetch(`${NEST_URI}/spotify`)
 }
 
+export const getSpotifyUsers = async (): Promise<any> => {
+  return await authFetch(`${NEST_URI}/spotify/users`)
+}
+
 /**
  * Don't we already get all this information from authenticating in spotify.
  * Do we really need to make an request?
