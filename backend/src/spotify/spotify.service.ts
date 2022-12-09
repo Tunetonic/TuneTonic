@@ -4,6 +4,7 @@ import { SpotifyUser } from './interface/spotify-user'
 import { HttpService } from '@nestjs/axios'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { catchError, firstValueFrom, map } from 'rxjs'
+import { User } from 'src/user/user.entity'
 
 @Injectable()
 export class SpotifyService {
@@ -47,12 +48,14 @@ export class SpotifyService {
     return user
   }
 
-  async getUsersFromSpotify(token: string, ids: string[]) {
+  async getUsersFromSpotify(token: string) {
     const spotifyUrl = 'https://api.spotify.com/v1/users/'
 
-    if (ids.length > 0) {
-      const users = []
-      for (const id in ids) {
+    const databaseUsers: User[] = await this.userService.findAllUsers()
+
+    if (databaseUsers.length > 0) {
+      const spotifyUsers = []
+      for (const id in databaseUsers) {
         const user: SpotifyUser = await firstValueFrom(
           this.httpService
             .get<SpotifyUser>(spotifyUrl + id, {
@@ -70,10 +73,10 @@ export class SpotifyService {
             ),
         )
 
-        users.push(user)
+        spotifyUsers.push(user)
       }
 
-      return users
+      return spotifyUsers
     }
 
     return NotFoundException
