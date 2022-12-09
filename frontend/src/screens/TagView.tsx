@@ -50,8 +50,8 @@ const TagView = () => {
               style={[
                 styles.tag,
                 {
-                  backgroundColor: data.isActive ? '#222023' : '#1ed760',
-                  borderColor: data.isActive ? '#1ed760' : '#1ed760',
+                  backgroundColor: data.isActive ? '#1DB954' : '#222023',
+                  borderColor: data.isActive ?  '#1DB954' : '#1DB954',
                 },
               ]}
             >
