@@ -1,23 +1,26 @@
 import React, { useContext } from 'react'
 import { CommonActions } from '@react-navigation/native'
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import {
   Appbar,
   Dialog,
   Paragraph,
   Portal,
   Button,
-  Card,
   Switch,
 } from 'react-native-paper'
 import { authContext } from '../providers/auth.provider'
+import { SettingsItem } from '../components/SettingsItem'
+import { themeContext } from '../providers/theme.provider'
 
 const Settings = ({ navigation, route }): JSX.Element => {
   const { logout } = useContext(authContext)
   const [visible, setVisible] = React.useState(false)
   const [isSwitchOn, setIsSwitchOn] = React.useState(true)
 
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn)
+  const onToggleSwitch = () => setIsSwitchOn(prev => !prev)
+
+  const { theme, switchTheme } = useContext(themeContext)
 
   const showDialog = () => setVisible(true)
 
@@ -48,61 +51,54 @@ const Settings = ({ navigation, route }): JSX.Element => {
         <Appbar.Content title={route.name} />
       </Appbar.Header>
 
-      <Card
-        style={styles.card}
+      <SettingsItem
+        title="Change genres"
         onPress={() => navigation.navigate('library')}
-        mode="outlined"
-      >
-        <Card.Title
-          title="Change genres"
-          right={() => (
-            <Button
-              children={undefined}
-              mode="text"
-              labelStyle={{ fontSize: 32, color: 'white' }}
-              icon="chevron-right"
-            ></Button>
-          )}
-        />
-      </Card>
-      <Card
-        style={styles.card}
-        onPress={() => navigation.navigate('library')}
-        mode="outlined"
-      >
-        <Card.Title
-          title="Delete account"
-          right={() => (
-            <Button
-              children={undefined}
-              mode="text"
-              labelStyle={{ fontSize: 32, color: 'white' }}
-              icon="chevron-right"
-            ></Button>
-          )}
-        />
-      </Card>
-      <Card style={styles.card} mode="outlined">
-        <Card.Title
-          title="Darkmode"
-          right={() => (
-            <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-          )}
-        />
-      </Card>
-      <Card style={styles.card} onPress={showDialog} mode="outlined">
-        <Card.Title
-          title={'Logout'}
-          right={() => (
-            <Button
-              children={undefined}
-              mode="text"
-              labelStyle={{ fontSize: 32, color: 'white' }}
-              icon="chevron-right"
-            ></Button>
-          )}
-        />
-      </Card>
+        cardMode="outlined"
+        right={() => (
+          <Button
+            children={undefined}
+            mode="text"
+            labelStyle={{ fontSize: 32, color: 'white' }}
+            icon="chevron-right"
+          ></Button>
+        )}
+      />
+
+      <SettingsItem
+        title="Delete account"
+        cardMode="outlined"
+        onPress={() => undefined}
+        right={() => (
+          <Button
+            children={undefined}
+            mode="text"
+            labelStyle={{ fontSize: 32, color: 'white' }}
+            icon="chevron-right"
+          ></Button>
+        )}
+      />
+
+      <SettingsItem
+        title="Darkmode"
+        onPress={() => undefined}
+        right={() => <Switch value={theme.dark} onValueChange={switchTheme} />}
+      />
+
+      <SettingsItem
+        title="Logout"
+        onPress={showDialog}
+        cardMode="outlined"
+        right={() => (
+          <Button
+            children={undefined}
+            mode="text"
+            labelStyle={{ fontSize: 32, color: 'white' }}
+            icon="chevron-right"
+          ></Button>
+        )}
+      />
+
       <Portal>
         <Dialog visible={visible} onDismiss={hideDialog} dismissable={false}>
           <Dialog.Title>Logout</Dialog.Title>
@@ -118,11 +114,5 @@ const Settings = ({ navigation, route }): JSX.Element => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  card: {
-    // backgroundColor: 'black',
-  },
-})
 
 export default Settings
