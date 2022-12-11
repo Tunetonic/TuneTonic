@@ -10,15 +10,15 @@ import {
   Switch,
 } from 'react-native-paper'
 import { authContext } from '../providers/auth.provider'
-import { SettingsItem } from '../components/SettingsItem'
+import { SettingsItem } from '../components/settings/SettingsItem'
 import { themeContext } from '../providers/theme.provider'
+import SettingsButton, {
+  SettingsButtonProps,
+} from '../components/settings/SettingsButton'
 
 const Settings = ({ navigation, route }): JSX.Element => {
   const { logout } = useContext(authContext)
   const [visible, setVisible] = React.useState(false)
-  const [isSwitchOn, setIsSwitchOn] = React.useState(true)
-
-  const onToggleSwitch = () => setIsSwitchOn(prev => !prev)
 
   const { theme, switchTheme } = useContext(themeContext)
 
@@ -40,6 +40,13 @@ const Settings = ({ navigation, route }): JSX.Element => {
     })
   }
 
+  const defaultSettingButtonValues: SettingsButtonProps = {
+    children: undefined,
+    mode: 'text',
+    labelStyle: { fontSize: 32, color: 'white' },
+    icon: 'chevron-right',
+  }
+
   return (
     <View>
       <Appbar.Header>
@@ -53,30 +60,16 @@ const Settings = ({ navigation, route }): JSX.Element => {
 
       <SettingsItem
         title="Change genres"
-        onPress={() => navigation.navigate('library')}
+        onPress={() => navigation.navigate('Library')}
         cardMode="outlined"
-        right={() => (
-          <Button
-            children={undefined}
-            mode="text"
-            labelStyle={{ fontSize: 32, color: 'white' }}
-            icon="chevron-right"
-          ></Button>
-        )}
+        right={() => <SettingsButton {...defaultSettingButtonValues} />}
       />
 
       <SettingsItem
         title="Delete account"
         cardMode="outlined"
         onPress={() => undefined}
-        right={() => (
-          <Button
-            children={undefined}
-            mode="text"
-            labelStyle={{ fontSize: 32, color: 'white' }}
-            icon="chevron-right"
-          ></Button>
-        )}
+        right={() => <SettingsButton {...defaultSettingButtonValues} />}
       />
 
       <SettingsItem
@@ -89,14 +82,7 @@ const Settings = ({ navigation, route }): JSX.Element => {
         title="Logout"
         onPress={showDialog}
         cardMode="outlined"
-        right={() => (
-          <Button
-            children={undefined}
-            mode="text"
-            labelStyle={{ fontSize: 32, color: 'white' }}
-            icon="chevron-right"
-          ></Button>
-        )}
+        right={() => <SettingsButton {...defaultSettingButtonValues} />}
       />
 
       <Portal>

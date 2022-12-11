@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Image, KeyboardAvoidingView, StyleSheet } from 'react-native'
 import { Button, Text } from 'react-native-paper'
 
 import { Prompt, ResponseType, useAuthRequest } from 'expo-auth-session'
-import { CLIENT_ID, NEST_URI, REDIRECT_URI } from '@env'
+import { CLIENT_ID, REDIRECT_URI } from '@env'
 import { authContext } from '../providers/auth.provider'
-import { getUserPlaylist } from '../services/user.service'
 
 const discovery = {
   authorizationEndpoint: 'https://accounts.spotify.com/authorize',

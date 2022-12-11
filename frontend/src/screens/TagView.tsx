@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-paper'
 import { themeContext } from '../providers/theme.provider'
@@ -9,9 +9,11 @@ interface Tag {
   isActive: boolean
 }
 
-const TagView = () => {
+const TagView: FC = () => {
   const [genres, setGenres] = useState<Tag[]>([])
-  const {isDarkTheme} = useContext(themeContext)
+  const { theme } = useContext(themeContext)
+
+  const headerTextColor = theme.dark ? '#FFFFFF' : '#000000'
 
   const fetchGenres = (): void => {
     getGenreSeeds().then((res) =>
@@ -39,7 +41,14 @@ const TagView = () => {
     <>
       <ScrollView>
         <View style={styles.container}>
-          <Text style={{...styles.title, color: isDarkTheme ? '#FFFFFF' : '#000000' }}>What genres do you like?</Text>
+          <Text
+            style={{
+              ...styles.title,
+              color: headerTextColor,
+            }}
+          >
+            What genres do you like?
+          </Text>
           <Text style={styles.text}>
             Click on the genres you listen or like the most.
           </Text>
@@ -74,7 +83,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     display: 'flex',
     flexWrap: 'wrap',
-    
   },
   frame: {
     borderWidth: 1,
