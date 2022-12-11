@@ -18,17 +18,17 @@ import SettingsButton, {
 
 const Settings = ({ navigation, route }): JSX.Element => {
   const { logout } = useContext(authContext)
-  const [visible, setVisible] = React.useState(false)
+  const [dialogIsvisible, setDialogIsVisible] = React.useState(false)
 
   const { theme, switchTheme } = useContext(themeContext)
 
-  const showDialog = () => setVisible(true)
+  const showDialog = () => setDialogIsVisible(true)
 
-  const hideDialog = () => setVisible(false)
+  const hideDialog = () => setDialogIsVisible(false)
 
   const handleLogOut = (): void => {
     logout().then(() => {
-      setVisible(false)
+      setDialogIsVisible(false)
       // reset the complete navigator state.
       navigation
         .getParent()
@@ -86,7 +86,11 @@ const Settings = ({ navigation, route }): JSX.Element => {
       />
 
       <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog} dismissable={false}>
+        <Dialog
+          visible={dialogIsvisible}
+          onDismiss={hideDialog}
+          dismissable={false}
+        >
           <Dialog.Title>Logout</Dialog.Title>
           <Dialog.Content>
             <Paragraph>You are about to log out.</Paragraph>
