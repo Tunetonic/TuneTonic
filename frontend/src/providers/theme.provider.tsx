@@ -40,7 +40,7 @@ const darkTheme: ThemeType = {
     ...combinedDarkTheme.colors,
     background: '#222023',
     accent: '#BDBCBD',
-    primary: '#008080',
+    primary: '#1DB954',
   },
 }
 
