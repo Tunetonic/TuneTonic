@@ -34,8 +34,7 @@ const Settings = ({ navigation, route }): JSX.Element => {
 
   const handleDeleteUser = (): void => {
     if (!user) {
-      console.error('user is not logged in!')
-      return
+      throw new Error('user is not authenticated!')
     }
 
     deleteUser(user.id)
