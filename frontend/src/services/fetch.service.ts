@@ -12,13 +12,15 @@ export const authFetch = async (url: string): Promise<Response> => {
       'Content-type': 'application/json',
       Authorization: 'Bearer ' + accessToken,
     },
-  }).then((res) => res.json())
+  })
+    .then((res) => res.json())
+    .catch(console.error)
 }
 
 export const authRequest = async (
   url: string,
-  body: any,
   method: HttpMethod,
+  body?: any,
 ) => {
   const accessToken = await getAsyncItem('access_token')
 
@@ -30,5 +32,20 @@ export const authRequest = async (
       'Content-type': 'application/json',
       Authorization: 'Bearer ' + accessToken,
     },
-  }).then((res) => res.json())
+  })
+    .then((res) => res.json())
+    .catch(console.error)
+}
+
+export const authDelete = async (url: string) => {
+  const accessToken = await getAsyncItem('access_token')
+
+  return await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+      Authorization: 'Bearer ' + accessToken,
+    },
+  }).catch(console.error)
 }
