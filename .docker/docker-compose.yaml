@@ -1,0 +1,26 @@
+services:
+  nest:
+    container_name: Backend-Nest
+    image: node:16-alpine
+    working_dir: /home/app/backend
+    command: yarn start:dev
+    ports:
+      - 8080:8080
+    volumes:
+      - ./backend:/home/app/backend
+      - ./backend/node_modules:/home/app/backend/node_modules
+  mysql:
+    container_name: Mysql
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=tunetonic
+      - MYSQL_USER=rainbow
+      - MYSQL_PASSWORD=unicorn
+      - MYSQL_ROOT_PASSWORD=unicorn
+    ports:
+      - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql
+volumes:
+  db-data:

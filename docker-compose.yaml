@@ -9,26 +9,21 @@ services:
     volumes:
       - ./backend:/home/app/backend
       - ./backend/node_modules:/home/app/backend/node_modules
-  mongo_db:
-    container_name: Mongo
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=rainbow
-      - MONGO_INITDB_ROOT_PASSWORD=unicorn
-    image: mongo:4.2.0
-    ports:
-      - 27017:27017
-    volumes:
-      - db-data:/data/db
-  mongo_express:
-    container_name: Mongo-Express
-    image: mongo-express
     depends_on:
-      - mongo_db
-    ports:
-      - 8081:8081
+      - mysql
+  mysql:
+    container_name: Mysql
+    build: ./db/
+    restart: always
     environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=rainbow
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=unicorn
-      - ME_CONFIG_MONGODB_SERVER=mongo_db
+      - MYSQL_DATABASE=tunetonic
+      - MYSQL_USER=rainbow
+      - MYSQL_PASSWORD=unicorn
+      - MYSQL_ROOT_PASSWORD=unicorn
+    ports:
+      - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql
+      - .docker/config/mysql/:/etc/mysql/conf.d/source
 volumes:
   db-data:
