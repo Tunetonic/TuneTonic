@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Button } from 'react-native-paper'
+import { ScrollView, StyleSheet, View } from 'react-native'
+import { Button, Text } from 'react-native-paper'
 import { themeContext } from '../providers/theme.provider'
 import { getGenreSeeds } from '../services/genre.service'
 
@@ -37,6 +37,46 @@ const TagView: FC = () => {
     fetchGenres()
   }, [])
 
+  const styles = StyleSheet.create({
+    container: {
+      margin: 20,
+      marginBottom: 90,
+      marginTop: 90,
+      flexDirection: 'row',
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    frame: {
+      borderWidth: 1,
+      width: 50,
+      height: 50,
+      backgroundColor: headerTextColor,
+      borderRadius: 8,
+      padding: 10,
+    },
+  
+    tag: {
+      borderRadius: 25,
+      borderWidth: 1,
+      color: headerTextColor,
+      borderStyle: 'solid',
+      margin: 5,
+    },
+    text: {
+      fontSize: 14,
+      textAlign: 'center',
+      color: theme.colors.text,
+      margin: 20,
+      marginLeft: 30,
+    },
+    title: {
+      fontSize: 26,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginLeft: 30,
+    },
+  })
+
   return (
     <>
       <ScrollView>
@@ -56,17 +96,16 @@ const TagView: FC = () => {
           {genres.map((data) => (
             <Button
               key={data.tagName}
-              color={data.isActive ? 'white' : 'white'}
               onPress={() => todoClicked(data)}
               style={[
                 styles.tag,
                 {
-                  backgroundColor: data.isActive ? '#222023' : '#1ed760',
-                  borderColor: data.isActive ? '#1ed760' : '#1ed760',
+                  backgroundColor: data.isActive ? theme.colors.primary : theme.colors.background,
+                  borderColor: data.isActive ? 'transparent' : theme.colors.primary,
                 },
               ]}
             >
-              {data.tagName}
+              <Text>{data.tagName}</Text>
             </Button>
           ))}
         </View>
@@ -74,45 +113,5 @@ const TagView: FC = () => {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    margin: 20,
-    marginBottom: 90,
-    marginTop: 90,
-    flexDirection: 'row',
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  frame: {
-    borderWidth: 1,
-    width: 50,
-    height: 50,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 10,
-  },
-
-  tag: {
-    borderColor: 'black',
-    borderRadius: 25,
-    borderWidth: 1,
-    backgroundColor: '#47D7AC',
-    borderStyle: 'solid',
-    margin: 5,
-  },
-  text: {
-    fontSize: 14,
-    textAlign: 'center',
-    margin: 20,
-    marginLeft: 30,
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginLeft: 30,
-  },
-})
 
 export default TagView

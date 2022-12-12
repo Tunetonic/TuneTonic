@@ -6,8 +6,10 @@ import { getUserPlaylist } from '../services/user.service'
 import { CommonActions } from '@react-navigation/native'
 import { authContext } from '../providers/auth.provider'
 import { playlistItemMapper, PlaylistProps } from '../util/playlist.util'
+import { themeContext } from '../providers/theme.provider'
 
 const UserProfile = ({ navigation, route }): JSX.Element => {
+  const { theme } = useContext(themeContext)
   const [playlistItems, setPlaylistItems] = useState<PlaylistProps[]>([])
   const { user } = useContext(authContext)
 
@@ -18,6 +20,51 @@ const UserProfile = ({ navigation, route }): JSX.Element => {
       )
     }
   }, [])
+
+  const styles = StyleSheet.create({
+    tinyLogo: {
+      borderRadius: 50,
+      width: 120,
+      height: 120,
+      position: 'absolute',
+      top: -65,
+      left: 30,
+    },
+    playlist: {
+      margin: 10,
+    },
+    playlistLogo: {
+      width: 120,
+      height: 120,
+    },
+  
+    imageContainer: {
+      width: 200,
+      height: 90,
+    },
+    container: {
+      borderRadius: 10,
+      backgroundColor: theme.colors.background,
+      height: 1000,
+    },
+    parentContainer: {
+      height: 1000,
+    },
+    firstChild: {
+      height: 140,
+    },
+    text: { color: theme.colors.text },
+    headerText: {
+      color: theme.colors.text,
+      fontSize: 25,
+    },
+    header: {
+      flexDirection: 'row',
+    },
+    playlistView: {
+      flexDirection: 'row',
+    },
+  })
 
   return (
     <>
@@ -76,47 +123,3 @@ const UserProfile = ({ navigation, route }): JSX.Element => {
 
 export default UserProfile
 
-const styles = StyleSheet.create({
-  tinyLogo: {
-    borderRadius: 50,
-    width: 120,
-    height: 120,
-    position: 'absolute',
-    top: -65,
-    left: 30,
-  },
-  playlist: {
-    margin: 10,
-  },
-  playlistLogo: {
-    width: 120,
-    height: 120,
-  },
-
-  imageContainer: {
-    width: 200,
-    height: 90,
-  },
-  container: {
-    borderRadius: 10,
-    backgroundColor: 'black',
-    height: 1000,
-  },
-  parentContainer: {
-    height: 1000,
-  },
-  firstChild: {
-    height: 140,
-  },
-  text: { color: 'white' },
-  headerText: {
-    color: 'white',
-    fontSize: 25,
-  },
-  header: {
-    flexDirection: 'row',
-  },
-  playlistView: {
-    flexDirection: 'row',
-  },
-})

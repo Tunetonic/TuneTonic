@@ -14,7 +14,7 @@ const OnboardingScreen = ({ navigation }): JSX.Element => {
     },
     text: {
       fontSize: 14,
-      color: theme.colors.accent,
+      color: theme.colors.text,
       textAlign: 'center',
       margin: 20,
     },

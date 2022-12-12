@@ -29,7 +29,7 @@ const Library = ({ navigation, route }): JSX.Element => {
         <TouchableHighlight
           onPress={() =>
             navigation.navigate('library-stack-navigation', {
-              screen: 'profile',
+              screen: 'Profile',
             })
           }
         >
