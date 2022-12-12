@@ -1,31 +1,34 @@
 import React, { useContext } from 'react'
 import { CommonActions } from '@react-navigation/native'
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import {
   Appbar,
   Dialog,
   Paragraph,
   Portal,
   Button,
-  Card,
   Switch,
 } from 'react-native-paper'
 import { authContext } from '../providers/auth.provider'
+import { SettingsItem } from '../components/settings/SettingsItem'
+import { themeContext } from '../providers/theme.provider'
+import SettingsButton, {
+  SettingsButtonProps,
+} from '../components/settings/SettingsButton'
 
 const Settings = ({ navigation, route }): JSX.Element => {
   const { logout } = useContext(authContext)
-  const [visible, setVisible] = React.useState(false)
-  const [isSwitchOn, setIsSwitchOn] = React.useState(true)
+  const [dialogIsvisible, setDialogIsVisible] = React.useState(false)
 
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn)
+  const { theme, switchTheme } = useContext(themeContext)
 
-  const showDialog = () => setVisible(true)
+  const showDialog = () => setDialogIsVisible(true)
 
-  const hideDialog = () => setVisible(false)
+  const hideDialog = () => setDialogIsVisible(false)
 
   const handleLogOut = (): void => {
     logout().then(() => {
-      setVisible(false)
+      setDialogIsVisible(false)
       // reset the complete navigator state.
       navigation
         .getParent()
@@ -35,6 +38,13 @@ const Settings = ({ navigation, route }): JSX.Element => {
           routes: [{ name: 'login' }],
         })
     })
+  }
+
+  const defaultSettingButtonValues: SettingsButtonProps = {
+    children: undefined,
+    mode: 'text',
+    labelStyle: { fontSize: 32, color: 'white' },
+    icon: 'chevron-right',
   }
 
   return (
@@ -48,63 +58,39 @@ const Settings = ({ navigation, route }): JSX.Element => {
         <Appbar.Content title={route.name} />
       </Appbar.Header>
 
-      <Card
-        style={styles.card}
-        onPress={() => navigation.navigate('library')}
-        mode="outlined"
-      >
-        <Card.Title
-          title="Change genres"
-          right={() => (
-            <Button
-              children={undefined}
-              mode="text"
-              labelStyle={{ fontSize: 32, color: 'white' }}
-              icon="chevron-right"
-            ></Button>
-          )}
-        />
-      </Card>
-      <Card
-        style={styles.card}
-        onPress={() => navigation.navigate('library')}
-        mode="outlined"
-      >
-        <Card.Title
-          title="Delete account"
-          right={() => (
-            <Button
-              children={undefined}
-              mode="text"
-              labelStyle={{ fontSize: 32, color: 'white' }}
-              icon="chevron-right"
-            ></Button>
-          )}
-        />
-      </Card>
-      <Card style={styles.card} mode="outlined">
-        <Card.Title
-          title="Darkmode"
-          right={() => (
-            <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-          )}
-        />
-      </Card>
-      <Card style={styles.card} onPress={showDialog} mode="outlined">
-        <Card.Title
-          title={'Logout'}
-          right={() => (
-            <Button
-              children={undefined}
-              mode="text"
-              labelStyle={{ fontSize: 32, color: 'white' }}
-              icon="chevron-right"
-            ></Button>
-          )}
-        />
-      </Card>
+      <SettingsItem
+        title="Change genres"
+        onPress={() => navigation.navigate('Library')}
+        cardMode="outlined"
+        right={() => <SettingsButton {...defaultSettingButtonValues} />}
+      />
+
+      <SettingsItem
+        title="Delete account"
+        cardMode="outlined"
+        onPress={() => undefined}
+        right={() => <SettingsButton {...defaultSettingButtonValues} />}
+      />
+
+      <SettingsItem
+        title="Darkmode"
+        onPress={() => undefined}
+        right={() => <Switch value={theme.dark} onValueChange={switchTheme} />}
+      />
+
+      <SettingsItem
+        title="Logout"
+        onPress={showDialog}
+        cardMode="outlined"
+        right={() => <SettingsButton {...defaultSettingButtonValues} />}
+      />
+
       <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog} dismissable={false}>
+        <Dialog
+          visible={dialogIsvisible}
+          onDismiss={hideDialog}
+          dismissable={false}
+        >
           <Dialog.Title>Logout</Dialog.Title>
           <Dialog.Content>
             <Paragraph>You are about to log out.</Paragraph>
@@ -118,11 +104,5 @@ const Settings = ({ navigation, route }): JSX.Element => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  card: {
-    // backgroundColor: 'black',
-  },
-})
 
 export default Settings
