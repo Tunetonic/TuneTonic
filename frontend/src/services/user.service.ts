@@ -44,3 +44,7 @@ export const saveUser = async (userBody: DatabaseUser): Promise<any> => {
 export const updateUser = async (
   updateUserBody: Partial<Omit<DatabaseUser, 'id'>>,
 ) => await authRequest(`${NEST_URI}/user`, updateUserBody, 'PUT')
+
+export const deleteUserById = async (id: string, token: string): Promise<any> => {
+  await authRequest(`${NEST_URI}/user/${id}`, token, 'DELETE')
+}

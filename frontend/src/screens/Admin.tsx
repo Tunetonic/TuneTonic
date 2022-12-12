@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, Image, StyleSheet, ScrollView } from "react-native";
 import { Text, TextInput, Card, IconButton } from 'react-native-paper';
-import { getSpotifyUsers } from "../services/user.service";
+import { deleteUserById, getSpotifyUsers } from "../services/user.service";
 import { userItemMapper, UserProps } from "../util/user.util";
 
 
@@ -32,7 +32,9 @@ const Admin = (): JSX.Element => {
         )
       }
 
-    const deleteUser = (userId: string) => {}
+    const deleteUser = (userId: string) => {
+        deleteUserById(userId, "token")
+    }
 
     return (<>
         <View style={styles.container}>

@@ -36,4 +36,9 @@ export class UserService {
   async saveUser(createUserBody: createUserDTO): Promise<User> {
     return await this.userRepository.save(createUserBody)
   }
+
+  async deleteUserById(id: string): Promise<User> {
+    const user: User = await this.findUserById(id)
+    return await this.userRepository.remove(user)
+  }
 }
