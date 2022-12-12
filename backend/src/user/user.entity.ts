@@ -1,5 +1,10 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm'
 
+export enum Role {
+  User = 'user',
+  Admin = 'admin',
+}
+
 @Entity('user')
 export class User {
   @PrimaryColumn()
@@ -8,6 +13,9 @@ export class User {
   @Column({ default: false })
   isBoarded: boolean
 
-  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'enum', enum: Role, default: Role.User })
+  role: Role
+
+  @CreateDateColumn({ type: 'datetime' })
   created_at?: Date
 }
