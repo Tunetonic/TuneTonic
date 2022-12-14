@@ -47,7 +47,7 @@ const Admin = (): JSX.Element => {
   }
 
   const deleteUser = (userId: string) => {
-    deleteUserById(userId, '')
+    deleteUserById(userId)
     setMasterDataSource(masterDataSource?.filter((user) => user.id !== userId))
     setFilteredDataSource(
       filteredDataSource?.filter((user) => user.id !== userId),

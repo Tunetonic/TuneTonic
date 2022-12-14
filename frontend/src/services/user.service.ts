@@ -73,5 +73,5 @@ export const deleteUser = async (id: string): Promise<any> =>
  * @returns deleted user
  */
 export const deleteUserById = async (id: string): Promise<any> => {
-  await authDeleteJWT(`${NEST_URI}/user/${id}`)
+  await authDeleteJWT(`${NEST_URI}/user/${id}/admin`)
 }

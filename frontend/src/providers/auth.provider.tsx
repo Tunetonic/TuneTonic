@@ -6,7 +6,7 @@ import {
   removeAsyncItem,
   setAsyncItem,
 } from '../services/async-storage.service'
-import { getJWT } from '../services/auth.service'
+import { getAuthInfo } from '../services/auth.service'
 
 interface AuthContextInterface {
   user: User | null
@@ -38,10 +38,11 @@ const AuthProvider = (props: PropsWithChildren) => {
 
     await setAsyncItem('spotify_access_token', access_token)
 
-    const jwt_access_token = await getJWT()
+    const authInfo = await getAuthInfo()
 
-    if (jwt_access_token && jwt_access_token.JWT) {
-      await setAsyncItem('jwt_access_token', jwt_access_token.JWT)
+    if (authInfo && authInfo.JWT) {
+      await setAsyncItem('jwt_access_token', authInfo.JWT)
+      await setAsyncItem('role', authInfo.role)
     }
 
     getSpotifyUser().then(setUser).catch(console.error)
