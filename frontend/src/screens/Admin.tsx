@@ -1,16 +1,29 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { View, Image, StyleSheet, ScrollView } from 'react-native'
-import { Text, TextInput, Card, IconButton } from 'react-native-paper'
+import {
+  Text,
+  TextInput,
+  Card,
+  IconButton,
+  Portal,
+  Dialog,
+  Button,
+  Paragraph,
+} from 'react-native-paper'
 import { deleteUserById, getSpotifyUsers } from '../services/user.service'
 import { userItemMapper, UserProps } from '../util/user.util'
 
 const Admin = (): JSX.Element => {
   const [search, setSearch] = useState('')
-  const [loading, setLoading] = useState(true)
+  const [visible, setVisible] = useState(false)
+  const [deleteUserId, setDeleteUserId] = useState('')
   const [filteredDataSource, setFilteredDataSource] = useState<UserProps[]>([])
   const [masterDataSource, setMasterDataSource] = useState<UserProps[] | null>(
     [],
   )
+
+  const showDialog = () => setVisible(true)
+  const hideDialog = () => setVisible(false)
 
   useEffect(() => {
     getSpotifyUsers()
@@ -36,7 +49,7 @@ const Admin = (): JSX.Element => {
   }
 
   const deleteUser = (userId: string) => {
-    deleteUserById(userId, 'token')
+    deleteUserById(userId, '')
   }
 
   return (
@@ -74,7 +87,10 @@ const Admin = (): JSX.Element => {
                         icon="delete"
                         size={26}
                         style={styles.deleteIcon}
-                        onPress={() => deleteUser(user.id)}
+                        onPress={() => {
+                          setDeleteUserId(user.id)
+                          showDialog()
+                        }}
                       />
                     )}
                   />
@@ -82,6 +98,32 @@ const Admin = (): JSX.Element => {
               )
             })}
         </ScrollView>
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog} dismissable={false}>
+            <Dialog.Title>Delete user</Dialog.Title>
+            <Dialog.Content>
+              <Paragraph>You are about to delete this user.</Paragraph>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button
+                onPress={() => {
+                  setDeleteUserId('')
+                  hideDialog()
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onPress={() => {
+                  deleteUser(deleteUserId)
+                  hideDialog()
+                }}
+              >
+                Confirm
+              </Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
       </View>
     </>
   )

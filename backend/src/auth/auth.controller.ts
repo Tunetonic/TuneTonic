@@ -29,12 +29,7 @@ export class AuthController {
 
     const databaseUser = await this.userService.findUserById(user.id)
 
-    console.log(databaseUser)
-    console.log(databaseUser.role)
-    console.log(Role.Admin)
-
     if (databaseUser && databaseUser.role && databaseUser.role === Role.Admin) {
-      console.log('hoi')
       return this.authService.createToken(databaseUser)
     }
 
