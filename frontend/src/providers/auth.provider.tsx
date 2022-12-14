@@ -41,12 +41,12 @@ const AuthProvider = (props: PropsWithChildren) => {
 
     if (!access_token) return
 
-    await setAsyncItem('access_token', access_token)
+    await setAsyncItem('spotify_access_token', access_token)
 
-    const adminToken = await getJWT()
+    const jwt_access_token = await getJWT()
 
-    if (adminToken && adminToken.JWT) {
-      await setAsyncItem('admin_token', adminToken.JWT)
+    if (jwt_access_token && jwt_access_token.JWT) {
+      await setAsyncItem('jwt_access_token', jwt_access_token.JWT)
     }
 
     getSpotifyUser().then(setUser).catch(console.error)
@@ -57,7 +57,8 @@ const AuthProvider = (props: PropsWithChildren) => {
   }
 
   const logout = async (): Promise<void> => {
-    removeAsyncItem('access_token')
+    removeAsyncItem('spotify_access_token')
+    removeAsyncItem('jwt_access_token')
     setUser(null)
   }
 

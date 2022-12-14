@@ -57,6 +57,8 @@ export class UserController {
     throw new ForbiddenException()
   }
 
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   async deleteUser(@Param('id') id: string) {
     return await this.userService.deleteUserById(id)

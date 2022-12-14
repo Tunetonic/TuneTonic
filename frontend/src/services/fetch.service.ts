@@ -3,7 +3,7 @@ import { getAsyncItem } from './async-storage.service'
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 export const authFetch = async (url: string): Promise<Response> => {
-  const accessToken = await getAsyncItem('access_token')
+  const accessToken = await getAsyncItem('spotify_access_token')
 
   return await fetch(url, {
     method: 'GET',
@@ -20,7 +20,7 @@ export const authRequest = async (
   body: any,
   method: HttpMethod,
 ) => {
-  const accessToken = await getAsyncItem('access_token')
+  const accessToken = await getAsyncItem('spotify_access_token')
 
   return await fetch(url, {
     method,
@@ -34,8 +34,8 @@ export const authRequest = async (
 }
 
 export const authFetchAdmin = async (url: string): Promise<Response> => {
-  const spotifyAccessToken = await getAsyncItem('access_token')
-  const JWT = await getAsyncItem('admin_token')
+  const spotifyAccessToken = await getAsyncItem('spotify_access_token')
+  const JWT = await getAsyncItem('jwt_access_token')
 
   return await fetch(url, {
     method: 'GET',
@@ -53,8 +53,8 @@ export const authRequestAdmin = async (
   body: any,
   method: HttpMethod,
 ) => {
-  const spotifyAccessToken = await getAsyncItem('access_token')
-  const JWT = await getAsyncItem('admin_token')
+  const spotifyAccessToken = await getAsyncItem('spotify_access_token')
+  const JWT = await getAsyncItem('jwt_access_token')
 
   return await fetch(url, {
     method,
