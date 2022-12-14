@@ -4,7 +4,6 @@ import { User } from './user.entity'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { HttpService } from '@nestjs/axios'
-import { catchError, firstValueFrom, map } from 'rxjs'
 import { UpdateUserDTO } from './dto/update-user.dto'
 
 @Injectable()

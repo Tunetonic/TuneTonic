@@ -17,5 +17,5 @@ export class User {
   role: Role
 
   @CreateDateColumn({ type: 'datetime' })
-  created_at?: Date
+  created_at?: Date = new Date(Date.now())
 }
