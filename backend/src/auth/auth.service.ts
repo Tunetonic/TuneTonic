@@ -15,6 +15,8 @@ export class AuthService {
       sub: user.id,
       role: user.role,
     }
-    return this.jwtService.sign(payload)
+    return {
+      JWT: this.jwtService.sign(payload),
+    }
   }
 }

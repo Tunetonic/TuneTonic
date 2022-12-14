@@ -25,8 +25,7 @@ export class UserController {
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
-  getAllUsers(@Request() req): Promise<User[]> {
-    console.log(req)
+  getAllUsers(): Promise<User[]> {
     return this.userService.findAllUsers()
   }
 
@@ -59,7 +58,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id') id: string, @Body() token: string) {
+  async deleteUser(@Param('id') id: string) {
     return await this.userService.deleteUserById(id)
   }
 }

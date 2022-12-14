@@ -1,7 +1,11 @@
 import { SpotifyPlaylist } from './interface/spotify-playlist'
 import { SpotifyService } from './spotify.service'
-import { Controller, Get, Headers } from '@nestjs/common'
+import { Controller, Get, Headers, UseGuards } from '@nestjs/common'
 import { SpotifyUser } from './interface/spotify-user'
+import { Role } from 'src/user/user.entity'
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
+import { RolesGuard } from 'src/auth/roles.guard'
+import { Roles } from 'src/auth/roles.decorator'
 
 @Controller('spotify')
 export class SpotifyController {
@@ -14,12 +18,11 @@ export class SpotifyController {
     return this.spotifyService.getUserFromSpotify(token)
   }
 
-  /**
-   * Role: admin
-   */
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('/users')
   getSpotifyUsers(
-    @Headers('Authorization') token: string,
+    @Headers('spotifyToken') token: string,
   ): Promise<SpotifyUser[]> {
     return this.spotifyService.getUsersFromSpotify(token)
   }

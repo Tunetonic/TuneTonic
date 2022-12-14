@@ -11,6 +11,7 @@ import {
   removeAsyncItem,
   setAsyncItem,
 } from '../services/async-storage.service'
+import { getJWT } from '../services/auth.service'
 
 interface AuthContextInterface {
   user: User | null
@@ -41,6 +42,12 @@ const AuthProvider = (props: PropsWithChildren) => {
     if (!access_token) return
 
     await setAsyncItem('access_token', access_token)
+
+    const adminToken = await getJWT()
+
+    if (adminToken && adminToken.JWT) {
+      await setAsyncItem('admin_token', adminToken.JWT)
+    }
 
     getSpotifyUser().then(setUser).catch(console.error)
 

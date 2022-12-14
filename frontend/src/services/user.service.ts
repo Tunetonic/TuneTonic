@@ -1,6 +1,11 @@
 import { NEST_URI } from '@env'
 import { DatabaseUser } from '../interfaces/db-user'
-import { authFetch, authRequest } from './fetch.service'
+import {
+  authFetch,
+  authFetchAdmin,
+  authRequest,
+  authRequestAdmin,
+} from './fetch.service'
 
 /**
  *
@@ -19,7 +24,7 @@ export const getSpotifyUser = async (): Promise<any> => {
 }
 
 export const getSpotifyUsers = async (): Promise<any> => {
-  return await authFetch(`${NEST_URI}/spotify/users`)
+  return await authFetchAdmin(`${NEST_URI}/spotify/users`)
 }
 
 /**
@@ -45,6 +50,9 @@ export const updateUser = async (
   updateUserBody: Partial<Omit<DatabaseUser, 'id'>>,
 ) => await authRequest(`${NEST_URI}/user`, updateUserBody, 'PUT')
 
-export const deleteUserById = async (id: string, token: string): Promise<any> => {
-  await authRequest(`${NEST_URI}/user/${id}`, token, 'DELETE')
+export const deleteUserById = async (
+  id: string,
+  token: string,
+): Promise<any> => {
+  await authRequestAdmin(`${NEST_URI}/user/${id}`, token, 'DELETE')
 }
