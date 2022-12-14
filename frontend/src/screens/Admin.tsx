@@ -18,9 +18,7 @@ const Admin = (): JSX.Element => {
   const [visible, setVisible] = useState(false)
   const [deleteUserId, setDeleteUserId] = useState('')
   const [filteredDataSource, setFilteredDataSource] = useState<UserProps[]>([])
-  const [masterDataSource, setMasterDataSource] = useState<UserProps[] | null>(
-    [],
-  )
+  const [masterDataSource, setMasterDataSource] = useState<UserProps[]>([])
 
   const showDialog = () => setVisible(true)
   const hideDialog = () => setVisible(false)
@@ -50,6 +48,11 @@ const Admin = (): JSX.Element => {
 
   const deleteUser = (userId: string) => {
     deleteUserById(userId, '')
+    setMasterDataSource(masterDataSource?.filter((user) => user.id !== userId))
+    setFilteredDataSource(
+      filteredDataSource?.filter((user) => user.id !== userId),
+    )
+    setDeleteUserId('')
   }
 
   return (
