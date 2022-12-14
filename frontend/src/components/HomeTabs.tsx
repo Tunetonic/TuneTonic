@@ -15,13 +15,13 @@ interface TabScreenProps {
 const Tab = createMaterialBottomTabNavigator()
 
 const tabs: TabScreenProps[] = [
-  { name: 'home', component: Home, iconName: 'home' },
-  { name: 'friends', component: Friends, iconName: 'account-multiple' },
+  { name: 'Home', component: Home, iconName: 'home' },
+  { name: 'Friends', component: Friends, iconName: 'account-multiple' },
   {
     name: 'library-stack-navigation',
     component: LibraryStackNavigation,
     iconName: 'folder-music',
-    title: 'your library',
+    title: 'Your library',
   },
 ]
 

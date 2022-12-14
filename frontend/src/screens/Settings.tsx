@@ -1,40 +1,64 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { CommonActions } from '@react-navigation/native'
-import { View, StyleSheet } from 'react-native'
-import {
-  Appbar,
-  Dialog,
-  Paragraph,
-  Portal,
-  Button,
-  Card,
-  Switch,
-} from 'react-native-paper'
+import { View } from 'react-native'
+import { Appbar, Portal, Switch } from 'react-native-paper'
 import { authContext } from '../providers/auth.provider'
+import { SettingsItem } from '../components/settings/SettingsItem'
+import { themeContext } from '../providers/theme.provider'
+import SettingsButton, {
+  SettingsButtonProps,
+} from '../components/settings/SettingsButton'
+import { deleteUser } from '../services/user.service'
+import LogoutDialog from '../components/dialogs/LogoutDialog'
+import DeleteUserDialog from '../components/dialogs/DeleteUserDialog'
 
 const Settings = ({ navigation, route }): JSX.Element => {
-  const { logout } = useContext(authContext)
-  const [visible, setVisible] = React.useState(false)
-  const [isSwitchOn, setIsSwitchOn] = React.useState(true)
+  const { user, logout } = useContext(authContext)
+  const [isLogoutDialogVisible, setIsLogoutDialogVisible] = useState(false)
+  const [isDeleteAccountDialogVisible, setIsDeleteAccountDialogVisible] =
+    useState(false)
 
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn)
+  const { theme, switchTheme } = useContext(themeContext)
 
-  const showDialog = () => setVisible(true)
+  const resetNavigationAndRedirect = (): void => {
+    // reset the complete navigator state.
 
-  const hideDialog = () => setVisible(false)
+    navigation
+      .getParent()
+      .getParent()
+      .reset({
+        index: 0,
+        routes: [{ name: 'login' }],
+      })
+  }
+
+  const handleDeleteUser = (): void => {
+    if (!user) {
+      throw new Error('user is not authenticated!')
+    }
+
+    deleteUser(user.id)
+      .then(() => {
+        logout().then(() => {
+          setIsDeleteAccountDialogVisible(false)
+          resetNavigationAndRedirect()
+        })
+      })
+      .catch(console.error)
+  }
 
   const handleLogOut = (): void => {
     logout().then(() => {
-      setVisible(false)
-      // reset the complete navigator state.
-      navigation
-        .getParent()
-        .getParent()
-        .reset({
-          index: 0,
-          routes: [{ name: 'login' }],
-        })
+      setIsLogoutDialogVisible(false)
+      resetNavigationAndRedirect()
     })
+  }
+
+  const defaultSettingButtonValues: SettingsButtonProps = {
+    children: undefined,
+    mode: 'text',
+    labelStyle: { fontSize: 32, color: 'white' },
+    icon: 'chevron-right',
   }
 
   return (
@@ -48,81 +72,50 @@ const Settings = ({ navigation, route }): JSX.Element => {
         <Appbar.Content title={route.name} />
       </Appbar.Header>
 
-      <Card
-        style={styles.card}
-        onPress={() => navigation.navigate('library')}
-        mode="outlined"
-      >
-        <Card.Title
-          title="Change genres"
-          right={() => (
-            <Button
-              children={undefined}
-              mode="text"
-              labelStyle={{ fontSize: 32, color: 'white' }}
-              icon="chevron-right"
-            ></Button>
-          )}
-        />
-      </Card>
-      <Card
-        style={styles.card}
-        onPress={() => navigation.navigate('library')}
-        mode="outlined"
-      >
-        <Card.Title
-          title="Delete account"
-          right={() => (
-            <Button
-              children={undefined}
-              mode="text"
-              labelStyle={{ fontSize: 32, color: 'white' }}
-              icon="chevron-right"
-            ></Button>
-          )}
-        />
-      </Card>
-      <Card style={styles.card} mode="outlined">
-        <Card.Title
-          title="Darkmode"
-          right={() => (
-            <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-          )}
-        />
-      </Card>
-      <Card style={styles.card} onPress={showDialog} mode="outlined">
-        <Card.Title
-          title={'Logout'}
-          right={() => (
-            <Button
-              children={undefined}
-              mode="text"
-              labelStyle={{ fontSize: 32, color: 'white' }}
-              icon="chevron-right"
-            ></Button>
-          )}
-        />
-      </Card>
+      <SettingsItem
+        title="Change genres"
+        onPress={() => navigation.navigate('Library')}
+        cardMode="outlined"
+        right={() => <SettingsButton {...defaultSettingButtonValues} />}
+      />
+
+      <SettingsItem
+        title="Delete account"
+        cardMode="outlined"
+        onPress={() => setIsDeleteAccountDialogVisible(true)}
+        right={() => <SettingsButton {...defaultSettingButtonValues} />}
+      />
+
+      <SettingsItem
+        title="Darkmode"
+        onPress={() => undefined}
+        right={() => <Switch value={theme.dark} onValueChange={switchTheme} />}
+      />
+
+      <SettingsItem
+        title="Logout"
+        onPress={() => setIsLogoutDialogVisible(true)}
+        cardMode="outlined"
+        right={() => <SettingsButton {...defaultSettingButtonValues} />}
+      />
+
       <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog} dismissable={false}>
-          <Dialog.Title>Logout</Dialog.Title>
-          <Dialog.Content>
-            <Paragraph>You are about to log out.</Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={hideDialog}>Cancel</Button>
-            <Button onPress={handleLogOut}>Confirm</Button>
-          </Dialog.Actions>
-        </Dialog>
+        <LogoutDialog
+          isDialogVisible={isLogoutDialogVisible}
+          onDismiss={() => setIsLogoutDialogVisible(false)}
+          onCancelPress={() => setIsLogoutDialogVisible(false)}
+          onConfirmPress={handleLogOut}
+        />
+
+        <DeleteUserDialog
+          isDialogVisible={isDeleteAccountDialogVisible}
+          onDismiss={() => setIsDeleteAccountDialogVisible(false)}
+          onCancelPress={() => setIsDeleteAccountDialogVisible(false)}
+          onConfirmPress={handleDeleteUser}
+        />
       </Portal>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  card: {
-    // backgroundColor: 'black',
-  },
-})
 
 export default Settings

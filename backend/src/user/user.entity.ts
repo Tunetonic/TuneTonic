@@ -8,6 +8,6 @@ export class User {
   @Column({ default: false })
   isBoarded: boolean
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: 'datetime'})
   created_at?: Date = new Date(Date.now())
 }

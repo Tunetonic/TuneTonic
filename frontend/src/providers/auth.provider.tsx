@@ -1,10 +1,5 @@
 import { AuthSessionResult } from 'expo-auth-session'
-import React, {
-  createContext,
-  PropsWithChildren,
-  useEffect,
-  useState,
-} from 'react'
+import React, { createContext, PropsWithChildren, useState } from 'react'
 import { User } from '../interfaces/spotify-user'
 import { getSpotifyUser, saveUser } from '../services/user.service'
 import {
