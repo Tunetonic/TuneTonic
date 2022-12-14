@@ -1,4 +1,5 @@
 import { SpotifyPlaylist } from './interface/spotify-playlist'
+import { SpotifyArtists } from './interface/spotify-artists'
 import { UserService } from './../user/user.service'
 import { SpotifyUser } from './interface/spotify-user'
 import { HttpService } from '@nestjs/axios'
@@ -89,4 +90,29 @@ export class SpotifyService {
         ),
     )
   }
+    async getFollowedArtists(token: string): Promise<any> {
+        const spotifyUrl =
+            'https://api.spotify.com/v1/me/following?type=artist'
+
+const data = await firstValueFrom(
+            this.httpService
+                .get(spotifyUrl, {
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: token,
+                    },
+                })
+                .pipe(
+                    map((response) => response),
+                    catchError((error) => {
+                        throw error.response.data
+                    }),
+                ),
+        )
+
+        console.log(data);
+
+        return await data
+    }
 }

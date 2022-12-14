@@ -4,7 +4,7 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 export const authFetch = async (url: string): Promise<Response> => {
   const accessToken = await getAsyncItem('access_token')
-
+  console.log('Bearer ', accessToken)
   return await fetch(url, {
     method: 'GET',
     headers: {

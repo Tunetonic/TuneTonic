@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { FlatList, Image, StyleSheet, View } from 'react-native'
 import {
   Text,
@@ -9,6 +9,9 @@ import {
 } from 'react-native-paper'
 import { capitalize } from '../../helpers'
 import { CommonActions } from '@react-navigation/native'
+import { authContext } from '../providers/auth.provider'
+import { getFollowedArtists } from '../services/user.service'
+
 
 interface FriendsProps {
   id: number
@@ -19,13 +22,15 @@ interface FriendsProps {
 const Friends = ({ navigation, route }): JSX.Element => {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
-  const [masterDataSource, setMasterDataSource] = useState<
-    FriendsProps[] | null
-  >(null)
+  const [masterDataSource, setMasterDataSource] = useState <FriendsProps[] | null>(null)
+  const [filteredDataSource, setFilteredDataSource] = useState<FriendsProps[]>([])
+  const { user } = useContext(authContext)
 
-  const [filteredDataSource, setFilteredDataSource] = useState<FriendsProps[]>(
-    [],
-  )
+  useEffect(() => {
+    getFollowedArtists().then((data) =>
+        console.log(data),
+    )
+  }, [])
 
   const jsonLink =
     'https://my-json-server.typicode.com/bcengioglu/json-example/users'
