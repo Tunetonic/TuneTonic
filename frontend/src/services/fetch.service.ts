@@ -38,7 +38,7 @@ export const authRequest = async (
 }
 
 export const authDelete = async (url: string) => {
-  const accessToken = await getAsyncItem('access_token')
+  const accessToken = await getAsyncItem('spotify_access_token')
 
   return await fetch(url, {
     method: 'DELETE',
@@ -50,7 +50,7 @@ export const authDelete = async (url: string) => {
   }).catch(console.error)
 }
 
-export const authFetchAdmin = async (url: string): Promise<Response> => {
+export const authFetchJWT = async (url: string): Promise<Response> => {
   const spotifyAccessToken = await getAsyncItem('spotify_access_token')
   const JWT = await getAsyncItem('jwt_access_token')
 
@@ -65,7 +65,7 @@ export const authFetchAdmin = async (url: string): Promise<Response> => {
   }).then((res) => res.json())
 }
 
-export const authRequestAdmin = async (
+export const authRequestJWT = async (
   url: string,
   body: any,
   method: HttpMethod,
@@ -83,4 +83,19 @@ export const authRequestAdmin = async (
       spotifyToken: 'Bearer ' + spotifyAccessToken,
     },
   }).then((res) => res.json())
+}
+
+export const authDeleteJWT = async (url: string) => {
+  const spotifyAccessToken = await getAsyncItem('spotify_access_token')
+  const JWT = await getAsyncItem('jwt_access_token')
+
+  return await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+      Authorization: 'Bearer ' + JWT,
+      spotifyToken: 'Bearer ' + spotifyAccessToken,
+    },
+  }).catch(console.error)
 }
