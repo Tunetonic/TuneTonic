@@ -8,7 +8,6 @@ import { AuthController } from './auth.controller'
 import { SpotifyModule } from 'src/spotify/spotify.module'
 import { SpotifyService } from 'src/spotify/spotify.service'
 import { HttpModule } from '@nestjs/axios'
-import * as path from 'path'
 
 @Module({
   imports: [

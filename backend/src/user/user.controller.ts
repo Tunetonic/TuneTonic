@@ -6,28 +6,27 @@ import {
   Delete,
   ForbiddenException,
   Get,
-  Header,
   Param,
   Post,
   Put,
+  Request,
   UseGuards,
 } from '@nestjs/common'
 import { Role, User } from './user.entity'
 import { UpdateUserDTO } from './dto/update-user.dto'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
-import { RolesGuard } from 'src/auth/roles.guard'
 import { Roles } from 'src/auth/roles.decorator'
+import { RolesGuard } from 'src/auth/roles.guard'
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  /**
-   * Role: admin
-   */
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
-  getAllUsers(): Promise<User[]> {
+  getAllUsers(@Request() req): Promise<User[]> {
+    console.log(req)
     return this.userService.findAllUsers()
   }
 
