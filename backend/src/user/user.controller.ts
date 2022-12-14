@@ -1,8 +1,22 @@
 import { createUserDTO } from './dto/create-user.dto'
 import { UserService } from './user.service'
-import { Body, Controller, Delete, ForbiddenException, Get, Param, Post, Put } from '@nestjs/common'
-import { User } from './user.entity'
+import {
+  Body,
+  Controller,
+  Delete,
+  ForbiddenException,
+  Get,
+  Header,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common'
+import { Role, User } from './user.entity'
 import { UpdateUserDTO } from './dto/update-user.dto'
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
+import { RolesGuard } from 'src/auth/roles.guard'
+import { Roles } from 'src/auth/roles.decorator'
 
 @Controller('user')
 export class UserController {
@@ -11,6 +25,7 @@ export class UserController {
   /**
    * Role: admin
    */
+  @UseGuards(JwtAuthGuard)
   @Get()
   getAllUsers(): Promise<User[]> {
     return this.userService.findAllUsers()
