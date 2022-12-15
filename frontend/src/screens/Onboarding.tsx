@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Onboarding from 'react-native-onboarding-swiper'
 import { Image, StyleSheet } from 'react-native'
 import { Text, useTheme } from 'react-native-paper'
-import TagView from './TagView'
+import TagView, { Tag } from './TagView'
+import {postUserPreferenceGenres } from '../services/genre.service'
+
 
 const OnboardingScreen = ({ navigation }): JSX.Element => {
   const theme = useTheme()
+
+    const [genres, setGenres] = useState<Tag[]>([])
 
   const styles = StyleSheet.create({
     image: {
@@ -62,18 +66,37 @@ const OnboardingScreen = ({ navigation }): JSX.Element => {
               />
             </>
           ),
+        }, {
+          backgroundColor: theme.colors.background,
+          title: ' ',
+          subtitle: ' ',
+          image: (
+            <>
+              <Text style={styles.title}>This is how you use the app</Text>
+              <Text style={styles.text}>
+                Do you love the song? swipe right!
+                Do you hate it? No worries then swipe left.
+              </Text>
+              <Image
+                source={require('../images/swipe.gif')}
+                style={styles.image}
+              />
+            </>
+          ),
         },
         {
           backgroundColor: theme.colors.background,
           title: ' ',
           subtitle: ' ',
-          image: <TagView></TagView>,
+          image: <TagView transferGenres={setGenres} ></TagView>,
         },
       ]}
       onSkip={() => {
         navigation.navigate('home-tab-navigation')
       }}
       onDone={() => {
+      const clickedGenres = genres.filter(data => data.isActive === true);
+          postUserPreferenceGenres(clickedGenres);
         navigation.navigate('home-tab-navigation')
       }}
     />

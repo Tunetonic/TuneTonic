@@ -3,13 +3,15 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-paper'
 import { getGenreSeeds } from '../services/genre.service'
 
-interface Tag {
+export interface Tag {
   tagName: string
   isActive: boolean
 }
 
-const TagView = () => {
+const TagView = ({transferGenres}) => {
   const [genres, setGenres] = useState<Tag[]>([])
+
+
 
   const fetchGenres = (): void => {
     getGenreSeeds().then((res) =>
@@ -27,6 +29,7 @@ const TagView = () => {
           : todo,
       ),
     )
+transferGenres(genres)
   }
 
   useEffect(() => {
@@ -61,7 +64,9 @@ const TagView = () => {
         </View>
       </ScrollView>
     </>
+
   )
+
 }
 
 const styles = StyleSheet.create({

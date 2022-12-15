@@ -46,8 +46,8 @@ const LoginScreen = ({navigation}): JSX.Element => {
 
     return (
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
-            <Image style={styles.image} source={require('../../assets/TuneTonic2.png')}/>
-            <Text style={styles.text}>Discover new music with TuneTonic</Text>
+            <Image style={styles.image} source={require('../../assets/tuneTonicIcon.png')}/>
+            {/*<Text style={styles.text}>Discover new music with TuneTonic</Text>*/}
             <Button
                 style={styles.button}
                 color="black"
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     },
     image: {
 
-        // width: 321,
-        // height: 83,
+         // width: 321,
+         // height: 83,
     },
 })
