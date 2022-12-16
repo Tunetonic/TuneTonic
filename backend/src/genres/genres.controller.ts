@@ -8,10 +8,9 @@ export class GenresController {
   constructor(private readonly genresService: GenresService) {}
 
   @Post()
-  create(@Body() createGenreDto: any[]) {
-    console.log('hi');
-    console.log(createGenreDto);
-    // return this.genresService.create(createGenreDto);
+  create(@Body() createGenreDto: CreateGenreDto[]) {
+    console.log("CHECKPOINT 3: ", createGenreDto);
+    return this.genresService.create(createGenreDto);
   }
 
   @Get()

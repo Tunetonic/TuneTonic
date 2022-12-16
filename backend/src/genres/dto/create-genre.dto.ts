@@ -1,4 +1,4 @@
-export class CreateGenreDto {
+export interface CreateGenreDto {
     isActive: boolean
     tagName: string
 }

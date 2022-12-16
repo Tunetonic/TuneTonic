@@ -1,4 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
+import { Genre } from '../entities/genre.entity';
 import { CreateGenreDto } from './create-genre.dto';
 
-export class UpdateGenreDto extends PartialType(CreateGenreDto) {}
+export interface UpdateGenreDto extends Partial<Omit<Genre, 'id'>> {}

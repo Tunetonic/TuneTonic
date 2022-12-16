@@ -17,14 +17,15 @@ export const authFetch = async (url: string): Promise<Response> => {
 
 export const authRequest = async (
   url: string,
-  body: any,
+  body: Object,
   method: HttpMethod,
 ) => {
   const accessToken = await getAsyncItem('access_token')
 
+  console.log("CHECKPOINT 2: ", body)
   return await fetch(url, {
-    method,
-    body,
+    method: method,
+    body: JSON.stringify(body),
     headers: {
       Accept: 'application/json',
       'Content-type': 'application/json',

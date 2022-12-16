@@ -13,7 +13,8 @@ export const getGenreSeeds = async (): Promise<any> => {
  * @param userBody User data to save
  * @returns
  */
-export const postUserPreferenceGenres = async (userBody: Tag[]): Promise<any> => {
+export const postUserPreferenceGenres = async (userBody: Tag[]) => {
   const postUrl = `${NEST_URI}/genres`
+  console.log("CHECKPOINT 1: ", userBody)
   return await authRequest(postUrl, userBody, 'POST')
 }

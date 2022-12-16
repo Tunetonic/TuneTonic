@@ -8,7 +8,7 @@ export interface Tag {
   isActive: boolean
 }
 
-const TagView = ({transferGenres}) => {
+const TagView = ({ transferGenres }) => {
   const [genres, setGenres] = useState<Tag[]>([])
 
 
@@ -23,13 +23,13 @@ const TagView = ({transferGenres}) => {
 
   const todoClicked = (e: Tag) => {
     setGenres(
-      genres.map((todo) =>
-        todo.tagName === e.tagName
-          ? { ...todo, isActive: !todo.isActive }
-          : todo,
+      genres.map((genre) =>
+        genre.tagName === e.tagName
+          ? { ...genre, isActive: !genre.isActive }
+          : genre,
       ),
     )
-transferGenres(genres)
+    transferGenres(genres)
   }
 
   useEffect(() => {
