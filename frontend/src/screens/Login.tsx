@@ -28,6 +28,9 @@ const LoginScreen = ({ navigation }): JSX.Element => {
         'streaming',
         'user-read-email',
         'user-read-private',
+        'user-follow-modify',
+        'user-follow-read'
+
       ],
       prompt: Prompt.SelectAccount,
       usePKCE: true,

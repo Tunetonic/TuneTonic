@@ -15,7 +15,7 @@ import { getFollowedArtists } from '../services/user.service'
 
 interface FriendsProps {
   id: number
-  title: string
+  name: string
   image: string
 }
 
@@ -27,29 +27,18 @@ const Friends = ({ navigation, route }): JSX.Element => {
   const { user } = useContext(authContext)
 
   useEffect(() => {
-    getFollowedArtists().then((data) =>
-        console.log(data),
-    )
-  }, [])
-
-  const jsonLink =
-    'https://my-json-server.typicode.com/bcengioglu/json-example/users'
-
-  useEffect(() => {
-    fetch(jsonLink)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setLoading(false)
-        setFilteredDataSource(responseJson)
-        setMasterDataSource(responseJson)
-      })
-      .catch(console.error)
-  }, [])
+    getFollowedArtists().then((data) => {
+      const artists = data['artists']['items']
+      setLoading(false)
+      setFilteredDataSource(artists)
+      setMasterDataSource(artists)
+    });
+  }, []);
 
   const handleSearchFilter = (text: string) => {
     return setFilteredDataSource(
       masterDataSource
-        ? masterDataSource.filter((e) => e.title.includes(text))
+        ? masterDataSource.filter((e) => e.name.includes(text))
         : [],
     )
   }
@@ -64,12 +53,12 @@ const Friends = ({ navigation, route }): JSX.Element => {
         <DataTable.Row style={styles.row} onPress={() => getItem(item)}>
           <DataTable.Cell>
             <Image
-              source={{ uri: item.image }}
-              style={{ width: 30, height: 30 }}
+              source={{ uri: item.images[0].url }}
+              style={{ width: 65, height: 65, borderRadius: 50}}
             />
           </DataTable.Cell>
           <DataTable.Cell>
-            <Text>{capitalize(item.title)}</Text>
+            <Text>{capitalize(item.name)}</Text>
           </DataTable.Cell>
           <DataTable.Cell style={{ justifyContent: 'flex-end' }}>
             {/* TODO: implement action functionality for each item. */}
@@ -85,10 +74,10 @@ const Friends = ({ navigation, route }): JSX.Element => {
     )
   }
 
-  const getItem = (item: { id: string; title: string }) => {
-    const { id, title } = item
+  const getItem = (item: { id: string; name: string }) => {
+    const { id, name } = item
     // Function for click on an item
-    alert(`Id : ${id} Title : ${title}`)
+    alert(`Id : ${id} Name : ${name}`)
   }
 
   let content: React.ReactElement
@@ -144,6 +133,7 @@ const styles = StyleSheet.create({
   },
   row: {
     height: 70,
+    marginBottom: 10,
   },
   count: {
     color: '#efefef',

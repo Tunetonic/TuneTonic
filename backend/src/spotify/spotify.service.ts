@@ -90,13 +90,12 @@ export class SpotifyService {
         ),
     )
   }
-    async getFollowedArtists(token: string): Promise<any> {
-        const spotifyUrl =
-            'https://api.spotify.com/v1/me/following?type=artist'
+    async getFollowedArtists(token: string): Promise<SpotifyArtists[]> {
+        const spotifyUrl = 'https://api.spotify.com/v1/me/following?type=artist'
 
-const data = await firstValueFrom(
+        return await firstValueFrom(
             this.httpService
-                .get(spotifyUrl, {
+                .get<SpotifyArtists[]>(spotifyUrl, {
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
@@ -104,15 +103,11 @@ const data = await firstValueFrom(
                     },
                 })
                 .pipe(
-                    map((response) => response),
+                    map((response) => response.data),
                     catchError((error) => {
                         throw error.response.data
                     }),
                 ),
         )
-
-        console.log(data);
-
-        return await data
     }
 }
