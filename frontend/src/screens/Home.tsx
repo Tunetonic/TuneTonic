@@ -4,7 +4,6 @@ import { Card, IconButton, Text } from 'react-native-paper'
 import { getPlaylist } from '../services/user.service'
 import { Track, trackItemMapper } from '../util/track'
 import { Audio, AVPlaybackStatus } from 'expo-av';
-import { SoundObject } from 'expo-av/build/Audio'
 import Slider from '@react-native-community/slider'
 import { themeContext } from '../providers/theme.provider'
 import { millisToHHMMSS } from '../../helpers'
@@ -22,18 +21,9 @@ const Home = ({ navigation }): JSX.Element => {
   //   if (playbackStatus.isPlaying) {
   //   }
   // }
-  // const playAudio = async (src: string | undefined) => {
-  //   if(src) {
-  //     const { sound } = await Audio.Sound.createAsync({uri: src})
-  //     setSound(sound)
-  
-  //     console.log('Playing Sound: ', src)
-  //     await sound.playAsync()
-  //   }
-  //   else {
-  //     console.log("too bad kid, no preview_url on this track.")
-  //   }
-  // }
+  const playAudio = async () => {
+    await audioSoundRef.current.playAsync()
+  }
 
   useEffect(() => {
     getPlaylist("1LwKg8pkx71G83WgOfvlLZ").then((data) => {
@@ -95,20 +85,16 @@ const Home = ({ navigation }): JSX.Element => {
       setSelectedTrack(viewableItems[0]['item'])
 
       if(viewableItems[0]['item']['preview_url']) {
-        Audio.Sound.createAsync({uri: viewableItems[0]['item']['preview_url']},
-          {
-          shouldPlay: false,
-          isLooping: false,
-          }
-        ).then(({ sound }) => {
-          console.log("soundObj: ", sound)
-          audioSoundRef.current = sound
+        Audio.Sound.createAsync(
+          {uri: viewableItems[0]['item']['preview_url']},
+          { shouldPlay: false, isLooping: false },
+          (playbackStatus) => {
+            console.log("status1: ", playbackStatus)
+            setSoundStatus(playbackStatus)
 
-          audioSoundRef.current.getStatusAsync()
-          .then((status) => {
-            console.log("status: ", status)
-            setSoundStatus(status)
-          })
+          },
+        ).then(({ sound }) => {
+          audioSoundRef.current = sound
         })
         console.log("hit!?")
       } else {
@@ -172,7 +158,7 @@ const Home = ({ navigation }): JSX.Element => {
           <Text>{selectedTrack ? selectedTrack.name : ''}</Text>
           <Text style={{ color: 'rgba(255,255,255, 0.6)'}}>{selectedTrack ? 'by '  + selectedTrack.artist_name: ''}</Text>
         </View>
-        <IconButton icon={'play-circle-outline'}></IconButton>
+        <IconButton icon={'play-circle-outline'} onPress={() => playAudio()}></IconButton>
 
         {/* <View>
           {/* <IconButton icon={'pause-circle-outline'}></IconButton>
