@@ -7,6 +7,7 @@ import {
   ForbiddenException,
   Get,
   Headers,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -50,14 +51,22 @@ export class UserController {
     return await this.userService.updateUser(id, updateBody)
   }
 
-  @Put(':id/:secret')
+  @Put(':id/:secret/:role')
   async updateUserRole(
     @Param('id') id: string,
     @Param('secret') code: string,
-    @Body() updateBody: UpdateUserDTO,
+    @Param('role') role: Role,
   ) {
     if (code === process.env.ADMIN_CODE) {
-      return await this.userService.updateUser(id, updateBody)
+      const databaseUser = await this.userService.findUserById(id)
+
+      if (!databaseUser) {
+        throw new NotFoundException()
+      }
+
+      const user = { ...databaseUser, role: role }
+
+      return await this.userService.updateUser(id, user)
     }
 
     throw new ForbiddenException()

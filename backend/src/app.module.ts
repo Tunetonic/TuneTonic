@@ -7,7 +7,6 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
 import * as path from 'path'
 import { SpotifyModule } from './spotify/spotify.module'
-import { AuthService } from './auth/auth.service'
 import { AuthModule } from './auth/auth.module'
 
 @Module({
