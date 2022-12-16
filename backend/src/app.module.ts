@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
 import * as path from 'path'
 import { SpotifyModule } from './spotify/spotify.module'
+import { GenresModule } from './genres/genres.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { SpotifyModule } from './spotify/spotify.module'
     HttpModule,
     UserModule,
     SpotifyModule,
+    GenresModule,
   ],
   controllers: [AppController],
   providers: [AppService],
