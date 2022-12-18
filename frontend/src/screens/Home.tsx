@@ -3,24 +3,18 @@ import { Image, StyleSheet, Dimensions, Platform, View, FlatList, TouchableHighl
 import { Card, IconButton, Text } from 'react-native-paper'
 import { getPlaylist } from '../services/user.service'
 import { Track, trackItemMapper } from '../util/track'
-import { Audio, AVPlaybackStatus } from 'expo-av';
+import { Audio, AVPlaybackStatus, AVPlaybackStatusSuccess } from 'expo-av';
 import Slider from '@react-native-community/slider'
 import { themeContext } from '../providers/theme.provider'
 import { millisToHHMMSS } from '../../helpers'
 
 const Home = ({ navigation }): JSX.Element => {
-  const { theme } = useContext(themeContext) 
+  const { theme } = useContext(themeContext)
   const [selectedTrack, setSelectedTrack] = useState<Track>();
   const [tracks, setTracks] = useState<Track[]>([])
   const audioSoundRef = React.useRef(new Audio.Sound());
-  const [soundStatus, setSoundStatus] = useState<AVPlaybackStatus>()
-  
-
-  // const onPlaybackStatusUpdate = async (playbackStatus) => {
-  //   await setSound(playbackStatus);
-  //   if (playbackStatus.isPlaying) {
-  //   }
-  // }
+  const [soundStatus, setSoundStatus] = useState<AVPlaybackStatusSuccess>()
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const playAudio = async () => {
     await audioSoundRef.current.playAsync()
   }
@@ -30,14 +24,6 @@ const Home = ({ navigation }): JSX.Element => {
       setTracks(trackItemMapper(data.items))
     })
   }, [])
-
-  // useEffect(() => {
-  //   return sound ? () => {
-  //         console.log('Unloading Sound');
-  //         sound.unloadAsync();
-  //       }
-  //     : console.log("hit?");
-  // }, [sound]);
 
   const BOTTOM_TAB_HEIGHT = 77.71
   const PLAYBACK_HEIGHT = 40
@@ -79,40 +65,77 @@ const Home = ({ navigation }): JSX.Element => {
       marginHorizontal: 10,
     },
   })
-  const onViewableItemsChanged = useCallback( ({ viewableItems }) => { 
+
+  const stop = async () => {
+    setIsPlaying(false)
+    await audioSoundRef.current.stopAsync()
+  }
+  const unload = async () => {
+    setIsPlaying(false)
+    await audioSoundRef.current.unloadAsync() 
+  }
+
+  const pausePlay = async () => {
+    if (soundStatus && !soundStatus.isPlaying) {
+      setIsPlaying(true)
+      await audioSoundRef.current.playFromPositionAsync(soundStatus.positionMillis)
+    } else {
+      setIsPlaying(false)
+      await audioSoundRef.current.pauseAsync()
+    }
+  }
+
+
+  const onViewableItemsChanged = useCallback(({ viewableItems }) => {
 
     if (viewableItems.length > 0) {
+      if (audioSoundRef) {
+        stop()
+      }
       setSelectedTrack(viewableItems[0]['item'])
 
-      if(viewableItems[0]['item']['preview_url']) {
+      if (viewableItems[0]['item']['preview_url']) {
+
+
         Audio.Sound.createAsync(
-          {uri: viewableItems[0]['item']['preview_url']},
+          { uri: viewableItems[0]['item']['preview_url'] },
           { shouldPlay: false, isLooping: false },
-          (playbackStatus) => {
-            console.log("status1: ", playbackStatus)
-            setSoundStatus(playbackStatus)
+          (status) => {
+            if (status.isLoaded) {
+              setSoundStatus(status)
+              if (status.didJustFinish) {
+                unload()
+              }
+            }
 
           },
         ).then(({ sound }) => {
           audioSoundRef.current = sound
         })
-        console.log("hit!?")
+          .catch((err) => {
+            console.log("hit!?", err)
+          })
       } else {
         console.log("too bad kid, theres no preview for this track.")
       }
-      
+
     }
   }, [])
 
   useEffect(() => {
-    if(selectedTrack?.preview_url) {
+    if (selectedTrack?.preview_url) {
       audioSoundRef.current.getStatusAsync()
-      .then(status => setSoundStatus(status))
-    }    
+        .then(status => {
+          if (status.isLoaded) setSoundStatus(status)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
   }, [selectedTrack])
 
   const _viewabilityConfig = useRef({
-    minimumViewTime: 200, 
+    minimumViewTime: 200,
     itemVisiblePercentThreshold: 50
   })
 
@@ -135,50 +158,47 @@ const Home = ({ navigation }): JSX.Element => {
         paddingVertical: Platform.OS === 'android' ? 0 : 0
       }}
       data={tracks}
-      // extraData={[soundStatus]}
       renderItem={({ item, index }) => (
         <TouchableHighlight
           key={item.id}
-          >
-            <Card key={item.id} style={styles.cardStyle}>
-              <Card.Content style={styles.cardContentStyle}>
-                <Image
-                  source={{ uri: item.image }}
-                  style={styles.image}
-                />
-                {/* <Text style={styles.title}>{item.id} | {CARD_HEIGHT} | {index}</Text> */}
-              </Card.Content>
-            </Card>
-          </TouchableHighlight>
-        )}
-      />
+        >
+          <Card key={item.id} style={styles.cardStyle}>
+            <Card.Content style={styles.cardContentStyle}>
+              <Image
+                source={{ uri: item.image }}
+                style={styles.image}
+              />
+              {/* <Text style={styles.title}>{item.id} | {CARD_HEIGHT} | {index}</Text> */}
+            </Card.Content>
+          </Card>
+        </TouchableHighlight>
+      )}
+    />
     <View style={{ 'margin': 10 }}>
-      <View style={{display:'flex', 'justifyContent': 'space-between', 'flexDirection': 'row'}}>
-        <View style={{'flexDirection': 'column'}}>
+      <View style={{ display: 'flex', 'justifyContent': 'space-between', 'flexDirection': 'row' }}>
+        <View style={{ 'flexDirection': 'column' }}>
           <Text>{selectedTrack ? selectedTrack.name : ''}</Text>
-          <Text style={{ color: 'rgba(255,255,255, 0.6)'}}>{selectedTrack ? 'by '  + selectedTrack.artist_name: ''}</Text>
+          <Text style={{ color: 'rgba(255,255,255, 0.6)' }}>{selectedTrack ? 'by ' + selectedTrack.artist_name : ''}</Text>
         </View>
-        <IconButton icon={'play-circle-outline'} onPress={() => playAudio()}></IconButton>
-
-        {/* <View>
-          {/* <IconButton icon={'pause-circle-outline'}></IconButton>
-        </View> */}
+        <IconButton icon={ isPlaying ? 'pause-circle-outline' : 'play-circle-outline' } disabled={!selectedTrack?.preview_url} onPress={pausePlay}></IconButton>
       </View>
 
 
       <Slider
-        style={{width: CARD_WIDTH - 20, height: 40}}
-        minimumValue={ soundStatus && soundStatus.isLoaded ? soundStatus?.positionMillis : 0}
-        maximumValue={ soundStatus && soundStatus.isLoaded ? soundStatus?.durationMillis : 1}
+        style={{ width: CARD_WIDTH - 20, height: 40 }}
+        minimumValue={0}
+        maximumValue={soundStatus && soundStatus.isLoaded ? soundStatus?.durationMillis : 1}
+        value={soundStatus && soundStatus.isLoaded ? soundStatus?.positionMillis : 0}
         minimumTrackTintColor="#FFFFFF"
+        step={0.5}
         maximumTrackTintColor="#DBDBDB"
         thumbTintColor={theme.colors.primary}
       />
-      <View style={{ 'display': 'flex', 'justifyContent': 'space-between', 'flexDirection': 'row'}}>
-        <Text style={{'fontSize': 11}}>{soundStatus && soundStatus.isLoaded && selectedTrack?.preview_url ? millisToHHMMSS(soundStatus?.positionMillis) : '--:--'}</Text>
-        <Text style={{'fontSize': 11}}>{soundStatus && soundStatus.isLoaded && soundStatus.durationMillis && selectedTrack?.preview_url ? millisToHHMMSS(soundStatus?.durationMillis): '--:--'}</Text>
+      <View style={{ 'display': 'flex', 'justifyContent': 'space-between', 'flexDirection': 'row' }}>
+        <Text style={{ 'fontSize': 11 }}>{soundStatus && selectedTrack?.preview_url ? millisToHHMMSS(soundStatus?.positionMillis) : '--:--'}</Text>
+        <Text style={{ 'fontSize': 11 }}>{soundStatus && soundStatus.durationMillis && selectedTrack?.preview_url ? millisToHHMMSS(soundStatus?.durationMillis) : '--:--'}</Text>
       </View>
-     </View>
+    </View>
   </>)
 }
 export default Home
