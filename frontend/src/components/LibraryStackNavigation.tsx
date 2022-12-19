@@ -13,9 +13,9 @@ const LibraryStackNavigation = (): JSX.Element => {
       id="library-stack-navigator"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="library" component={Library} />
-      <Stack.Screen name="profile" component={Profile} />
-      <Stack.Screen name="settings" component={Settings} />
+      <Stack.Screen name="Library" component={Library} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen
         name="playlist"
         component={Playlist}
