@@ -32,7 +32,7 @@ export const getUserPlaylist = async (): Promise<any> => {
  * @returns
  */
 export const getFollowedArtists = async (): Promise<any> => {
-  return await authFetch(`${NEST_URI}/spotify/artists`)
+  return await authFetch(`${NEST_URI}/spotify/artists/`)
 }
 
 /**

@@ -5,6 +5,7 @@ import { SpotifyUser } from './interface/spotify-user'
 import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { catchError, firstValueFrom, map } from 'rxjs'
+import { SpotifyArtist } from './interface/spotify-artist'
 
 @Injectable()
 export class SpotifyService {
@@ -96,6 +97,27 @@ export class SpotifyService {
         return await firstValueFrom(
             this.httpService
                 .get<SpotifyArtists[]>(spotifyUrl, {
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: token,
+                    },
+                })
+                .pipe(
+                    map((response) => response.data),
+                    catchError((error) => {
+                        throw error.response.data
+                    }),
+                ),
+        )
+    }
+
+    async getArtist(token: string, id: string): Promise<SpotifyArtist> {
+        const spotifyUrl = 'https://api.spotify.com/v1/artists/'+ id
+
+        return await firstValueFrom(
+            this.httpService
+                .get<SpotifyArtist>(spotifyUrl, {
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',

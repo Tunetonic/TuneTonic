@@ -1,8 +1,9 @@
 import { SpotifyPlaylist } from './interface/spotify-playlist'
 import { SpotifyService } from './spotify.service'
-import { Controller, Get, Headers } from '@nestjs/common'
+import { Controller, Get, Headers, Param } from '@nestjs/common'
 import { SpotifyUser } from './interface/spotify-user'
 import { SpotifyArtists } from './interface/spotify-artists'
+import { SpotifyArtist } from './interface/spotify-artist'
 
 @Controller('spotify')
 export class SpotifyController {
@@ -34,5 +35,13 @@ export class SpotifyController {
       @Headers('Authorization') token,
   ): Promise<SpotifyArtists[]> {
     return await this.spotifyService.getFollowedArtists(token)
+  }
+
+  @Get('/artist/:id')
+  async getArtist(
+      @Headers('Authorization') token,
+      @Param('id') id: string
+  ): Promise<SpotifyArtist> {
+    return await this.spotifyService.getArtist(token, id)
   }
 }

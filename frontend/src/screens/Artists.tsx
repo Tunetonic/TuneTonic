@@ -11,7 +11,7 @@ import { capitalize } from '../../helpers'
 import { CommonActions } from '@react-navigation/native'
 import { authContext } from '../providers/auth.provider'
 import { getFollowedArtists } from '../services/user.service'
-
+import { getArtist} from '../services/spotify.service'
 
 interface FriendsProps {
   id: number
@@ -19,7 +19,7 @@ interface FriendsProps {
   image: string
 }
 
-const Friends = ({ navigation, route }): JSX.Element => {
+const Artists = ({ navigation, route }): JSX.Element => {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
   const [masterDataSource, setMasterDataSource] = useState <FriendsProps[] | null>(null)
@@ -35,7 +35,7 @@ const Friends = ({ navigation, route }): JSX.Element => {
     });
   }, []);
 
-  const handleSearchFilter = (text: string) => {
+    const handleSearchFilter = (text: string) => {
     return setFilteredDataSource(
       masterDataSource
         ? masterDataSource.filter((e) => e.name.includes(text))
@@ -75,6 +75,13 @@ const Friends = ({ navigation, route }): JSX.Element => {
   }
 
   const getItem = (item: { id: string; name: string }) => {
+    const artistId = item['id']
+    getArtist(artistId).then((data) => {
+      navigation.navigate('Artist')
+    });
+
+    // New page with artistId
+
     const { id, name } = item
     // Function for click on an item
     alert(`Id : ${id} Name : ${name}`)
@@ -146,4 +153,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Friends
+export default Artists
