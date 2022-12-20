@@ -37,7 +37,7 @@ const Home = ({ navigation }): JSX.Element => {
 
   return (
     <>
-      {role === 'admin' ? (
+      {role && role === 'admin' ? (
         <Admin />
       ) : (
         <View>
