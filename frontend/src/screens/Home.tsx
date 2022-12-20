@@ -180,7 +180,7 @@ const Home = ({ navigation }): JSX.Element => {
           <Text>{selectedTrack ? selectedTrack.name : ''}</Text>
           <Text style={{ color: 'rgba(255,255,255, 0.6)' }}>{selectedTrack ? 'by ' + selectedTrack.artist_name : ''}</Text>
         </View>
-        <IconButton icon={ isPlaying ? 'pause-circle-outline' : 'play-circle-outline' } disabled={!selectedTrack?.preview_url} onPress={pausePlay}></IconButton>
+        <IconButton size={35} icon={ isPlaying ? 'pause-circle-outline' : 'play-circle-outline' } disabled={!selectedTrack?.preview_url} onPress={pausePlay}></IconButton>
       </View>
 
 
