@@ -3,7 +3,7 @@ import { Image, StyleSheet, Dimensions, Platform, View, FlatList, TouchableHighl
 import { Card, IconButton, Text } from 'react-native-paper'
 import { getPlaylist } from '../services/user.service'
 import { Track, trackItemMapper } from '../util/track'
-import { Audio, AVPlaybackStatus, AVPlaybackStatusSuccess } from 'expo-av';
+import { Audio, AVPlaybackStatusSuccess } from 'expo-av';
 import Slider from '@react-native-community/slider'
 import { themeContext } from '../providers/theme.provider'
 import { millisToHHMMSS } from '../../helpers'
@@ -15,9 +15,7 @@ const Home = ({ navigation }): JSX.Element => {
   const audioSoundRef = React.useRef(new Audio.Sound());
   const [soundStatus, setSoundStatus] = useState<AVPlaybackStatusSuccess>()
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const playAudio = async () => {
-    await audioSoundRef.current.playAsync()
-  }
+
 
   useEffect(() => {
     getPlaylist("1LwKg8pkx71G83WgOfvlLZ").then((data) => {
@@ -96,7 +94,6 @@ const Home = ({ navigation }): JSX.Element => {
 
       if (viewableItems[0]['item']['preview_url']) {
 
-
         Audio.Sound.createAsync(
           { uri: viewableItems[0]['item']['preview_url'] },
           { shouldPlay: false, isLooping: false },
@@ -109,12 +106,13 @@ const Home = ({ navigation }): JSX.Element => {
             }
 
           },
-        ).then(({ sound }) => {
+        )
+        .then(({ sound }) => {
           audioSoundRef.current = sound
         })
-          .catch((err) => {
-            console.log("hit!?", err)
-          })
+        .catch((err) => {
+          console.log("hit!?", err)
+        })
       } else {
         console.log("too bad kid, theres no preview for this track.")
       }
@@ -158,7 +156,7 @@ const Home = ({ navigation }): JSX.Element => {
         paddingVertical: Platform.OS === 'android' ? 0 : 0
       }}
       data={tracks}
-      renderItem={({ item, index }) => (
+      renderItem={({ item }) => (
         <TouchableHighlight
           key={item.id}
         >
@@ -182,8 +180,6 @@ const Home = ({ navigation }): JSX.Element => {
         </View>
         <IconButton size={35} icon={ isPlaying ? 'pause-circle-outline' : 'play-circle-outline' } disabled={!selectedTrack?.preview_url} onPress={pausePlay}></IconButton>
       </View>
-
-
       <Slider
         style={{ width: CARD_WIDTH - 20, height: 40 }}
         minimumValue={0}
