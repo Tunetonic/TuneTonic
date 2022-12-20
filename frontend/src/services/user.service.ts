@@ -10,19 +10,28 @@ export const getDatabaseUser = async (id: number): Promise<any> =>
   await authFetch(`${NEST_URI}/user/${id}`)
 
 /**
- * Do we get the spotify user from spotify authentication?
+ * TODO: Do we get the spotify user from spotify authentication?
  * @returns
  */
 export const getSpotifyUser = async (): Promise<any> =>
   await authFetch(`${NEST_URI}/spotify`)
 
 /**
- * Don't we already get all this information from authenticating in spotify.
- * Do we really need to make an request?
+ * TODO: Don't we already get all this information from authenticating in spotify.
+ *       Do we really need to make an request?
  * @param setPlaylistItems
  */
-export const getUserPlaylist = async (): Promise<any> =>
-  await authFetch(`${NEST_URI}/spotify/playlist`)
+export const getUserPlaylist = async (): Promise<any> => {
+  return await authFetch(`${NEST_URI}/spotify/playlists`)
+}
+
+/**
+ * Retrieves a particular spotify playlist.
+ * @param id Spotify playlist ID
+ */
+export const getPlaylist = async (id: string): Promise<Response> => {
+  return await authFetch(`${NEST_URI}/spotify/playlist/${id}`)
+}
 
 /**
  * Saves user in our database.
