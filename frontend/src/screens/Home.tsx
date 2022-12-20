@@ -5,17 +5,6 @@ import { getAsyncItem } from '../services/async-storage.service'
 import Admin from './Admin'
 
 const Home = ({ navigation }): JSX.Element => {
-  const [role, setRole] = useState('')
-
-  useEffect(() => {
-    getRole()
-  }, [])
-
-  const getRole = async () => {
-    const userRole = await getAsyncItem('role')
-    setRole(userRole!)
-  }
-
   // useEffect(() => {
   //     if (cookies.loginCookie !== '') {
   //         axios.get(
@@ -37,15 +26,11 @@ const Home = ({ navigation }): JSX.Element => {
 
   return (
     <>
-      {role && role === 'admin' ? (
-        <Admin />
-      ) : (
-        <View>
-          <Text>you're logged in!</Text>
-          {/* <Button onPress={() => logOut()} title={'logOut'}/>
+      <View>
+        <Text>you're logged in!</Text>
+        {/* <Button onPress={() => logOut()} title={'logOut'}/>
             <Button onPress={() => navigation.navigate('Landingpage')} title={'go back to landingPage'}/> */}
-        </View>
-      )}
+      </View>
     </>
   )
 }
