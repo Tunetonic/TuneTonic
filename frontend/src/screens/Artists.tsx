@@ -11,7 +11,6 @@ import { capitalize } from '../../helpers'
 import { CommonActions } from '@react-navigation/native'
 import { authContext } from '../providers/auth.provider'
 import { getFollowedArtists } from '../services/user.service'
-import { getArtist} from '../services/spotify.service'
 
 interface FriendsProps {
   id: number
@@ -25,6 +24,7 @@ const Artists = ({ navigation, route }): JSX.Element => {
   const [masterDataSource, setMasterDataSource] = useState <FriendsProps[] | null>(null)
   const [filteredDataSource, setFilteredDataSource] = useState<FriendsProps[]>([])
   const { user } = useContext(authContext)
+
 
   useEffect(() => {
     getFollowedArtists().then((data) => {
@@ -74,18 +74,10 @@ const Artists = ({ navigation, route }): JSX.Element => {
     )
   }
 
-  const getItem = (item: { id: string; name: string }) => {
-    const artistId = item['id']
-    getArtist(artistId).then((data) => {
-      navigation.navigate('Artist')
-    });
-
-    // New page with artistId
-
-    const { id, name } = item
-    // Function for click on an item
-    alert(`Id : ${id} Name : ${name}`)
-  }
+    const getItem = (item: { id: string }) => {
+      const artistId = item['id']
+      navigation.navigate('artist', { artist: artistId })
+    }
 
   let content: React.ReactElement
 

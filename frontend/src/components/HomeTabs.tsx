@@ -4,6 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Artists from '../screens/Artists'
 import Home from '../screens/Home'
 import LibraryStackNavigation from './LibraryStackNavigation'
+import ArtistsStackNavigation from './ArtistStackNavigation'
 
 interface TabScreenProps {
   name: string
@@ -16,7 +17,7 @@ const Tab = createMaterialBottomTabNavigator()
 
 const tabs: TabScreenProps[] = [
   { name: 'home', component: Home, iconName: 'home' },
-  { name: 'artists', component: Artists, iconName: 'account-multiple' },
+  { name: 'artists', component: ArtistsStackNavigation, iconName: 'account-multiple' },
   {
     name: 'library-stack-navigation',
     component: LibraryStackNavigation,
