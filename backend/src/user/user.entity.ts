@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm'
 
-import { Role } from 'src/enums/role.enum'
+import { Role } from '../enums/role.enum'
 
 @Entity('user')
 export class User {
