@@ -1,11 +1,10 @@
-import { UserService } from './../user/user.service'
 import { SpotifyController } from './spotify.controller'
 import { SpotifyService } from './spotify.service'
 import { forwardRef, Module } from '@nestjs/common'
 import { HttpModule } from '@nestjs/axios'
-import { User } from 'src/user/user.entity'
+import { User } from '../user/user.entity'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { UserModule } from 'src/user/user.module'
+import { UserModule } from '../user/user.module'
 
 @Module({
   imports: [

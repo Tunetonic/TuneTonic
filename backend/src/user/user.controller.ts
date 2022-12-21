@@ -18,10 +18,10 @@ import {
 import { User } from './user.entity'
 import { Role } from '../enums/role.enum'
 import { UpdateUserDTO } from './dto/update-user.dto'
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
-import { Roles } from 'src/auth/roles.decorator'
-import { RolesGuard } from 'src/auth/roles.guard'
-import { SpotifyService } from 'src/spotify/spotify.service'
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'
+import { Roles } from '../auth/roles.decorator'
+import { RolesGuard } from '../auth/roles.guard'
+import { SpotifyService } from '../spotify/spotify.service'
 
 @Controller('user')
 export class UserController {

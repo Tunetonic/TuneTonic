@@ -4,7 +4,7 @@ import { SpotifyUser } from './interface/spotify-user'
 import { HttpService } from '@nestjs/axios'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { catchError, firstValueFrom, map } from 'rxjs'
-import { User } from 'src/user/user.entity'
+import { User } from '../user/user.entity'
 
 @Injectable()
 export class SpotifyService {
