@@ -14,7 +14,9 @@ export const authFetch = async (url: string): Promise<Response> => {
       Authorization: 'Bearer ' + JWT,
       spotifyToken: 'Bearer ' + spotifyAccessToken,
     },
-  }).then((res) => res.json())
+  })
+    .then((res) => res.json())
+    .catch(console.error)
 }
 
 export const authRequest = async (
@@ -34,7 +36,9 @@ export const authRequest = async (
       Authorization: 'Bearer ' + JWT,
       spotifyToken: 'Bearer ' + spotifyAccessToken,
     },
-  }).then((res) => res.json())
+  })
+    .then((res) => res.json())
+    .catch(console.error)
 }
 
 export const authDelete = async (url: string) => {
