@@ -36,7 +36,7 @@ export class UserController {
     return this.userService.findAllUsers()
   }
 
-  @Roles(Role.User)
+  @Roles(Role.User, Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   getUser(@Param('id') id: string): Promise<User> {
@@ -48,14 +48,14 @@ export class UserController {
     return this.userService.saveUser(user)
   }
 
-  @Roles(Role.User)
+  @Roles(Role.User, Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
   async updateUser(@Param('id') id: string, @Body() updateBody: UpdateUserDTO) {
     return await this.userService.updateUser(id, updateBody)
   }
 
-  @Roles(Role.User)
+  @Roles(Role.User, Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id/:secret/:role')
   async updateUserRole(
