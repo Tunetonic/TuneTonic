@@ -36,6 +36,8 @@ export class UserController {
     return this.userService.findAllUsers()
   }
 
+  @Roles(Role.User)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   getUser(@Param('id') id: string): Promise<User> {
     return this.userService.findUserById(id)
@@ -46,11 +48,15 @@ export class UserController {
     return this.userService.saveUser(user)
   }
 
+  @Roles(Role.User)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
   async updateUser(@Param('id') id: string, @Body() updateBody: UpdateUserDTO) {
     return await this.userService.updateUser(id, updateBody)
   }
 
+  @Roles(Role.User)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id/:secret/:role')
   async updateUserRole(
     @Param('id') id: string,
@@ -79,9 +85,11 @@ export class UserController {
     return await this.userService.deleteUserById(id)
   }
 
+  @Roles(Role.User)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   async deleteUser(
-    @Headers('Authorization') token: string,
+    @Headers('spotifyToken') token: string,
     @Param('id') id: string,
   ) {
     const user = await this.spotifyService.getUserFromSpotify(token)

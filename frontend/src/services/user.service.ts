@@ -1,13 +1,6 @@
 import { NEST_URI } from '@env'
 import { DatabaseUser } from '../interfaces/db-user'
-import {
-  authFetch,
-  authRequest,
-  authDelete,
-  authFetchJWT,
-  authRequestJWT,
-  authDeleteJWT,
-} from './fetch.service'
+import { authFetch, authRequest, authDelete } from './fetch.service'
 
 /**
  *
@@ -28,7 +21,7 @@ export const getSpotifyUser = async (): Promise<any> =>
  * @returns
  */
 export const getSpotifyUsers = async (): Promise<any> => {
-  return await authFetchJWT(`${NEST_URI}/spotify/users`)
+  return await authFetch(`${NEST_URI}/spotify/users`)
 }
 
 /**
@@ -73,5 +66,5 @@ export const deleteUser = async (id: string): Promise<any> =>
  * @returns deleted user
  */
 export const deleteUserById = async (id: string): Promise<any> => {
-  await authDeleteJWT(`${NEST_URI}/user/${id}/admin`)
+  await authDelete(`${NEST_URI}/user/${id}/admin`)
 }

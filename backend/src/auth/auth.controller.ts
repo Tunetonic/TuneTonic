@@ -20,7 +20,7 @@ export class AuthController {
   ) {}
 
   @Get()
-  async getToken(@Headers('Authorization') token): Promise<authInfo> {
+  async getToken(@Headers('spotifyToken') token): Promise<authInfo> {
     const user = await this.spotifyService.getUserFromSpotify(token)
 
     if (!user) {
