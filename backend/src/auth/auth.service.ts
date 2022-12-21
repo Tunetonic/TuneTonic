@@ -1,14 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { User } from '../user/user.entity'
-import { UserService } from '../user/user.service'
 import { JwtService } from '@nestjs/jwt'
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private userService: UserService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private jwtService: JwtService) {}
 
   async createToken(user: User) {
     const payload = {
