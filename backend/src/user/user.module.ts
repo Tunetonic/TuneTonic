@@ -1,14 +1,20 @@
 import { HttpModule } from '@nestjs/axios'
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserService } from './user.service'
 import { UserController } from './user.controller'
 import { User } from './user.entity'
 import { SpotifyService } from 'src/spotify/spotify.service'
+import { AuthService } from 'src/auth/auth.service'
+import { SpotifyModule } from 'src/spotify/spotify.module'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), HttpModule],
-  providers: [UserService, SpotifyService],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    HttpModule,
+    forwardRef(() => SpotifyModule),
+  ],
+  providers: [UserService],
   exports: [UserService],
   controllers: [UserController],
 })

@@ -8,6 +8,7 @@ import { AuthController } from './auth.controller'
 import { SpotifyModule } from 'src/spotify/spotify.module'
 import { SpotifyService } from 'src/spotify/spotify.service'
 import { HttpModule } from '@nestjs/axios'
+import { UserService } from 'src/user/user.service'
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { HttpModule } from '@nestjs/axios'
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [AuthService, JwtStrategy, SpotifyService],
+  providers: [AuthService, JwtStrategy],
   exports: [AuthService],
   controllers: [AuthController],
 })
