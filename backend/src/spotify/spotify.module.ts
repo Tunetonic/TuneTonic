@@ -5,7 +5,6 @@ import { forwardRef, Module } from '@nestjs/common'
 import { HttpModule } from '@nestjs/axios'
 import { User } from 'src/user/user.entity'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { AuthService } from 'src/auth/auth.service'
 import { UserModule } from 'src/user/user.module'
 
 @Module({

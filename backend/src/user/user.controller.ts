@@ -15,7 +15,8 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
-import { Role, User } from './user.entity'
+import { User } from './user.entity'
+import { Role } from 'src/enums/role.enum'
 import { UpdateUserDTO } from './dto/update-user.dto'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 import { Roles } from 'src/auth/roles.decorator'

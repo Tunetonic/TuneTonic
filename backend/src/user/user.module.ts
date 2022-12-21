@@ -4,8 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserService } from './user.service'
 import { UserController } from './user.controller'
 import { User } from './user.entity'
-import { SpotifyService } from 'src/spotify/spotify.service'
-import { AuthService } from 'src/auth/auth.service'
 import { SpotifyModule } from 'src/spotify/spotify.module'
 
 @Module({

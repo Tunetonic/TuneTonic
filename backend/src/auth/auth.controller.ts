@@ -5,9 +5,8 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
-import { SpotifyService } from 'src/spotify/spotify.service'
-import { Role } from 'src/user/user.entity'
-import { UserService } from 'src/user/user.service'
+import { SpotifyService } from '../spotify/spotify.service'
+import { UserService } from '../user/user.service'
 import { AuthService } from './auth.service'
 import { authInfo } from './dto/auth-info'
 

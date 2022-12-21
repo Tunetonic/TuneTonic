@@ -1,4 +1,4 @@
-import { Role } from 'src/user/user.entity'
+import { Role } from 'src/enums/role.enum'
 
 export interface authInfo {
   JWT: string
