@@ -34,7 +34,7 @@ const Library = ({ navigation, route }): JSX.Element => {
           }
         >
           <Image
-            style={{ height: 50, width: 50 }}
+            style={{ height: 50, width: 50, borderRadius: 100 }}
             source={{ uri: user?.images[0].url }}
           />
         </TouchableHighlight>
