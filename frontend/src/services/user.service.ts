@@ -24,6 +24,9 @@ export const getSpotifyUser = async (): Promise<any> =>
 export const getUserPlaylist = async (): Promise<any> =>
   await authFetch(`${NEST_URI}/spotify/playlist`)
 
+export const getPlaylistSongs = async (): Promise<any> =>
+  await authFetch(`${NEST_URI}/spotify/playlist`)
+
 /**
  * Saves user in our database.
  * @param userBody User data to save
