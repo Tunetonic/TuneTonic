@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react'
-import { Appbar, Button, Text } from 'react-native-paper'
+import { Appbar, Button, IconButton, Text, MD3Colors } from 'react-native-paper'
 import { View, ScrollView, Image, StyleSheet } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { CommonActions } from '@react-navigation/native'
@@ -8,85 +8,31 @@ import { songMapper, SongProps } from '../util/song.util'
 import { getPlaylistSongs } from '../services/user.service'
 import { SongCard } from '../components/cards/SongCard'
 
-const test: SongProps[] = [
-  {
-    name: 'Test',
-    id: 'pokoe',
-    href: 'http://hoi.nl',
-    artist: 'Hessel',
-    image: 'https://i.scdn.co/image/ab67616d0000b273bd5d6e268126a92a3a327afa',
-    length: '3:26',
-  },
-  {
-    name: 'Test',
-    id: 'pokoe',
-    href: 'http://hoi.nl',
-    artist: 'Hessel',
-    image: 'https://i.scdn.co/image/ab67616d0000b273bd5d6e268126a92a3a327afa',
-    length: '3:26',
-  },
-  {
-    name: 'Test',
-    id: 'pokoe',
-    href: 'http://hoi.nl',
-    artist: 'Hessel',
-    image: 'https://i.scdn.co/image/ab67616d0000b273bd5d6e268126a92a3a327afa',
-    length: '3:26',
-  },
-  {
-    name: 'Test',
-    id: 'pokoe',
-    href: 'http://hoi.nl',
-    artist: 'Hessel',
-    image: 'https://i.scdn.co/image/ab67616d0000b273bd5d6e268126a92a3a327afa',
-    length: '3:26',
-  },
-  {
-    name: 'Test',
-    id: 'pokoe',
-    href: 'http://hoi.nl',
-    artist: 'Hessel',
-    image: 'https://i.scdn.co/image/ab67616d0000b273bd5d6e268126a92a3a327afa',
-    length: '3:26',
-  },
-  {
-    name: 'Test',
-    id: 'pokoe',
-    href: 'http://hoi.nl',
-    artist: 'Hessel',
-    image: 'https://i.scdn.co/image/ab67616d0000b273bd5d6e268126a92a3a327afa',
-    length: '3:26',
-  },
-  {
-    name: 'Test',
-    id: 'pokoe',
-    href: 'http://hoi.nl',
-    artist: 'Hessel',
-    image: 'https://i.scdn.co/image/ab67616d0000b273bd5d6e268126a92a3a327afa',
-    length: '3:26',
-  },
-]
-
 const LibraryDetail = ({
   navigation,
   route,
   playlistName,
   playlistId,
+  playlistImage,
 }): JSX.Element => {
   const { theme } = useContext(themeContext)
-  const [songs, setSongs] = useState<SongProps[]>(test)
+  const [songs, setSongs] = useState<SongProps[]>([])
 
-  //   useEffect(() => {
-  //     handleGetSongs()
-  //   }, [])
+  useEffect(() => {
+    handleGetSongs()
+  }, [])
 
-  //   const handleGetSongs = () => {
-  //     getPlaylistSongs()
-  //       .then((data) => setSongs(songMapper(data.items)))
-  //       .catch(console.error)
-  //   }
+  const handleGetSongs = () => {
+    getPlaylistSongs('61z8DNzEuuKuLKs54DvrYi')
+      .then((data) => {
+        setSongs(songMapper(data.tracks.items))
+      })
+      .catch(console.error)
+  }
 
   const playSong = () => {}
+
+  const shuffleSong = () => {}
 
   const styles = StyleSheet.create({
     firstChild: {
@@ -121,6 +67,13 @@ const LibraryDetail = ({
     songs: {
       flexDirection: 'column',
     },
+    playIcon: {
+      marginRight: 15,
+    },
+    shuffleIcon: {
+      marginLeft: 15,
+      color: 'green',
+    },
   })
 
   return (
@@ -150,10 +103,26 @@ const LibraryDetail = ({
               />
             </View>
             <View style={styles.icons}>
-              <Button>Shuffle</Button>
-              <Button>Play</Button>
+              <IconButton
+                icon="shuffle"
+                size={45}
+                color="green"
+                style={styles.shuffleIcon}
+                onPress={() => {
+                  shuffleSong()
+                }}
+              />
+              <IconButton
+                icon="play"
+                size={45}
+                color="green"
+                style={styles.playIcon}
+                onPress={() => {
+                  playSong()
+                }}
+              />
             </View>
-            <Text style={styles.playlistName}>Playlist</Text>
+            <Text style={styles.playlistName}>{playlistName}</Text>
           </View>
         </View>
 
