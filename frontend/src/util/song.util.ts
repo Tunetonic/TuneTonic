@@ -22,6 +22,6 @@ export const songMapper = (arr: any[]): SongProps[] => {
     artist: item.track.artists.map((a) => a.name).join(', '),
     href: item.track.href,
     length: millisToMinutesAndSeconds(item.track.duration_ms),
-    image: item.track.album.images[0].url,
+    image: item.track.album.images[0]?.url,
   }))
 }
