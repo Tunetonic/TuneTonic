@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react'
 import { Appbar, Button, IconButton, Text } from 'react-native-paper'
-import { View, ScrollView, Image, StyleSheet } from 'react-native'
+import { View, ScrollView, Image, StyleSheet, Linking } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { CommonActions } from '@react-navigation/native'
 import { themeContext } from '../providers/theme.provider'
@@ -26,7 +26,11 @@ const LibraryDetail = ({ navigation, route }): JSX.Element => {
       .catch(console.error)
   }
 
-  const playSong = () => {}
+  const redirectPlaylist = () => {
+    Linking.openURL(
+      `https://open.spotify.com/playlist/${route.params.playlistId}`,
+    )
+  }
 
   const shuffleSong = () => {}
 
@@ -113,7 +117,7 @@ const LibraryDetail = ({ navigation, route }): JSX.Element => {
                 color="green"
                 style={styles.playIcon}
                 onPress={() => {
-                  playSong()
+                  redirectPlaylist()
                 }}
               />
             </View>
@@ -128,7 +132,6 @@ const LibraryDetail = ({ navigation, route }): JSX.Element => {
                 id={song.id}
                 name={song.name}
                 artist={song.artist}
-                onPress={() => playSong}
                 image={song.image}
                 length={song.length}
               />

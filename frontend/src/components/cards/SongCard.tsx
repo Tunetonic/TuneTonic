@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Image, StyleSheet } from 'react-native'
+import { Image, Linking, StyleSheet } from 'react-native'
 import { Card, Text } from 'react-native-paper'
 
 interface SongCardProps {
@@ -7,7 +7,6 @@ interface SongCardProps {
   name: string
   artist: string
   image: string
-  onPress: () => void
   length: string
 }
 
@@ -16,11 +15,14 @@ export const SongCard: FC<SongCardProps> = ({
   name,
   artist,
   image,
-  onPress,
   length,
 }) => {
   return (
-    <Card style={styles.card} onPress={() => onPress} key={id}>
+    <Card
+      style={styles.card}
+      onPress={() => Linking.openURL(`https://open.spotify.com/track/${id}`)}
+      key={id}
+    >
       <Card.Title
         title={name}
         subtitle={artist}

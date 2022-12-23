@@ -17,7 +17,7 @@ function millisToMinutesAndSeconds(millis: number) {
 
 export const songMapper = (arr: any[]): SongProps[] => {
   return arr.map((item) => ({
-    id: item.id,
+    id: item.track.id,
     name: item.track.name,
     artist: item.track.artists.map((a) => a.name).join(', '),
     href: item.track.href,
