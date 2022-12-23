@@ -1,19 +1,18 @@
 import { View, ScrollView, Image, StyleSheet } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
 import { Appbar, Text } from 'react-native-paper'
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { getArtist} from '../services/spotify.service'
 import { LinearGradient } from 'expo-linear-gradient'
 
 function Artist({ navigation, route }) {
     const artistId = route.params['artist'];
-    let artist;
+    const [artist, setArtist] = useState(null);
     useEffect(() => {
         getArtist(artistId).then((data) => {
-            artist = data;
-            console.log(data);
+            setArtist(data)
         });
-    }, [artist]);
+    }, []);
 
     return (
         <>
@@ -43,7 +42,7 @@ function Artist({ navigation, route }) {
                             />
                         </View>
                         <View>
-                            <Text style={styles.headerText}>{artist?.display_name}</Text>
+                            <Text style={styles.headerText}>{artist?.name}</Text>
                             <Text style={styles.text}>{artist?.followers.total} followers</Text>
                         </View>
                     </View>
