@@ -22,7 +22,7 @@ const tabs: TabScreenProps[] = [
     name: 'library-stack-navigation',
     component: LibraryStackNavigation,
     iconName: 'folder-music',
-    title: 'your library',
+    title: 'Your library',
   },
 ]
 

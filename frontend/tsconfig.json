@@ -6,6 +6,7 @@
     "skipLibCheck": true,
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
-    "typeRoots": ["./src/types"]
+    "typeRoots": ["./src/types"],
+    "target": "ESNext"
   }
 }
