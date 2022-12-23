@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react'
-import { Appbar, Button, IconButton, Text, MD3Colors } from 'react-native-paper'
+import { Appbar, Button, IconButton, Text } from 'react-native-paper'
 import { View, ScrollView, Image, StyleSheet } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { CommonActions } from '@react-navigation/native'
@@ -8,22 +8,18 @@ import { songMapper, SongProps } from '../util/song.util'
 import { getPlaylistSongs } from '../services/user.service'
 import { SongCard } from '../components/cards/SongCard'
 
-const LibraryDetail = ({
-  navigation,
-  route,
-  playlistName,
-  playlistId,
-  playlistImage,
-}): JSX.Element => {
+const LibraryDetail = ({ navigation, route }): JSX.Element => {
   const { theme } = useContext(themeContext)
   const [songs, setSongs] = useState<SongProps[]>([])
 
   useEffect(() => {
-    handleGetSongs()
-  }, [])
+    if (route.params.playlistId) {
+      handleGetSongs()
+    }
+  }, [route.params.playlistId])
 
   const handleGetSongs = () => {
-    getPlaylistSongs('61z8DNzEuuKuLKs54DvrYi')
+    getPlaylistSongs(route.params.playlistId)
       .then((data) => {
         setSongs(songMapper(data.tracks.items))
       })
@@ -59,9 +55,9 @@ const LibraryDetail = ({
     playlistName: {
       position: 'absolute',
       color: theme.colors.text,
-      fontSize: 26,
+      fontSize: 30,
       fontWeight: 'bold',
-      bottom: 30,
+      bottom: 45,
       alignSelf: 'center',
     },
     songs: {
@@ -84,7 +80,6 @@ const LibraryDetail = ({
             navigation.dispatch(CommonActions.goBack())
           }}
         />
-        <Appbar.Content title={route.name} />
       </Appbar.Header>
       <ScrollView>
         <LinearGradient
@@ -98,14 +93,14 @@ const LibraryDetail = ({
               <Image
                 style={styles.playlistImage}
                 source={{
-                  uri: 'https://i.scdn.co/image/ab67616d0000b273bd5d6e268126a92a3a327afa',
+                  uri: route.params.playlistImage,
                 }}
               />
             </View>
             <View style={styles.icons}>
               <IconButton
                 icon="shuffle"
-                size={45}
+                size={36}
                 color="green"
                 style={styles.shuffleIcon}
                 onPress={() => {
@@ -114,7 +109,7 @@ const LibraryDetail = ({
               />
               <IconButton
                 icon="play"
-                size={45}
+                size={36}
                 color="green"
                 style={styles.playIcon}
                 onPress={() => {
@@ -122,7 +117,7 @@ const LibraryDetail = ({
                 }}
               />
             </View>
-            <Text style={styles.playlistName}>{playlistName}</Text>
+            <Text style={styles.playlistName}>{route.params.playlistName}</Text>
           </View>
         </View>
 
