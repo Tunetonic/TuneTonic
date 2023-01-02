@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { FlatList, Image, StyleSheet, View } from 'react-native'
+import { FlatList, Image, StyleSheet, View, Alert } from 'react-native'
 import {
   Text,
   DataTable,
   ActivityIndicator,
   Searchbar,
   Appbar,
+  Button
 } from 'react-native-paper'
 import { capitalize } from '../../helpers'
 import { CommonActions } from '@react-navigation/native'
 import { authContext } from '../providers/auth.provider'
 import { getFollowedArtists } from '../services/user.service'
+import { unfollowArtist } from '../services/spotify.service'
 
 interface FriendsProps {
   id: number
@@ -43,11 +45,13 @@ const Artists = ({ navigation, route }): JSX.Element => {
     )
   }
 
+
+
   useEffect(() => {
     handleSearchFilter(search)
   }, [search])
 
-  const ItemView = ({ item }) => {
+    const ItemView = ({ item }) => {
     return (
       <DataTable>
         <DataTable.Row style={styles.row} onPress={() => getItem(item)}>
@@ -61,13 +65,12 @@ const Artists = ({ navigation, route }): JSX.Element => {
             <Text>{capitalize(item.name)}</Text>
           </DataTable.Cell>
           <DataTable.Cell style={{ justifyContent: 'flex-end' }}>
-            {/* TODO: implement action functionality for each item. */}
-            {/* <Button
-                style={styles.icon}
+            <Button
                 mode="text"
-                labelStyle={{ fontSize: 32, color: 'white' }}
+                labelStyle={{ fontSize: 25, color: 'white' }}
                 icon="delete"
-            ></Button> */}
+                onPress={() => unfollow(item)}>
+            </Button>
           </DataTable.Cell>
         </DataTable.Row>
       </DataTable>
@@ -78,6 +81,35 @@ const Artists = ({ navigation, route }): JSX.Element => {
       const artistId = item['id']
       navigation.navigate('artist', { artist: artistId })
     }
+
+  const unfollow = (item: {id: string, name: string}) => {
+    const artistId = item['id'];
+    const name = item['name']
+    Alert.alert(
+        'Unfollow',
+        'Do you wish to unfollow ' + name + '?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () =>
+                unfollowArtist(artistId).then((response) => {
+                  // The artist was successfully unfollowed, so update the master data source
+                  getFollowedArtists().then((data) => {
+                    const artists = data['artists']['items']
+                    setLoading(false)
+                    setFilteredDataSource(artists)
+                    setMasterDataSource(artists)
+                  })
+                })
+          },
+        ],
+        {cancelable: false},
+    );
+  }
+
 
   let content: React.ReactElement
 
@@ -142,7 +174,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#FFFFFF',
-  },
+  }
 })
 
 export default Artists

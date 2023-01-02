@@ -1,6 +1,6 @@
 import { SpotifyPlaylist } from './interface/spotify-playlist'
 import { SpotifyService } from './spotify.service'
-import { Controller, Get, Headers, Param } from '@nestjs/common'
+import { Controller, Get, Headers, Param, Delete } from '@nestjs/common'
 import { SpotifyUser } from './interface/spotify-user'
 import { SpotifyArtists } from './interface/spotify-artists'
 import { SpotifyArtist } from './interface/spotify-artist'
@@ -43,5 +43,12 @@ export class SpotifyController {
       @Param('id') id: string
   ): Promise<SpotifyArtist> {
     return await this.spotifyService.getArtist(token, id)
+  }
+
+  @Delete('/artist/:id')
+  async unfollowArtist(
+      @Headers('Authorization') token,
+      @Param('id') id: string) {
+    return await this.spotifyService.unfollowArtist(token, id)
   }
 }

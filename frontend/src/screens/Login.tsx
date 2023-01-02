@@ -28,7 +28,7 @@ const LoginScreen = ({ navigation }): JSX.Element => {
         'user-read-email',
         'user-read-private',
         'user-follow-modify',
-        'user-follow-read'
+        'user-follow-read',
 
       ],
       prompt: Prompt.SelectAccount,

@@ -132,4 +132,26 @@ export class SpotifyService {
                 ),
         )
     }
+
+    async unfollowArtist(token: string, id: string): Promise<SpotifyArtist> {
+        const spotifyUrl = 'https://api.spotify.com/v1/me/following?type=artist&ids='+ id
+
+        return await firstValueFrom(
+            this.httpService
+                .delete<SpotifyArtist>(spotifyUrl, {
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: token,
+                    },
+                })
+                .pipe(
+                    map((response) => response.data),
+                    catchError((error) => {
+                        throw error.response.data
+                    }),
+                ),
+        )
+    }
+
 }
