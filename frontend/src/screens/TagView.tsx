@@ -54,7 +54,7 @@ const TagView: FC = () => {
       borderRadius: 8,
       padding: 10,
     },
-  
+
     tag: {
       borderRadius: 25,
       borderWidth: 1,
@@ -100,8 +100,12 @@ const TagView: FC = () => {
               style={[
                 styles.tag,
                 {
-                  backgroundColor: data.isActive ? theme.colors.primary : theme.colors.background,
-                  borderColor: data.isActive ? 'transparent' : theme.colors.primary,
+                  backgroundColor: data.isActive
+                    ? theme.colors.primary
+                    : theme.colors.background,
+                  borderColor: data.isActive
+                    ? 'transparent'
+                    : theme.colors.primary,
                 },
               ]}
             >
