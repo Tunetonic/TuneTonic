@@ -11,5 +11,5 @@ if __name__ == "__main__":
              Song("song 5", "beast", "work-out"),
              Song("song 6", "Chris brown", "rock")]
     df = initial_values(genres)
-    algo_result = content_algorithme(df, songs, 4)
+    algo_result = content_algorithme(df, songs, 3)
     # print(algo_result)

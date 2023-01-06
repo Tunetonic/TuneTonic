@@ -14,7 +14,7 @@ class Song:
         return list(map(lambda e:Song(e.name, e.artist, e.genre)))
     
     def __str__(self) -> str:
-        return self.name
+        return f"name: {self.name}, genre: {self.genre}"
     
     def __repr__(self) -> str:
-        return self.name
+        return self.__str__()
