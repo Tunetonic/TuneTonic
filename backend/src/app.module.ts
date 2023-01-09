@@ -23,6 +23,8 @@ import { GenresModule } from './genres/genres.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [__dirname + '/**/*.entity.{js,ts}'],
+      migrations: [__dirname + "dist/migration/*{.ts,.js}"],
+      migrationsRun: true,
       synchronize: true,
     }),
     HttpModule,
