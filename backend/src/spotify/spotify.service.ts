@@ -3,9 +3,11 @@ import { SpotifyArtists } from './interface/spotify-artists'
 import { UserService } from './../user/user.service'
 import { SpotifyUser } from './interface/spotify-user'
 import { HttpService } from '@nestjs/axios'
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { catchError, firstValueFrom, map } from 'rxjs'
 import { SpotifyArtist } from './interface/spotify-artist'
+
+import { User } from '../user/user.entity'
 
 @Injectable()
 export class SpotifyService {
@@ -47,6 +49,39 @@ export class SpotifyService {
     }
 
     return user
+  }
+
+  async getUsersFromSpotify(token: string): Promise<SpotifyUser[]> {
+    const spotifyUrl = 'https://api.spotify.com/v1/users/'
+
+    const databaseUsers: User[] = await this.userService.findAllUsers()
+    const ids: string[] = databaseUsers.map((x) => x.id)
+    const spotifyUsers = []
+
+    if (databaseUsers.length > 0) {
+      for (const id of ids) {
+        const user: SpotifyUser = await firstValueFrom(
+          this.httpService
+            .get<SpotifyUser>(spotifyUrl + id, {
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: token,
+              },
+            })
+            .pipe(
+              map((response) => response.data),
+              catchError((error) => {
+                throw error.response.data
+              }),
+            ),
+        )
+
+        spotifyUsers.push(user)
+      }
+    }
+
+    return spotifyUsers
   }
 
   async getUserPlaylists(token: string): Promise<SpotifyPlaylist[]> {

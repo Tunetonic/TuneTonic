@@ -1,9 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import Library from '../screens/Library'
-import Playlist from '../screens/Playlist'
-import Profile from '../screens/Profile'
 import Settings from '../screens/Settings'
+import Library from '../screens/Library'
+import Profile from '../screens/Profile'
+import Playlist from '../screens/Playlist'
+import Admin from '../screens/Admin'
 
 const Stack = createNativeStackNavigator()
 
@@ -16,6 +17,7 @@ const LibraryStackNavigation = (): JSX.Element => {
       <Stack.Screen name="Library" component={Library} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen name="Admin" component={Admin} />
       <Stack.Screen
         name="playlist"
         component={Playlist}

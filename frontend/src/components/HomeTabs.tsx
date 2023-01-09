@@ -1,8 +1,11 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Artists from '../screens/Artists'
+import Admin from '../screens/Admin'
+import Friends from '../screens/Friends'
 import Home from '../screens/Home'
+import { getAsyncItem } from '../services/async-storage.service'
 import LibraryStackNavigation from './LibraryStackNavigation'
 import ArtistsStackNavigation from './ArtistStackNavigation'
 
@@ -18,6 +21,10 @@ const Tab = createMaterialBottomTabNavigator()
 const tabs: TabScreenProps[] = [
   { name: 'home', component: Home, iconName: 'home' },
   { name: 'artists', component: ArtistsStackNavigation, iconName: 'account-multiple' },
+
+const defaultTabs: TabScreenProps[] = [
+  { name: 'Home', component: Home, iconName: 'home' },
+  { name: 'Friends', component: Friends, iconName: 'account-multiple' },
   {
     name: 'library-stack-navigation',
     component: LibraryStackNavigation,
@@ -25,8 +32,26 @@ const tabs: TabScreenProps[] = [
     title: 'Your library',
   },
 ]
+const adminTab: TabScreenProps = {
+  name: 'Admin',
+  component: Admin,
+  iconName: 'account-tie-hat',
+}
 
 const HomeTabs = ({ navigation }): JSX.Element => {
+  const [tabs, setTabs] = useState<TabScreenProps[]>(defaultTabs)
+
+  useEffect(() => {
+    verifyAdmin()
+  }, [])
+
+  const verifyAdmin = async () => {
+    const userRole = await getAsyncItem('role')
+    if (userRole === 'admin') {
+      setTabs([...tabs, adminTab])
+    }
+  }
+
   return (
     <Tab.Navigator
       id="bottom-tab-navigator"
