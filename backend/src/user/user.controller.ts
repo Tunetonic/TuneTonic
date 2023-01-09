@@ -56,8 +56,6 @@ export class UserController {
     return await this.userService.updateUser(id, updateBody)
   }
 
-  @Roles(Role.User, Role.Admin)
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id/:secret/:role')
   async updateUserRole(
     @Param('id') id: string,
