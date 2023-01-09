@@ -51,4 +51,12 @@ export class SpotifyController {
       @Param('id') id: string) {
     return await this.spotifyService.unfollowArtist(token, id)
   }
+
+  @Get('/playlist/:id')
+  async getArtistPlaylists(
+      @Headers('Authorization') token,
+      @Param('id') id: string
+  ): Promise<SpotifyPlaylist[]> {
+    return await this.spotifyService.getArtistPlaylists(token, id)
+  }
 }

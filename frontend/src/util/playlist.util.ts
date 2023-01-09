@@ -10,6 +10,6 @@ export const playlistItemMapper = (arr: any[]): PlaylistProps[] => {
     id: item.id,
     name: item.name,
     image: item.images[0].url,
-    totalTracks: item.tracks.total,
+    totalTracks: item.total_tracks,
   }))
 }

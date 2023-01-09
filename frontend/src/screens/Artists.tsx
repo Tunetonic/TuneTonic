@@ -99,7 +99,6 @@ const Artists = ({ navigation, route }): JSX.Element => {
                   // The artist was successfully unfollowed, so update the master data source
                   getFollowedArtists().then((data) => {
                     const artists = data['artists']['items']
-                    setLoading(false)
                     setFilteredDataSource(artists)
                     setMasterDataSource(artists)
                   })

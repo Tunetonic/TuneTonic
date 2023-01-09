@@ -16,3 +16,11 @@ export const getArtist = async (id: string): Promise<any> => {
 export const unfollowArtist = async (id: string): Promise<any> => {
     return await authDelete(`${NEST_URI}/spotify/artist/${id}`)
 }
+
+/**
+ * Don't we already get all this information from authenticating in spotify.
+ * Do we really need to make an request?
+ * @param setPlaylistItems
+ */
+export const getArtistPlaylists = async (id: string): Promise<any> =>
+    await authFetch(`${NEST_URI}/spotify/playlist/${id}`)

@@ -154,4 +154,25 @@ export class SpotifyService {
         )
     }
 
+    async getArtistPlaylists(token: string, id: string): Promise<SpotifyPlaylist[]> {
+        const spotifyUrl = 'https://api.spotify.com/v1/artists/'+id+'/albums'
+
+        return await firstValueFrom(
+            this.httpService
+                .get<SpotifyPlaylist[]>(spotifyUrl, {
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: token,
+                    },
+                })
+                .pipe(
+                    map((response) => response.data),
+                    catchError((error) => {
+                        throw error.response.data
+                    }),
+                ),
+        )
+    }
+
 }

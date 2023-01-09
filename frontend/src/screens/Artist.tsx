@@ -2,17 +2,27 @@ import { View, ScrollView, Image, StyleSheet } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
 import { Appbar, Text } from 'react-native-paper'
 import React, {useContext, useEffect, useState} from "react";
-import { getArtist} from '../services/spotify.service'
+import { getArtist, getArtistPlaylists} from '../services/spotify.service'
 import { LinearGradient } from 'expo-linear-gradient'
+import { playlistItemMapper, PlaylistProps } from '../util/playlist.util'
 
 function Artist({ navigation, route }) {
     const artistId = route.params['artist'];
     const [artist, setArtist] = useState(null);
+    const [playlistItems, setPlaylistItems] = useState<PlaylistProps[]>([])
+
     useEffect(() => {
         getArtist(artistId).then((data) => {
             setArtist(data)
         });
     }, []);
+
+    useEffect(() => {
+        getArtistPlaylists(artistId).then((playlist) =>
+                // console.log(playlist)
+                setPlaylistItems(playlistItemMapper(playlist.items)),
+            )
+    }, [])
 
     const compactNumber = (number) => {
         if (number >= 1000000) {
@@ -54,9 +64,24 @@ function Artist({ navigation, route }) {
                         <View>
                             <Text style={styles.headerText}>{artist?.name}</Text>
                             <Text style={styles.text}>{compactNumber(artist?.followers.total)} followers</Text>
-
                         </View>
                     </View>
+                    <Text style={styles.headerText}>Playlist</Text>
+                    <ScrollView horizontal={true} style={styles.playlistView}>
+                        {playlistItems.map(
+                            (data) =>
+                                !!data.image && (
+                                    <View key={data.id} style={styles.playlist}>
+                                        <Image
+                                            style={styles.playlistLogo}
+                                            source={{ uri: data.image }}
+                                        />
+                                        <Text style={styles.text}>{data.name}</Text>
+                                        <Text style={styles.text}>{data.totalTracks} songs</Text>
+                                    </View>
+                                ),
+                        )}
+                    </ScrollView>
                 </View>
             </View>
         </>
