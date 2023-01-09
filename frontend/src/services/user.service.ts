@@ -17,6 +17,14 @@ export const getSpotifyUser = async (): Promise<any> =>
   await authFetch(`${NEST_URI}/spotify`)
 
 /**
+ * Fetches all users (admin)
+ * @returns
+ */
+export const getSpotifyUsers = async (): Promise<any> => {
+  return await authFetch(`${NEST_URI}/spotify/users`)
+}
+
+/**
  * Don't we already get all this information from authenticating in spotify.
  * Do we really need to make an request?
  * @param setPlaylistItems
@@ -47,7 +55,16 @@ export const updateUser = async (
 /**
  * Deletes a user based on ID
  * @param id Id of the user
- * @returns
+ * @returns deleted user
  */
 export const deleteUser = async (id: string): Promise<any> =>
   await authDelete(`${NEST_URI}/user/${id}`)
+
+/**
+ * Deletes a user based on ID (admin)
+ * @param id Id of the user
+ * @returns deleted user
+ */
+export const deleteUserById = async (id: string): Promise<any> => {
+  await authDelete(`${NEST_URI}/user/${id}/admin`)
+}
