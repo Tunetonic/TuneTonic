@@ -36,7 +36,8 @@ export class UserService {
     return await this.userRepository.save(createUserBody)
   }
 
-  async deleteUser(id: string): Promise<void> {
-    await this.userRepository.delete(id)
+  async deleteUserById(id: string): Promise<User> {
+    const user: User = await this.findUserById(id)
+    return await this.userRepository.remove(user)
   }
 }

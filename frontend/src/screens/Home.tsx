@@ -1,6 +1,8 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Text } from 'react-native-paper'
+import { getAsyncItem } from '../services/async-storage.service'
+import Admin from './Admin'
 
 const Home = ({ navigation }): JSX.Element => {
   // useEffect(() => {
@@ -23,11 +25,13 @@ const Home = ({ navigation }): JSX.Element => {
   // }, [])
 
   return (
-    <View>
-      <Text>you're logged in!</Text>
-      {/* <Button onPress={() => logOut()} title={'logOut'}/>
+    <>
+      <View>
+        <Text>you're logged in!</Text>
+        {/* <Button onPress={() => logOut()} title={'logOut'}/>
             <Button onPress={() => navigation.navigate('Landingpage')} title={'go back to landingPage'}/> */}
-    </View>
+      </View>
+    </>
   )
 }
 export default Home
