@@ -35,7 +35,7 @@ export class SpotifyController {
 
   @Get('/playlist/:id')
   async getPlaylistSongs(
-    @Headers('Authorization') token,
+    @Headers('spotifyToken') token,
     @Param('id') id: string,
   ): Promise<SpotifySong[]> {
     return await this.spotifyService.getPlaylistSongs(token, id)
