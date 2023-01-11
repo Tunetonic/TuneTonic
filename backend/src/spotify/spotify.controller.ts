@@ -58,7 +58,7 @@ export class SpotifyController {
   }
 
   @Get('/artists')
-  async getArtists(@Headers('Authorization') token): Promise<SpotifyArtists[]> {
+  async getArtists(@Headers('spotifyToken') token): Promise<SpotifyArtists[]> {
     return await this.spotifyService.getFollowedArtists(token)
   }
 

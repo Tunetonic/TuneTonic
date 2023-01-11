@@ -18,10 +18,10 @@ function Artist({ navigation, route }) {
     }, []);
 
     useEffect(() => {
-        getArtistPlaylists(artistId).then((playlist) =>
-                // console.log(playlist)
-                setPlaylistItems(playlistItemMapper(playlist.items)),
-            )
+        getArtistPlaylists(artistId).then((playlist) => {
+            console.log(playlist)
+            setPlaylistItems(playlistItemMapper(playlist.items))
+        })
     }, [])
 
     const compactNumber = (number) => {
@@ -42,7 +42,7 @@ function Artist({ navigation, route }) {
                         navigation.dispatch(CommonActions.goBack())
                     }}
                 />
-                <Appbar.Content title={route.name} />
+                <Appbar.Content title={artist?.name + '\'s Profile'} />
             </Appbar.Header>
             <View style={styles.parentContainer}>
                 <LinearGradient

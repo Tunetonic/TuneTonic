@@ -5,6 +5,7 @@ import {
   DataTable,
   ActivityIndicator,
   Searchbar,
+  Avatar,
   Appbar,
   Button
 } from 'react-native-paper'
@@ -56,7 +57,7 @@ const Artists = ({ navigation, route }): JSX.Element => {
       <DataTable>
         <DataTable.Row style={styles.row} onPress={() => getItem(item)}>
           <DataTable.Cell>
-            <Image
+            <Avatar.Image
               source={{ uri: item.images[0].url }}
               style={{ width: 65, height: 65, borderRadius: 50}}
             />
@@ -68,7 +69,7 @@ const Artists = ({ navigation, route }): JSX.Element => {
             <Button
                 mode="text"
                 labelStyle={{ fontSize: 25, color: 'white' }}
-                icon="delete"
+                icon="account-multiple-minus"
                 onPress={() => unfollow(item)}>
             </Button>
           </DataTable.Cell>
@@ -124,7 +125,7 @@ const Artists = ({ navigation, route }): JSX.Element => {
     content = (
       <>
         <Text style={styles.count}>
-          {Object.keys(filteredDataSource).length}: Results
+          {Object.keys(filteredDataSource).length} Artists
         </Text>
         <FlatList
           style={styles.container}
@@ -145,7 +146,7 @@ const Artists = ({ navigation, route }): JSX.Element => {
               navigation.dispatch(CommonActions.goBack())
             }}
           />
-          <Appbar.Content title={route.name} />
+          <Appbar.Content title="My Followed Artists" />
         </Appbar.Header>
       </>
       <Searchbar
