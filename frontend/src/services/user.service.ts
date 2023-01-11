@@ -32,6 +32,9 @@ export const getSpotifyUsers = async (): Promise<any> => {
 export const getUserPlaylist = async (): Promise<any> =>
   await authFetch(`${NEST_URI}/spotify/playlist`)
 
+export const getPlaylistSongs = async (id: string): Promise<any> =>
+  await authFetch(`${NEST_URI}/spotify/playlist/${id}`)
+
 /**
  * Returns the followed artist of the user
  * @returns

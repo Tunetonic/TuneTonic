@@ -1,7 +1,15 @@
+import {
+  Controller,
+  Get,
+  Headers,
+  UseGuards,
+  Param,
+  Delete,
+} from '@nestjs/common'
 import { SpotifyPlaylist } from './interface/spotify-playlist'
 import { SpotifyService } from './spotify.service'
-import { Controller, Get, Headers, Param, Delete } from '@nestjs/common'
 import { SpotifyUser } from './interface/spotify-user'
+import { SpotifySong } from './interface/spotify-song'
 import { SpotifyArtists } from './interface/spotify-artists'
 import { SpotifyArtist } from './interface/spotify-artist'
 import { Role } from '../enums/role.enum'
@@ -34,6 +42,14 @@ export class SpotifyController {
     return await this.spotifyService.getUserPlaylists(token)
   }
 
+  @Get('/playlist/:id')
+  async getPlaylistSongs(
+    @Headers('spotifyToken') token,
+    @Param('id') id: string,
+  ): Promise<SpotifySong[]> {
+    return await this.spotifyService.getPlaylistSongs(token, id)
+  }
+
   @Get('/seeds')
   async getGenreSeeds(
     @Headers('spotifyToken') token,
@@ -42,31 +58,30 @@ export class SpotifyController {
   }
 
   @Get('/artists')
-  async getArtists(
-      @Headers('Authorization') token,
-  ): Promise<SpotifyArtists[]> {
+  async getArtists(@Headers('Authorization') token): Promise<SpotifyArtists[]> {
     return await this.spotifyService.getFollowedArtists(token)
   }
 
   @Get('/artist/:id')
   async getArtist(
-      @Headers('Authorization') token,
-      @Param('id') id: string
+    @Headers('spotifyToken') token,
+    @Param('id') id: string,
   ): Promise<SpotifyArtist> {
     return await this.spotifyService.getArtist(token, id)
   }
 
   @Delete('/artist/:id')
   async unfollowArtist(
-      @Headers('Authorization') token,
-      @Param('id') id: string) {
+    @Headers('spotifyToken') token,
+    @Param('id') id: string,
+  ) {
     return await this.spotifyService.unfollowArtist(token, id)
   }
 
   @Get('/playlist/:id')
   async getArtistPlaylists(
-      @Headers('Authorization') token,
-      @Param('id') id: string
+    @Headers('spotifyToken') token,
+    @Param('id') id: string,
   ): Promise<SpotifyPlaylist[]> {
     return await this.spotifyService.getArtistPlaylists(token, id)
   }
