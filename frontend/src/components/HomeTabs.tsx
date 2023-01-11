@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Artists from '../screens/Artists'
 import Admin from '../screens/Admin'
-import Friends from '../screens/Friends'
 import Home from '../screens/Home'
 import { getAsyncItem } from '../services/async-storage.service'
 import LibraryStackNavigation from './LibraryStackNavigation'
@@ -18,13 +17,9 @@ interface TabScreenProps {
 
 const Tab = createMaterialBottomTabNavigator()
 
-const tabs: TabScreenProps[] = [
-  { name: 'home', component: Home, iconName: 'home' },
-  { name: 'artists', component: ArtistsStackNavigation, iconName: 'account-multiple' },
-
 const defaultTabs: TabScreenProps[] = [
   { name: 'Home', component: Home, iconName: 'home' },
-  { name: 'Friends', component: Friends, iconName: 'account-multiple' },
+  { name: 'Artists', component: Artists, iconName: 'account-multiple' },
   {
     name: 'library-stack-navigation',
     component: LibraryStackNavigation,
