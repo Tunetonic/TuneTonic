@@ -26,7 +26,7 @@ export const getSpotifyUsers = async (): Promise<any> => {
 
 /**
  * Don't we already get all this information from authenticating in spotify.
- * Do we really need to make an request?
+ * Do we really need to make a request?
  * @param setPlaylistItems
  */
 export const getUserPlaylist = async (): Promise<any> =>
@@ -34,6 +34,14 @@ export const getUserPlaylist = async (): Promise<any> =>
 
 export const getPlaylistSongs = async (id: string): Promise<any> =>
   await authFetch(`${NEST_URI}/spotify/playlist/${id}`)
+
+/**
+ * Returns the followed artist of the user
+ * @returns
+ */
+export const getFollowedArtists = async (): Promise<any> => {
+  return await authFetch(`${NEST_URI}/spotify/artists/`)
+}
 
 /**
  * Saves user in our database.
