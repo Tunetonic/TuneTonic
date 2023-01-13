@@ -1,15 +1,17 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import Onboarding from 'react-native-onboarding-swiper'
 import {Image, StyleSheet} from 'react-native'
 import {Text, useTheme} from 'react-native-paper'
-import TagView, {Tag} from './TagView'
+import TagView, {GenreBody, Tag} from './TagView'
 import { postUserPreferenceGenres } from '../services/genre.service'
+import { authContext } from '../providers/auth.provider'
 
 
 const OnboardingScreen = ({navigation}): JSX.Element => {
     const theme = useTheme()
-
+    const { user } = useContext(authContext)
     const [genres, setGenres] = useState<Tag[]>([])
+    const [genreBody, setGenreBody] = useState<GenreBody>()
 
     const styles = StyleSheet.create({
         image: {
@@ -97,7 +99,8 @@ const OnboardingScreen = ({navigation}): JSX.Element => {
             onDone={() => {
 
                 console.log(genres.filter(data => data.isActive === true));
-                postUserPreferenceGenres(genres)
+                if (user?.id) setGenreBody({userId: user.id, genres: genres})
+                if (genreBody) postUserPreferenceGenres(genreBody)
 
                 // postUserPreferenceGenres('jasmin hoi');
 

@@ -7,7 +7,10 @@ export interface Tag {
   tagName: string
   isActive: boolean
 }
-
+export interface GenreBody {
+  userId: string
+  genres: Tag[]
+}
 const TagView = ({ transferGenres }) => {
   const [genres, setGenres] = useState<Tag[]>([])
 
@@ -29,6 +32,7 @@ const TagView = ({ transferGenres }) => {
           : genre,
       ),
     )
+
     transferGenres(genres)
   }
 

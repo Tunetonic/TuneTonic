@@ -3,17 +3,33 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
+import { GenreDist } from './entities/genre-dist.entity';
 import { Genre } from './entities/genre.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class GenresService {
 
   constructor(
-      @InjectRepository(Genre) private genreRepository: Repository<Genre>
+      @InjectRepository(GenreDist) private genreRepository: Repository<GenreDist>
   ) {}
 
-  async create(createGenreDto: CreateGenreDto[]): Promise<Genre[]> {
-    return await this.genreRepository.save(createGenreDto)
+  async create(genres: Record<string, string>[], userId: string): Promise<void> {
+    let columnsLst = []
+    let valuesLst = []
+
+    genres.map((genre) => {
+      genre.isActive = (genre.isActive ? "1" : "0")
+      columnsLst.push(genre.tagName)
+      valuesLst.push(genre.isActive)
+    })
+
+    let query = `
+    INSERT INTO genre_dist (id, user_id, ${columnsLst.toString()})
+    VALUES ("${uuidv4()}", "${userId}", ${valuesLst.toString()})
+    `
+    console.log(query)
+    this.genreRepository.query(query)
   }
 
   findAll() {
