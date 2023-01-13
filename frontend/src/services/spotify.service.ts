@@ -23,4 +23,4 @@ export const unfollowArtist = async (id: string): Promise<any> => {
  * @param setPlaylistItems
  */
 export const getArtistPlaylists = async (id: string): Promise<any> =>
-    await authFetch(`${NEST_URI}/spotify/playlist/${id}`)
+    await authFetch(`${NEST_URI}/spotify/artist/playlist/${id}`)

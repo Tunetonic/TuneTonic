@@ -78,7 +78,7 @@ export class SpotifyController {
     return await this.spotifyService.unfollowArtist(token, id)
   }
 
-  @Get('/playlist/:id')
+  @Get('/artist/playlist/:id')
   async getArtistPlaylists(
     @Headers('spotifyToken') token,
     @Param('id') id: string,

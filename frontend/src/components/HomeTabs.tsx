@@ -6,7 +6,6 @@ import Home from '../screens/Home'
 import { getAsyncItem } from '../services/async-storage.service'
 import LibraryStackNavigation from './LibraryStackNavigation'
 import ArtistsStackNavigation from './ArtistStackNavigation'
-import Artists from '../screens/Artists'
 
 interface TabScreenProps {
   name: string
@@ -19,7 +18,12 @@ const Tab = createMaterialBottomTabNavigator()
 
 const defaultTabs: TabScreenProps[] = [
   { name: 'Home', component: Home, iconName: 'home' },
-  { name: 'Artists', component: Artists, iconName: 'account-multiple' },
+  { 
+    name: 'artist-stack-navigation',
+    component: ArtistsStackNavigation,
+    iconName: 'account-multiple',
+    title: 'Followed Artists'
+  },
   {
     name: 'library-stack-navigation',
     component: LibraryStackNavigation,
