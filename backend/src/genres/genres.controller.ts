@@ -9,7 +9,6 @@ export class GenresController {
 
   @Post()
   create(@Body('genres') genres: Record<string, string>[], @Body('userId') userId: string) {
-    console.log(typeof userId, userId)
     return this.genresService.create(genres, userId);
   }
 

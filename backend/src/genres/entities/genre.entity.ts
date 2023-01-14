@@ -5,9 +5,6 @@ export class Genre {
     @PrimaryGeneratedColumn("uuid")
     id: string
 
-    // @Column({ default: false })
-    // isActive: boolean
-
     @Column()
     tagName: string
 
