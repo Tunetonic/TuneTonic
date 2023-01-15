@@ -4,7 +4,7 @@ import { Appbar, Text } from 'react-native-paper'
 import React, {useContext, useEffect, useState} from "react";
 import { getArtist, getArtistPlaylists} from '../services/spotify.service'
 import { LinearGradient } from 'expo-linear-gradient'
-import { playlistItemMapper, PlaylistProps } from '../util/playlist.util'
+import { albumItemMapper, PlaylistProps } from '../util/playlist.util'
 
 function Artist({ navigation, route }) {
     const artistId = route.params['artist'];
@@ -20,7 +20,7 @@ function Artist({ navigation, route }) {
     useEffect(() => {
         getArtistPlaylists(artistId).then((playlist) => {
             console.log(playlist)
-            setPlaylistItems(playlistItemMapper(playlist.items))
+            setPlaylistItems(albumItemMapper(playlist.items))
         })
     }, [])
 
