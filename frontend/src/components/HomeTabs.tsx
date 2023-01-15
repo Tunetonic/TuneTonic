@@ -2,10 +2,10 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import React, { useContext, useEffect, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Admin from '../screens/Admin'
-import Friends from '../screens/Friends'
 import Home from '../screens/Home'
 import { getAsyncItem } from '../services/async-storage.service'
 import LibraryStackNavigation from './LibraryStackNavigation'
+import ArtistsStackNavigation from './ArtistStackNavigation'
 
 interface TabScreenProps {
   name: string
@@ -18,7 +18,12 @@ const Tab = createMaterialBottomTabNavigator()
 
 const defaultTabs: TabScreenProps[] = [
   { name: 'Home', component: Home, iconName: 'home' },
-  { name: 'Friends', component: Friends, iconName: 'account-multiple' },
+  { 
+    name: 'artist-stack-navigation',
+    component: ArtistsStackNavigation,
+    iconName: 'account-multiple',
+    title: 'Followed Artists'
+  },
   {
     name: 'library-stack-navigation',
     component: LibraryStackNavigation,
