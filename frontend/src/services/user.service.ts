@@ -10,13 +10,14 @@ export const getDatabaseUser = async (id: number): Promise<any> =>
   await authFetch(`${NEST_URI}/user/${id}`)
 
 /**
- * Do we get the spotify user from spotify authentication?
+ * TODO: Do we get the spotify user from spotify authentication?
  * @returns
  */
 export const getSpotifyUser = async (): Promise<any> =>
   await authFetch(`${NEST_URI}/spotify`)
 
 /**
+
  * Fetches all users (admin)
  * @returns
  */
@@ -29,11 +30,20 @@ export const getSpotifyUsers = async (): Promise<any> => {
  * Do we really need to make a request?
  * @param setPlaylistItems
  */
-export const getUserPlaylist = async (): Promise<any> =>
-  await authFetch(`${NEST_URI}/spotify/playlist`)
+export const getUserPlaylist = async (): Promise<any> => {
+  return await authFetch(`${NEST_URI}/spotify/playlist`)
+}
+
+/**
+ * Retrieves a particular spotify playlist.
+ * @param id Spotify playlist ID
+ */
+export const getPlaylist = async (id: string): Promise<Response> => {
+  return await authFetch(`${NEST_URI}/spotify/playlist/${id}`)
+}
 
 export const getPlaylistSongs = async (id: string): Promise<any> =>
-  await authFetch(`${NEST_URI}/spotify/playlist/${id}`)
+  await authFetch(`${NEST_URI}/spotify/playlist/songs/${id}`)
 
 /**
  * Returns the followed artist of the user

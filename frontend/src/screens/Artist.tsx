@@ -4,7 +4,7 @@ import { Appbar, Text } from 'react-native-paper'
 import React, {useContext, useEffect, useState} from "react";
 import { getArtist, getArtistPlaylists} from '../services/spotify.service'
 import { LinearGradient } from 'expo-linear-gradient'
-import { albumItemMapper, PlaylistProps } from '../util/playlist.util'
+import { albumItemMapper, playlistItemMapper, PlaylistProps } from '../util/playlist.util'
 
 function Artist({ navigation, route }) {
     const artistId = route.params['artist'];
@@ -19,7 +19,7 @@ function Artist({ navigation, route }) {
 
     useEffect(() => {
         getArtistPlaylists(artistId).then((playlist) => {
-            console.log(playlist)
+            setPlaylistItems(playlistItemMapper(playlist.items))
             setPlaylistItems(albumItemMapper(playlist.items))
         })
     }, [])
@@ -33,6 +33,12 @@ function Artist({ navigation, route }) {
         return number;
     }
 
+    const truncate = (string) => {
+        if (string.length > 17) {
+            return string.substring(0, 14) + "...";
+        }
+        return string;
+    };
 
     return (
         <>
@@ -76,7 +82,7 @@ function Artist({ navigation, route }) {
                                             style={styles.playlistLogo}
                                             source={{ uri: data.image }}
                                         />
-                                        <Text style={styles.text}>{data.name}</Text>
+                                        <Text style={styles.text}>{truncate(data.name)}</Text>
                                         <Text style={styles.text}>{data.totalTracks} songs</Text>
                                     </View>
                                 ),

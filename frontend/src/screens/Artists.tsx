@@ -35,6 +35,9 @@ const Artists = ({ navigation, route }): JSX.Element => {
       setLoading(false)
       setFilteredDataSource(artists)
       setMasterDataSource(artists)
+    },
+    (err) => {
+      console.log(err)
     });
   }, []);
 

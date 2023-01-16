@@ -22,15 +22,16 @@ export const authFetch = async (url: string): Promise<Response> => {
 
 export const authRequest = async (
   url: string,
+  body: Object,
   method: HttpMethod,
-  body?: any,
 ) => {
   const spotifyAccessToken = await getAsyncItem('spotify_access_token')
   const JWT = await getAsyncItem('jwt_access_token')
 
+  console.log("CHECKPOINT 2: ", body)
   return await fetch(url, {
-    method,
-    body,
+    method: method,
+    body: JSON.stringify(body),
     headers: {
       Accept: 'application/json',
       'Content-type': 'application/json',
