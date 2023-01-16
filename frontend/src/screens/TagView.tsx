@@ -4,16 +4,21 @@ import { Button, Text } from 'react-native-paper'
 import { themeContext } from '../providers/theme.provider'
 import { getGenreSeeds } from '../services/genre.service'
 
-interface Tag {
+export interface Tag {
   tagName: string
   isActive: boolean
 }
-
-const TagView: FC = () => {
+export interface GenreBody {
+  userId: string
+  genres: Tag[]
+}
+const TagView = ({ transferGenres }) => {
   const [genres, setGenres] = useState<Tag[]>([])
   const { theme } = useContext(themeContext)
 
   const headerTextColor = theme.dark ? '#FFFFFF' : '#000000'
+
+
 
   const fetchGenres = (): void => {
     getGenreSeeds().then((res) =>
@@ -25,12 +30,14 @@ const TagView: FC = () => {
 
   const todoClicked = (e: Tag) => {
     setGenres(
-      genres.map((todo) =>
-        todo.tagName === e.tagName
-          ? { ...todo, isActive: !todo.isActive }
-          : todo,
+      genres.map((genre) =>
+        genre.tagName === e.tagName
+          ? { ...genre, isActive: !genre.isActive }
+          : genre,
       ),
     )
+
+    transferGenres(genres)
   }
 
   useEffect(() => {
@@ -111,7 +118,9 @@ const TagView: FC = () => {
         </View>
       </ScrollView>
     </>
+
   )
+
 }
 
 export default TagView
