@@ -19,7 +19,11 @@ const Home = ({ navigation }): JSX.Element => {
 
   useEffect(() => {
     getPlaylist("1LwKg8pkx71G83WgOfvlLZ").then((data) => {
+      console.log(data)
       setTracks(trackItemMapper(data.items))
+    },
+    (err) => {
+      console.log(err)
     })
   }, [])
 
