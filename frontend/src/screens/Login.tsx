@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {Image, KeyboardAvoidingView, StyleSheet} from 'react-native'
-import {Button, Text} from 'react-native-paper'
+import {Button} from 'react-native-paper'
 
 import {Prompt, ResponseType, useAuthRequest} from 'expo-auth-session'
-import {CLIENT_ID, NEST_URI, REDIRECT_URI} from '@env'
+import {CLIENT_ID, REDIRECT_URI} from '@env'
 import {authContext} from '../providers/auth.provider'
-import {getUserPlaylist} from '../services/user.service'
+
 
 const discovery = {
     authorizationEndpoint: 'https://accounts.spotify.com/authorize',
@@ -15,26 +15,29 @@ const discovery = {
 const LoginScreen = ({navigation}): JSX.Element => {
     const {login} = useContext(authContext)
 
-    const [req, response, promptAsync] = useAuthRequest(
-        {
-            responseType: ResponseType.Token,
-            clientId: CLIENT_ID,
-            scopes: [
-                'user-read-currently-playing',
-                'user-read-recently-played',
-                'user-read-playback-state',
-                'user-top-read',
-                'user-modify-playback-state',
-                'streaming',
-                'user-read-email',
-                'user-read-private',
-            ],
-            prompt: Prompt.SelectAccount,
-            usePKCE: true,
-            redirectUri: REDIRECT_URI,
-        },
-        discovery,
-    )
+  const [req, response, promptAsync] = useAuthRequest(
+    {
+      responseType: ResponseType.Token,
+      clientId: CLIENT_ID,
+      scopes: [
+        'user-read-currently-playing',
+        'user-read-recently-played',
+        'user-read-playback-state',
+        'user-top-read',
+        'user-modify-playback-state',
+        'streaming',
+        'user-read-email',
+        'user-read-private',
+        'user-follow-modify',
+        'user-follow-read',
+
+      ],
+      prompt: Prompt.SelectAccount,
+      usePKCE: true,
+      redirectUri: REDIRECT_URI,
+    },
+    discovery,
+  )
 
     useEffect(() => {
         if (response && response?.type === 'success') {

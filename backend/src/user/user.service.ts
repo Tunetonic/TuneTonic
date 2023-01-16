@@ -4,7 +4,6 @@ import { User } from './user.entity'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { HttpService } from '@nestjs/axios'
-import { catchError, firstValueFrom, map } from 'rxjs'
 import { UpdateUserDTO } from './dto/update-user.dto'
 
 @Injectable()
@@ -35,5 +34,10 @@ export class UserService {
 
   async saveUser(createUserBody: createUserDTO): Promise<User> {
     return await this.userRepository.save(createUserBody)
+  }
+
+  async deleteUserById(id: string): Promise<User> {
+    const user: User = await this.findUserById(id)
+    return await this.userRepository.remove(user)
   }
 }

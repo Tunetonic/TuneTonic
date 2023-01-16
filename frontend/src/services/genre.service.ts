@@ -1,6 +1,5 @@
 import { NEST_URI } from '@env'
-import { DatabaseUser } from '../interfaces/db-user'
-import {GenreBody, Tag } from '../screens/TagView'
+import { GenreBody } from '../screens/TagView'
 import { authFetch, authRequest } from './fetch.service'
 
 export const getGenreSeeds = async (): Promise<any> => {

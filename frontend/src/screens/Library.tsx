@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Image, TouchableHighlight, StyleSheet, ScrollView } from 'react-native'
-import { Appbar, Card } from 'react-native-paper'
+import { Appbar, Button, Card, IconButton } from 'react-native-paper'
 
 import { capitalize } from '../../helpers'
 import { authContext } from '../providers/auth.provider'
@@ -29,12 +29,12 @@ const Library = ({ navigation, route }): JSX.Element => {
         <TouchableHighlight
           onPress={() =>
             navigation.navigate('library-stack-navigation', {
-              screen: 'profile',
+              screen: 'Profile',
             })
           }
         >
           <Image
-            style={{ height: 50, width: 50 }}
+            style={{ height: 50, width: 50, borderRadius: 100 }}
             source={{ uri: user?.images[0].url }}
           />
         </TouchableHighlight>
@@ -46,7 +46,7 @@ const Library = ({ navigation, route }): JSX.Element => {
           icon="cog-outline"
           onPress={() =>
             navigation.navigate('library-stack-navigation', {
-              screen: 'settings',
+              screen: 'Settings',
             })
           }
         />
@@ -55,7 +55,16 @@ const Library = ({ navigation, route }): JSX.Element => {
         {playlistItems.length > 0 &&
           playlistItems.map((playlist, i: number) => {
             return (
-              <Card key={i}>
+              <Card
+                key={i}
+                onPress={() =>
+                  navigation.navigate('LibraryDetail', {
+                    playlistId: playlist.id,
+                    playlistName: playlist.name,
+                    playlistImage: playlist.image,
+                  })
+                }
+              >
                 <Card.Title
                   title={playlist.name}
                   titleStyle={styles.cardTitle}
@@ -67,8 +76,6 @@ const Library = ({ navigation, route }): JSX.Element => {
                       style={styles.playlistImage}
                     />
                   )}
-                  // TODO: inflate playlist screen with spotify tracks.
-                  // right={() => <Button mode="text" labelStyle={{ fontSize: 32 }} icon="arrow-right-drop-circle"onPress={() => navigation.navigate("playlist", {playlistId: playlist.title}) }></Button>}
                 />
               </Card>
             )

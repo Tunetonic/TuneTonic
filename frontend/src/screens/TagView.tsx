@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Button } from 'react-native-paper'
+import React, { FC, useContext, useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, View } from 'react-native'
+import { Button, Text } from 'react-native-paper'
+import { themeContext } from '../providers/theme.provider'
 import { getGenreSeeds } from '../services/genre.service'
 
 export interface Tag {
@@ -13,6 +14,9 @@ export interface GenreBody {
 }
 const TagView = ({ transferGenres }) => {
   const [genres, setGenres] = useState<Tag[]>([])
+  const { theme } = useContext(themeContext)
+
+  const headerTextColor = theme.dark ? '#FFFFFF' : '#000000'
 
 
 
@@ -40,11 +44,58 @@ const TagView = ({ transferGenres }) => {
     fetchGenres()
   }, [])
 
+  const styles = StyleSheet.create({
+    container: {
+      margin: 20,
+      marginBottom: 90,
+      marginTop: 90,
+      flexDirection: 'row',
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    frame: {
+      borderWidth: 1,
+      width: 50,
+      height: 50,
+      backgroundColor: headerTextColor,
+      borderRadius: 8,
+      padding: 10,
+    },
+  
+    tag: {
+      borderRadius: 25,
+      borderWidth: 1,
+      color: headerTextColor,
+      borderStyle: 'solid',
+      margin: 5,
+    },
+    text: {
+      fontSize: 14,
+      textAlign: 'center',
+      color: theme.colors.text,
+      margin: 20,
+      marginLeft: 30,
+    },
+    title: {
+      fontSize: 26,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginLeft: 30,
+    },
+  })
+
   return (
     <>
       <ScrollView>
         <View style={styles.container}>
-          <Text style={styles.title}>What genres do you like?</Text>
+          <Text
+            style={{
+              ...styles.title,
+              color: headerTextColor,
+            }}
+          >
+            What genres do you like?
+          </Text>
           <Text style={styles.text}>
             Click on the genres you listen or like the most.
           </Text>
@@ -52,17 +103,16 @@ const TagView = ({ transferGenres }) => {
           {genres.map((data) => (
             <Button
               key={data.tagName}
-              color={data.isActive ? 'white' : 'white'}
               onPress={() => todoClicked(data)}
               style={[
                 styles.tag,
                 {
-                  backgroundColor: data.isActive ? '#1DB954' : '#222023',
-                  borderColor: data.isActive ?  '#1DB954' : '#1DB954',
+                  backgroundColor: data.isActive ? theme.colors.primary : theme.colors.background,
+                  borderColor: data.isActive ? 'transparent' : theme.colors.primary,
                 },
               ]}
             >
-              {data.tagName}
+              <Text>{data.tagName}</Text>
             </Button>
           ))}
         </View>
@@ -72,47 +122,5 @@ const TagView = ({ transferGenres }) => {
   )
 
 }
-
-const styles = StyleSheet.create({
-  container: {
-    margin: 20,
-    marginBottom: 90,
-    marginTop: 90,
-    flexDirection: 'row',
-    display: 'flex',
-    flexWrap: 'wrap',
-    backgroundColor: '#222023',
-  },
-  frame: {
-    borderWidth: 1,
-    width: 50,
-    height: 50,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 10,
-  },
-
-  tag: {
-    borderColor: 'black',
-    borderRadius: 25,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    margin: 5,
-  },
-  text: {
-    fontSize: 14,
-    color: '#BDBCBD',
-    textAlign: 'center',
-    margin: 20,
-    marginLeft: 30,
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#FFFFFF',
-    marginLeft: 30,
-  },
-})
 
 export default TagView

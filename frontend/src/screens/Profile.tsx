@@ -6,8 +6,10 @@ import { getUserPlaylist } from '../services/user.service'
 import { CommonActions } from '@react-navigation/native'
 import { authContext } from '../providers/auth.provider'
 import { playlistItemMapper, PlaylistProps } from '../util/playlist.util'
+import { themeContext } from '../providers/theme.provider'
 
 const UserProfile = ({ navigation, route }): JSX.Element => {
+  const { theme } = useContext(themeContext)
   const [playlistItems, setPlaylistItems] = useState<PlaylistProps[]>([])
   const { user } = useContext(authContext)
 
@@ -18,6 +20,67 @@ const UserProfile = ({ navigation, route }): JSX.Element => {
       )
     }
   }, [])
+
+  const styles = StyleSheet.create({
+    container: {
+      height: 1000,
+      borderTopLeftRadius: 25,
+      borderTopRightRadius: 25,
+    },
+    parentContainer: {
+      height: 1000,
+    },
+    firstChild: {
+      height: 125,
+    },
+    header: {
+      flexDirection: 'row',
+    },
+    imageContainer: {
+      width: 200,
+      height: 90,
+    },
+    tinyLogo: {
+      borderRadius: 100,
+      width: 120,
+      height: 120,
+      position: 'absolute',
+      top: -65,
+      left: 25,
+    },
+    userInformation: {
+      marginTop: 12,
+    },
+    userName: {
+      color: theme.colors.text,
+      fontSize: 25,
+      fontWeight: 'bold',
+    },
+    text: {
+      color: theme.colors.text,
+      marginTop: 10,
+    },
+    categoryText: {
+      color: theme.colors.text,
+      fontSize: 19,
+      left: 25,
+      fontWeight: 'bold',
+    },
+    playlistView: {
+      flexDirection: 'row',
+      left: 25,
+      top: 5,
+    },
+    playlist: {
+      marginTop: 10,
+      marginRight: 10,
+      marginBottom: 10,
+    },
+    playlistLogo: {
+      width: 120,
+      height: 120,
+    },
+  })
 
   return (
     <>
@@ -46,13 +109,18 @@ const UserProfile = ({ navigation, route }): JSX.Element => {
                 source={{ uri: user?.images[0].url }}
               />
             </View>
-            <View>
-              <Text style={styles.headerText}>{user?.display_name}</Text>
-              <Text style={styles.text}>{user?.followers.total} followers</Text>
+            <View style={styles.userInformation}>
+              <Text style={styles.userName}>{user?.display_name}</Text>
+              <Text style={styles.text}>
+                <Text style={{ fontWeight: 'bold' }}>
+                  {user?.followers.total}{' '}
+                </Text>
+                followers
+              </Text>
             </View>
           </View>
 
-          <Text style={styles.headerText}>Playlist</Text>
+          <Text style={styles.categoryText}>Playlists</Text>
           <ScrollView horizontal={true} style={styles.playlistView}>
             {playlistItems.map(
               (data) =>
@@ -75,48 +143,3 @@ const UserProfile = ({ navigation, route }): JSX.Element => {
 }
 
 export default UserProfile
-
-const styles = StyleSheet.create({
-  tinyLogo: {
-    borderRadius: 50,
-    width: 120,
-    height: 120,
-    position: 'absolute',
-    top: -65,
-    left: 30,
-  },
-  playlist: {
-    margin: 10,
-  },
-  playlistLogo: {
-    width: 120,
-    height: 120,
-  },
-
-  imageContainer: {
-    width: 200,
-    height: 90,
-  },
-  container: {
-    borderRadius: 10,
-    backgroundColor: 'black',
-    height: 1000,
-  },
-  parentContainer: {
-    height: 1000,
-  },
-  firstChild: {
-    height: 140,
-  },
-  text: { color: 'white' },
-  headerText: {
-    color: 'white',
-    fontSize: 25,
-  },
-  header: {
-    flexDirection: 'row',
-  },
-  playlistView: {
-    flexDirection: 'row',
-  },
-})

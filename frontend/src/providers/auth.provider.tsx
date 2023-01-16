@@ -1,16 +1,12 @@
 import { AuthSessionResult } from 'expo-auth-session'
-import React, {
-  createContext,
-  PropsWithChildren,
-  useEffect,
-  useState,
-} from 'react'
+import React, { createContext, PropsWithChildren, useState } from 'react'
 import { User } from '../interfaces/spotify-user'
 import { getSpotifyUser, saveUser } from '../services/user.service'
 import {
   removeAsyncItem,
   setAsyncItem,
 } from '../services/async-storage.service'
+import { getAuthInfo } from '../services/auth.service'
 
 interface AuthContextInterface {
   user: User | null
@@ -40,7 +36,14 @@ const AuthProvider = (props: PropsWithChildren) => {
 
     if (!access_token) return
 
-    await setAsyncItem('access_token', access_token)
+    await setAsyncItem('spotify_access_token', access_token)
+
+    const authInfo = await getAuthInfo()
+
+    if (authInfo && authInfo.JWT) {
+      await setAsyncItem('jwt_access_token', authInfo.JWT)
+      await setAsyncItem('role', authInfo.role)
+    }
 
     getSpotifyUser().then(setUser).catch(console.error)
 
@@ -50,7 +53,8 @@ const AuthProvider = (props: PropsWithChildren) => {
   }
 
   const logout = async (): Promise<void> => {
-    removeAsyncItem('access_token')
+    removeAsyncItem('spotify_access_token')
+    removeAsyncItem('jwt_access_token')
     setUser(null)
   }
 
