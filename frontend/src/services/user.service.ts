@@ -31,7 +31,7 @@ export const getSpotifyUsers = async (): Promise<any> => {
  * @param setPlaylistItems
  */
 export const getUserPlaylist = async (): Promise<any> => {
-  return await authFetch(`${NEST_URI}/spotify/playlists`)
+  return await authFetch(`${NEST_URI}/spotify/playlist`)
 }
 
 /**
