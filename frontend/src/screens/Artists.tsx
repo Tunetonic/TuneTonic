@@ -30,15 +30,19 @@ const Artists = ({ navigation, route }): JSX.Element => {
 
 
   useEffect(() => {
-    getFollowedArtists().then((data) => {
-      const artists = data['artists']['items']
-      setLoading(false)
-      setFilteredDataSource(artists)
-      setMasterDataSource(artists)
-    },
-    (err) => {
-      console.log(err)
-    });
+    getFollowedArtists().then(async (data) => {
+          try {
+            const artists = data['artists']['items']
+            setFilteredDataSource(artists)
+            setMasterDataSource(artists)
+          } catch (error) {
+            console.log(error)
+          }
+          setLoading(false)
+        },
+        (err) => {
+          console.log(err)
+        });
   }, []);
 
     const handleSearchFilter = (text: string) => {
