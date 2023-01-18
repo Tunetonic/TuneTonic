@@ -3,7 +3,7 @@ import { getAsyncItem } from './async-storage.service'
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 export const authFetch = async (url: string): Promise<Response> => {
-  const accessToken = await getAsyncItem('access_token');
+  const accessToken = await getAsyncItem('access_token')
 
   return await fetch(url, {
     method: 'GET',

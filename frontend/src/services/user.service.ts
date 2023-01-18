@@ -6,14 +6,15 @@ import { authFetch, authRequest, authDelete } from './fetch.service'
  *
  * @returns Returns the current user from our Database
  */
-export const getDatabaseUser = async (id: string): Promise<any> =>
+export const getDatabaseUser = async (id: number): Promise<any> =>
   await authFetch(`${NEST_URI}/user/${id}`)
 
 /**
  * TODO: Do we get the spotify user from spotify authentication?
  * @returns
  */
-export const getSpotifyUser = async (): Promise<any> => await authFetch(`${NEST_URI}/spotify`)
+export const getSpotifyUser = async (): Promise<any> =>
+  await authFetch(`${NEST_URI}/spotify`)
 
 /**
  * TODO: Don't we already get all this information from authenticating in spotify.
