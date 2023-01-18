@@ -1,9 +1,13 @@
 import { SpotifyPlaylist } from './interface/spotify-playlist'
+import { SpotifyArtists } from './interface/spotify-artists'
 import { UserService } from './../user/user.service'
 import { SpotifyUser } from './interface/spotify-user'
 import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { catchError, firstValueFrom, map } from 'rxjs'
+import { SpotifyArtist } from './interface/spotify-artist'
+import { SpotifySong } from './interface/spotify-song'
+import { User } from '../user/user.entity'
 
 @Injectable()
 export class SpotifyService {
@@ -48,6 +52,39 @@ export class SpotifyService {
     return user
   }
 
+  async getUsersFromSpotify(token: string): Promise<SpotifyUser[]> {
+    const spotifyUrl = 'https://api.spotify.com/v1/users/'
+
+    const databaseUsers: User[] = await this.userService.findAllUsers()
+    const ids: string[] = databaseUsers.map((x) => x.id)
+    const spotifyUsers = []
+
+    if (databaseUsers.length > 0) {
+      for (const id of ids) {
+        const user: SpotifyUser = await firstValueFrom(
+          this.httpService
+            .get<SpotifyUser>(spotifyUrl + id, {
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: token,
+              },
+            })
+            .pipe(
+              map((response) => response.data),
+              catchError((error) => {
+                throw error.response.data
+              }),
+            ),
+        )
+
+        spotifyUsers.push(user)
+      }
+    }
+
+    return spotifyUsers
+  }
+
   async getUserPlaylists(token: string): Promise<SpotifyPlaylist[]> {
     const spotifyUrl = 'https://api.spotify.com/v1/me/playlists'
 
@@ -89,6 +126,26 @@ export class SpotifyService {
         ),
     )
   }
+  async getPlaylistSongs(token: string, id: string): Promise<SpotifySong[]> {
+    const spotifyUrl = `https://api.spotify.com/v1/playlists/${id}`
+
+    return await firstValueFrom(
+      this.httpService
+        .get<SpotifySong[]>(spotifyUrl, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        })
+        .pipe(
+          map((response) => response.data),
+          catchError((error) => {
+            throw error.response.data
+          }),
+        ),
+    )
+  }
 
   async getGenreSeeds(token: string): Promise<any[]> {
     const spotifyUrl =
@@ -97,6 +154,92 @@ export class SpotifyService {
     return await firstValueFrom(
       this.httpService
         .get(spotifyUrl, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        })
+        .pipe(
+          map((response) => response.data),
+          catchError((error) => {
+            throw error.response.data
+          }),
+        ),
+    )
+  }
+  async getFollowedArtists(token: string): Promise<SpotifyArtists[]> {
+    const spotifyUrl = 'https://api.spotify.com/v1/me/following?type=artist'
+
+    return await firstValueFrom(
+      this.httpService
+        .get<SpotifyArtists[]>(spotifyUrl, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        })
+        .pipe(
+          map((response) => response.data),
+          catchError((error) => {
+            throw error.response.data
+          }),
+        ),
+    )
+  }
+
+  async getArtist(token: string, id: string): Promise<SpotifyArtist> {
+    const spotifyUrl = `https://api.spotify.com/v1/artists/${id}`
+
+    return await firstValueFrom(
+      this.httpService
+        .get<SpotifyArtist>(spotifyUrl, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        })
+        .pipe(
+          map((response) => response.data),
+          catchError((error) => {
+            throw error.response.data
+          }),
+        ),
+    )
+  }
+
+  async unfollowArtist(token: string, id: string): Promise<SpotifyArtist> {
+    const spotifyUrl = `https://api.spotify.com/v1/me/following?type=artist&ids=${id}`
+
+    return await firstValueFrom(
+      this.httpService
+        .delete<SpotifyArtist>(spotifyUrl, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        })
+        .pipe(
+          map((response) => response.data),
+          catchError((error) => {
+            throw error.response.data
+          }),
+        ),
+    )
+  }
+
+  async getArtistPlaylists(
+    token: string,
+    id: string,
+  ): Promise<SpotifyPlaylist[]> {
+    const spotifyUrl = `https://api.spotify.com/v1/artists/${id}/albums`
+
+    return await firstValueFrom(
+      this.httpService
+        .get<SpotifyPlaylist[]>(spotifyUrl, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',

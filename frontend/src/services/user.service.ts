@@ -17,12 +17,21 @@ export const getSpotifyUser = async (): Promise<any> =>
   await authFetch(`${NEST_URI}/spotify`)
 
 /**
- * TODO: Don't we already get all this information from authenticating in spotify.
- *       Do we really need to make an request?
+
+ * Fetches all users (admin)
+ * @returns
+ */
+export const getSpotifyUsers = async (): Promise<any> => {
+  return await authFetch(`${NEST_URI}/spotify/users`)
+}
+
+/**
+ * Don't we already get all this information from authenticating in spotify.
+ * Do we really need to make a request?
  * @param setPlaylistItems
  */
 export const getUserPlaylist = async (): Promise<any> => {
-  return await authFetch(`${NEST_URI}/spotify/playlists`)
+  return await authFetch(`${NEST_URI}/spotify/playlist`)
 }
 
 /**
@@ -31,6 +40,17 @@ export const getUserPlaylist = async (): Promise<any> => {
  */
 export const getPlaylist = async (id: string): Promise<Response> => {
   return await authFetch(`${NEST_URI}/spotify/playlist/${id}`)
+}
+
+export const getPlaylistSongs = async (id: string): Promise<any> =>
+  await authFetch(`${NEST_URI}/spotify/playlist/songs/${id}`)
+
+/**
+ * Returns the followed artist of the user
+ * @returns
+ */
+export const getFollowedArtists = async (): Promise<any> => {
+  return await authFetch(`${NEST_URI}/spotify/artists/`)
 }
 
 /**
@@ -56,7 +76,16 @@ export const updateUser = async (
 /**
  * Deletes a user based on ID
  * @param id Id of the user
- * @returns
+ * @returns deleted user
  */
 export const deleteUser = async (id: string): Promise<any> =>
   await authDelete(`${NEST_URI}/user/${id}`)
+
+/**
+ * Deletes a user based on ID (admin)
+ * @param id Id of the user
+ * @returns deleted user
+ */
+export const deleteUserById = async (id: string): Promise<any> => {
+  await authDelete(`${NEST_URI}/user/${id}/admin`)
+}
