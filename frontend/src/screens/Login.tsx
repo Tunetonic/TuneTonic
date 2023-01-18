@@ -14,7 +14,8 @@ const discovery = {
 const LoginScreen = ({ navigation }): JSX.Element => {
   const { login } = useContext(authContext)
 
-  const [req, response, promptAsync] = useAuthRequest(
+
+    const [req, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
       clientId: CLIENT_ID,
@@ -37,8 +38,9 @@ const LoginScreen = ({ navigation }): JSX.Element => {
 
   useEffect(() => {
     if (response && response?.type === 'success') {
-      login(response)
-        .then(() => navigation.navigate('onboarding'))
+        console.log(response);
+      login(response).then(data => data.isBoarded ? navigation.navigate('home-tab-navigation') : navigation.navigate('onboarding'))
+        // .then(() => navigation.navigate('onboarding'))
         .catch(console.error)
     }
   }, [response])
