@@ -178,7 +178,11 @@ const Home = ({ navigation }): JSX.Element => {
     <View style={{ 'margin': 10 }}>
       <View style={{ display: 'flex', 'justifyContent': 'space-between', 'flexDirection': 'row' }}>
         <View style={{ 'flexDirection': 'column' }}>
-          <Text>{selectedTrack ? selectedTrack.name : ''}</Text>
+          <Text
+            style={{ width: 300 }}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >{selectedTrack ? selectedTrack.name : ''}</Text>
           <Text style={{ color: 'rgba(255,255,255, 0.6)' }}>{selectedTrack ? 'by ' + selectedTrack.artist_name : ''}</Text>
         </View>
         <IconButton size={35} icon={ isPlaying ? 'pause-circle-outline' : 'play-circle-outline' } disabled={!selectedTrack?.preview_url} onPress={pausePlay}></IconButton>
