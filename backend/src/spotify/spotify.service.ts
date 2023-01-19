@@ -146,7 +146,7 @@ export class SpotifyService {
     )
   }
 
-  async getRandomTracks(token: string): Promise<any> {
+  async getRandomTracks(token: string, url?: string): Promise<any> {
     const characters = 'abcdefghijklmnopqrstuvwxyz'
     // Gets a random character from the characters string.
     const randomCharacter = characters.charAt(
@@ -164,7 +164,10 @@ export class SpotifyService {
     }
     const randomOffset = Math.floor(Math.random() * 1000)
 
-    const spotifyUrl = `https://api.spotify.com/v1/search?type=track&q=\'${randomSearch}\'&offset=${randomOffset}`
+    const spotifyUrl = url
+      ? url
+      : `https://api.spotify.com/v1/search?type=track&q=\'${randomSearch}\'&offset=${randomOffset}`
+
     console.log(spotifyUrl)
     return await firstValueFrom(
       this.httpService

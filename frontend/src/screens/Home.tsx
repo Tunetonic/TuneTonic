@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { Image, StyleSheet, Dimensions, Platform, View, FlatList, TouchableHighlight } from 'react-native'
+import { Image, StyleSheet, Dimensions, Platform, View, FlatList, TouchableHighlight, RefreshControl } from 'react-native'
 import { Card, IconButton, Text } from 'react-native-paper'
 import { getRandomTracks } from '../services/user.service'
 import { Track, trackItemMapper } from '../util/track'
@@ -15,11 +15,45 @@ const Home = ({ navigation }): JSX.Element => {
   const audioSoundRef = React.useRef(new Audio.Sound());
   const [soundStatus, setSoundStatus] = useState<AVPlaybackStatusSuccess>()
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
+  const [tracksMeta, setTracksMeta] = useState<any>()
+  const [refreshing, setRefreshing] = React.useState(false);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getRandomTracks().then((data) => {
+      
+      console.log(data)
+      
+      setTracks(trackItemMapper(data.tracks.items))
+      setTracksMeta({
+        'limit': data.tracks.limit,
+        'offset': data.tracks.offset,
+        'previous': data.tracks.previous,
+        'next': data.tracks.next,
+        'total': data.tracks.total
+      })
+    },
+    (err) => {
+      console.log(err)
+    })
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     getRandomTracks().then((data) => {
+      
+      console.log(data)
+      
       setTracks(trackItemMapper(data.tracks.items))
+      setTracksMeta({
+        'limit': data.tracks.limit,
+        'offset': data.tracks.offset,
+        'previous': data.tracks.previous,
+        'next': data.tracks.next,
+        'total': data.tracks.total
+      })
     },
     (err) => {
       console.log(err)
@@ -107,7 +141,6 @@ const Home = ({ navigation }): JSX.Element => {
                 unload()
               }
             }
-
           },
         )
         .then(({ sound }) => {
@@ -148,6 +181,9 @@ const Home = ({ navigation }): JSX.Element => {
       showsVerticalScrollIndicator={false}
       viewabilityConfig={_viewabilityConfig.current}
       onViewableItemsChanged={onViewableItemsChanged}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
       contentInset={{
         top: 0,
         left: 0,
