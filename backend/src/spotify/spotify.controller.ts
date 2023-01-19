@@ -16,6 +16,7 @@ import { Role } from '../enums/role.enum'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { RolesGuard } from '../auth/roles.guard'
 import { Roles } from '../auth/roles.decorator'
+import { SpotifyTrack } from './interface/spotify-track'
 
 @Controller('spotify')
 export class SpotifyController {
@@ -35,7 +36,13 @@ export class SpotifyController {
     return this.spotifyService.getUsersFromSpotify(token)
   }
 
-  @Get('/playlist')
+  @Get('/random/tracks')
+  async getRandomTracks(
+    @Headers('spotifyToken') token,
+  ): Promise<SpotifyTrack[]> {
+    return await this.spotifyService.getRandomTracks(token)
+  }
+  @Get('/playlists')
   async getPlaylists(
     @Headers('spotifyToken') token,
   ): Promise<SpotifyPlaylist[]> {

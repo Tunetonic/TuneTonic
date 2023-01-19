@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { Image, StyleSheet, Dimensions, Platform, View, FlatList, TouchableHighlight } from 'react-native'
 import { Card, IconButton, Text } from 'react-native-paper'
-import { getPlaylist } from '../services/user.service'
+import { getRandomTracks } from '../services/user.service'
 import { Track, trackItemMapper } from '../util/track'
 import { Audio, AVPlaybackStatusSuccess } from 'expo-av';
 import Slider from '@react-native-community/slider'
@@ -18,9 +18,8 @@ const Home = ({ navigation }): JSX.Element => {
 
 
   useEffect(() => {
-    getPlaylist("1LwKg8pkx71G83WgOfvlLZ").then((data) => {
-      console.log(data)
-      setTracks(trackItemMapper(data.items))
+    getRandomTracks().then((data) => {
+      setTracks(trackItemMapper(data.tracks.items))
     },
     (err) => {
       console.log(err)
