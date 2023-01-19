@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
 import * as path from 'path'
 import { SpotifyModule } from './spotify/spotify.module'
+import { GenresModule } from './genres/genres.module';
 import { AuthModule } from './auth/auth.module'
 
 @Module({
@@ -23,11 +24,14 @@ import { AuthModule } from './auth/auth.module'
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [__dirname + '/**/*.entity.{js,ts}'],
+      migrations: [__dirname + "dist/migration/*{.ts,.js}"],
+      migrationsRun: true,
       synchronize: true,
     }),
     HttpModule,
     UserModule,
     SpotifyModule,
+    GenresModule,
     AuthModule,
   ],
   controllers: [AppController],

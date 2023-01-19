@@ -24,6 +24,7 @@
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^9.0.0",
+    "@nestjs/mapped-types": "^1.2.0",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
@@ -35,7 +36,8 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.5.5",
     "sqlite3": "^5.1.2",
-    "typeorm": "^0.3.10"
+    "typeorm": "^0.3.10",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
