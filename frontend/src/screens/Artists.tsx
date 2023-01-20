@@ -103,14 +103,17 @@ const Artists = ({ navigation, route }): JSX.Element => {
             style: 'cancel',
           },
           {text: 'OK', onPress: () =>
-                unfollowArtist(artistId).then((response) => {
-                  // The artist was successfully unfollowed, so update the master data source
-                  getFollowedArtists().then((data) => {
-                    const artists = data['artists']['items']
-                    setFilteredDataSource(artists)
-                    setMasterDataSource(artists)
-                  })
-                })
+                  unfollowArtist(artistId)
+                      .then((response) => {
+                          getFollowedArtists().then((data) => {
+                              const artists = data['artists']['items']
+                              setFilteredDataSource(artists)
+                              setMasterDataSource(artists)
+                          })
+                      })
+                      .catch((error) => {
+                          console.log(error)
+                      })
           },
         ],
         {cancelable: false},
