@@ -33,13 +33,6 @@ function Artist({ navigation, route }) {
         return number;
     }
 
-    const truncate = (string) => {
-        if (string.length > 17) {
-            return string.substring(0, 14) + "...";
-        }
-        return string;
-    };
-
     return (
         <>
             <Appbar.Header>
@@ -82,7 +75,10 @@ function Artist({ navigation, route }) {
                                             style={styles.playlistLogo}
                                             source={{ uri: data.image }}
                                         />
-                                        <Text style={styles.text}>{truncate(data.name)}</Text>
+                                        <Text
+                                            numberOfLines={1}
+                                            ellipsizeMode="tail"
+                                            style={styles.width}>{data.name}</Text>
                                         <Text style={styles.text}>{data.totalTracks} songs</Text>
                                     </View>
                                 ),
@@ -128,7 +124,13 @@ const styles = StyleSheet.create({
     firstChild: {
         height: 140,
     },
-    text: { color: 'white' },
+    text: {
+        color: 'white'
+    },
+    width: {
+        color: 'white',
+        width: 100
+    },
     headerText: {
         color: 'white',
         fontSize: 25,
