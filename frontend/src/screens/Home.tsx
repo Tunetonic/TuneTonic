@@ -18,6 +18,31 @@ const Home = ({ navigation }): JSX.Element => {
   const [tracksMeta, setTracksMeta] = useState<any>()
   const [refreshing, setRefreshing] = React.useState(false);
 
+  const onEndReached = React.useCallback(() => {
+    setRefreshing(true);
+
+    getRandomTracks(tracksMeta.next).then((data) => {
+      
+      console.log(data)
+      
+      setTracks([...tracks, ...trackItemMapper(data.tracks.items)])
+      setTracksMeta({
+        'limit': data.tracks.limit,
+        'offset': data.tracks.offset,
+        'previous': data.tracks.previous,
+        'next': data.tracks.next,
+        'total': data.tracks.total
+      })
+    },
+    (err) => {
+      console.log(err)
+    })
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+
+  }, [tracksMeta])
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     getRandomTracks().then((data) => {
@@ -184,6 +209,8 @@ const Home = ({ navigation }): JSX.Element => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.05}
       contentInset={{
         top: 0,
         left: 0,
@@ -197,9 +224,9 @@ const Home = ({ navigation }): JSX.Element => {
       data={tracks}
       renderItem={({ item }) => (
         <TouchableHighlight
-          key={item.id}
+          key={item.uri}
         >
-          <Card key={item.id} style={styles.cardStyle}>
+          <Card key={item.uri} style={styles.cardStyle}>
             <Card.Content style={styles.cardContentStyle}>
               <Image
                 source={{ uri: item.image }}

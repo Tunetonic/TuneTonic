@@ -5,6 +5,8 @@ import {
   UseGuards,
   Param,
   Delete,
+  Body,
+  Post,
 } from '@nestjs/common'
 import { SpotifyPlaylist } from './interface/spotify-playlist'
 import { SpotifyService } from './spotify.service'
@@ -42,6 +44,15 @@ export class SpotifyController {
   ): Promise<SpotifyTrack[]> {
     return await this.spotifyService.getRandomTracks(token)
   }
+
+  @Post('/random/tracks')
+  async getRandomTracksFromURL(
+    @Headers('spotifyToken') token,
+    @Body('url') url,
+  ): Promise<SpotifyTrack[]> {
+    return await this.spotifyService.getRandomTracks(token, url)
+  }
+
   @Get('/playlists')
   async getPlaylists(
     @Headers('spotifyToken') token,

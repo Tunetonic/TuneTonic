@@ -41,9 +41,15 @@ export const getUserPlaylist = async (): Promise<any> => {
 export const getPlaylist = async (id: string): Promise<Response> => {
   return await authFetch(`${NEST_URI}/spotify/playlist/${id}`)
 }
-export const getRandomTracks = async (): Promise<any> => {
-  return await authFetch(`${NEST_URI}/spotify/random/tracks`)
+export const getRandomTracks = async (url?: string): Promise<any> => {
+  if(url) {
+    return await authRequest(`${NEST_URI}/spotify/random/tracks`, {'url': url}, 'POST')
+  }
+  else {
+    return await authFetch(`${NEST_URI}/spotify/random/tracks`)
+  }
 }
+
 
 
 export const getPlaylistSongs = async (id: string): Promise<any> =>
