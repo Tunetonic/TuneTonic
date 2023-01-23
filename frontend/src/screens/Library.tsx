@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Image, TouchableHighlight, StyleSheet, ScrollView, RefreshControl } from 'react-native'
-import { Appbar, Button, Card, IconButton } from 'react-native-paper'
-
+import { Appbar, Card } from 'react-native-paper'
 import { capitalize } from '../../helpers'
 import { authContext } from '../providers/auth.provider'
 import { getUserPlaylist } from '../services/user.service'

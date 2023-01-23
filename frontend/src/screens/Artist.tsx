@@ -1,7 +1,7 @@
 import { View, ScrollView, Image, StyleSheet, RefreshControl } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
 import { Appbar, Text } from 'react-native-paper'
-import React, {useContext, useEffect, useState} from "react";
+import React, { useEffect, useState} from "react";
 import { getArtist, getArtistPlaylists} from '../services/spotify.service'
 import { LinearGradient } from 'expo-linear-gradient'
 import { albumItemMapper, PlaylistProps } from '../util/playlist.util'
