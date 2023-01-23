@@ -4,7 +4,6 @@ import Settings from '../screens/Settings'
 import Library from '../screens/Library'
 import LibraryDetail from '../screens/LibraryDetail'
 import Profile from '../screens/Profile'
-import Playlist from '../screens/Playlist'
 import Admin from '../screens/Admin'
 
 const Stack = createNativeStackNavigator()

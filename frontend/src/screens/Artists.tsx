@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { FlatList, Image, StyleSheet, View, Alert, RefreshControl } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { FlatList, StyleSheet, View, Alert, RefreshControl } from 'react-native'
 import {
   Text,
   DataTable,
-  ActivityIndicator,
   Searchbar,
   Avatar,
   Appbar,
