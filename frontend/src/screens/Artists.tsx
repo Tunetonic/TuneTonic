@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { FlatList, Image, StyleSheet, View, Alert } from 'react-native'
+import { FlatList, Image, StyleSheet, View, Alert, RefreshControl } from 'react-native'
 import {
   Text,
   DataTable,
@@ -11,7 +11,6 @@ import {
 } from 'react-native-paper'
 import { capitalize } from '../../helpers'
 import { CommonActions } from '@react-navigation/native'
-import { authContext } from '../providers/auth.provider'
 import { getFollowedArtists } from '../services/user.service'
 import { unfollowArtist } from '../services/spotify.service'
 
@@ -23,22 +22,25 @@ interface FriendsProps {
 
 const Artists = ({ navigation, route }): JSX.Element => {
   const [search, setSearch] = useState('')
-  const [loading, setLoading] = useState(true)
   const [masterDataSource, setMasterDataSource] = useState <FriendsProps[] | null>(null)
   const [filteredDataSource, setFilteredDataSource] = useState<FriendsProps[]>([])
-  const { user } = useContext(authContext)
+  const [refreshing, setRefreshing] = useState<boolean>(false)
 
-
-  useEffect(() => {
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
     getFollowedArtists().then((data) => {
       const artists = data['artists']['items']
-      setLoading(false)
+      setRefreshing(false);
       setFilteredDataSource(artists)
       setMasterDataSource(artists)
     },
     (err) => {
       console.log(err)
     });
+  }, []);
+
+  useEffect(() => {
+    onRefresh()
   }, []);
 
     const handleSearchFilter = (text: string) => {
@@ -48,8 +50,6 @@ const Artists = ({ navigation, route }): JSX.Element => {
         : [],
     )
   }
-
-
 
   useEffect(() => {
     handleSearchFilter(search)
@@ -116,15 +116,6 @@ const Artists = ({ navigation, route }): JSX.Element => {
 
   let content: React.ReactElement
 
-  if (loading) {
-    content = (
-      <ActivityIndicator
-        animating={true}
-        style={{ marginTop: 20 }}
-        size="large"
-      />
-    )
-  } else {
     content = (
       <>
         <Text style={styles.count}>
@@ -135,10 +126,12 @@ const Artists = ({ navigation, route }): JSX.Element => {
           data={filteredDataSource}
           keyExtractor={(item, index) => index.toString()}
           renderItem={ItemView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         />
       </>
     )
-  }
 
   return (
     <View style={styles.container}>

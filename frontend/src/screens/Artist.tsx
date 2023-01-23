@@ -1,4 +1,4 @@
-import { View, ScrollView, Image, StyleSheet } from 'react-native'
+import { View, ScrollView, Image, StyleSheet, RefreshControl } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
 import { Appbar, Text } from 'react-native-paper'
 import React, {useContext, useEffect, useState} from "react";
@@ -15,11 +15,7 @@ function Artist({ navigation, route }) {
         getArtist(artistId).then((data) => {
             setArtist(data)
         });
-    }, []);
-
-    useEffect(() => {
         getArtistPlaylists(artistId).then((playlist) => {
-            console.log(playlist)
             setPlaylistItems(albumItemMapper(playlist.items))
         })
     }, [])

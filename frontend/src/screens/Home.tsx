@@ -12,7 +12,7 @@ const Home = ({ navigation }): JSX.Element => {
   const { theme } = useContext(themeContext)
   const [selectedTrack, setSelectedTrack] = useState<Track>();
   const [tracks, setTracks] = useState<Track[]>([])
-  const audioSoundRef = React.useRef(new Audio.Sound());
+  const audioSoundRef = useRef(new Audio.Sound());
   const [soundStatus, setSoundStatus] = useState<AVPlaybackStatusSuccess>()
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
@@ -78,7 +78,7 @@ const Home = ({ navigation }): JSX.Element => {
   }
 
   const pausePlay = async () => {
-    if (soundStatus && !soundStatus.isPlaying) {
+    if (soundStatus && !soundStatus.isPlaying && soundStatus.isLoaded) {
       setIsPlaying(true)
       await audioSoundRef.current.playFromPositionAsync(soundStatus.positionMillis)
     } else {
@@ -91,9 +91,12 @@ const Home = ({ navigation }): JSX.Element => {
   const onViewableItemsChanged = useCallback(({ viewableItems }) => {
 
     if (viewableItems.length > 0) {
-      if (audioSoundRef) {
-        stop()
-      }
+      audioSoundRef.current.getStatusAsync().then((status) => {
+        if (status.isLoaded) {
+          stop()
+        } 
+      })
+      
       setSelectedTrack(viewableItems[0]['item'])
 
       if (viewableItems[0]['item']['preview_url']) {
@@ -117,10 +120,7 @@ const Home = ({ navigation }): JSX.Element => {
         .catch((err) => {
           console.log("hit!?", err)
         })
-      } else {
-        console.log("too bad kid, theres no preview for this track.")
       }
-
     }
   }, [])
 
