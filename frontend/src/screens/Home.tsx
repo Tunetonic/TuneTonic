@@ -112,26 +112,60 @@ const Home = ({ }): JSX.Element => {
     },
   })
 
-  const stop = async () => {
-    setIsPlaying(false)
-    await audioSoundRef.current.stopAsync()
-  }
-  const unload = async () => {
-    setIsPlaying(false)
-    await audioSoundRef.current.unloadAsync() 
-  }
+    const BOTTOM_TAB_HEIGHT = 77.71
+    const PLAYBACK_HEIGHT = 40
+    const CARD_WIDTH = Dimensions.get('window').width
+    const CARD_HEIGHT = Dimensions.get('window').height - BOTTOM_TAB_HEIGHT - PLAYBACK_HEIGHT
 
-  const pausePlay = async () => {
-    if (soundStatus && !soundStatus.isPlaying && soundStatus.isLoaded) {
-      setIsPlaying(true)
-      await audioSoundRef.current.playFromPositionAsync(soundStatus.positionMillis)
-    } else {
-      setIsPlaying(false)
-      await audioSoundRef.current.pauseAsync()
+    const styles = StyleSheet.create({
+        cardContentStyle: {
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        cardStyle: {
+            width: CARD_WIDTH,
+            height: CARD_HEIGHT,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            // backgroundColor: 'teal',
+            borderRadius: 15
+        },
+        title: {
+            textAlign: 'center',
+        },
+        image: {
+            width: 256,
+            height: 256,
+            alignItems: 'center',
+            borderRadius: 0,
+        },
+        actionText: {
+            fontSize: 100
+        },
+        cardTitle: {
+            marginLeft: 5,
+        },
+        subtitle: {
+            marginLeft: 5,
+        },
+        header: {
+            marginTop: 10,
+            marginVertical: 10,
+            marginHorizontal: 10,
+        },
+    })
 
+    const stop = async () => {
+        setIsPlaying(false)
+        await audioSoundRef.current.stopAsync()
+    }
+    const unload = async () => {
+        setIsPlaying(false)
+        await audioSoundRef.current.unloadAsync()
     }
   }
-
   const onViewableItemsChanged = useCallback(({viewableItems}) => {
 
     if (viewableItems.length > 0) {
@@ -212,7 +246,6 @@ const Home = ({ }): JSX.Element => {
       minimumViewTime: 200,
       itemVisiblePercentThreshold: 80
   })
-
   return (<>
     <FlatList
       decelerationRate={0.7}
