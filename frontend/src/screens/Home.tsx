@@ -5,80 +5,87 @@ import {getPlaylist} from '../services/user.service'
 import {Track, trackItemMapper} from '../util/track'
 import {Audio, AVPlaybackStatusSuccess} from 'expo-av';
 import Slider from '@react-native-community/slider'
-import {themeContext} from '../providers/theme.provider'
-import {millisToHHMMSS} from '../../helpers'
-import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
-import {addLike, dislike} from "../services/like.service";
-import {authContext} from "../providers/auth.provider";
 
-const Home = ({navigation}): JSX.Element => {
-    const {theme} = useContext(themeContext)
-    const [selectedTrack, setSelectedTrack] = useState<Track>();
-    const [tracks, setTracks] = useState<Track[]>([])
-    const audioSoundRef = React.useRef(new Audio.Sound());
-    const [soundStatus, setSoundStatus] = useState<AVPlaybackStatusSuccess>()
-    const [isPlaying, setIsPlaying] = useState<boolean>(false)
+import { themeContext } from '../providers/theme.provider'
+import { millisToHHMMSS } from '../../helpers'
 
-    const {user} = useContext(authContext)
+const Home = ({ navigation }): JSX.Element => {
+  const { theme } = useContext(themeContext)
+  const [selectedTrack, setSelectedTrack] = useState<Track>();
+  const [tracks, setTracks] = useState<Track[]>([])
+  const audioSoundRef = useRef(new Audio.Sound());
+  const [soundStatus, setSoundStatus] = useState<AVPlaybackStatusSuccess>()
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
-    useEffect(() => {
-        getPlaylist("1LwKg8pkx71G83WgOfvlLZ").then((data) => {
-            setTracks(trackItemMapper(data.items))
-        })
-    }, [])
 
-    const BOTTOM_TAB_HEIGHT = 77.71
-    const PLAYBACK_HEIGHT = 40
-    const CARD_WIDTH = Dimensions.get('window').width
-    const CARD_HEIGHT = Dimensions.get('window').height - BOTTOM_TAB_HEIGHT - PLAYBACK_HEIGHT
-    const styles = StyleSheet.create({
-        cardContentStyle: {
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center'
-        },
-        cardStyle: {
-            width: CARD_WIDTH,
-            height: CARD_HEIGHT,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            // backgroundColor: 'teal',
-            borderRadius: 15
-        },
-        title: {
-            textAlign: 'center',
-        },
-
-        actionText: {
-            fontSize: 100
-        },
-        image: {
-            width: 256,
-            height: 256,
-            alignItems: 'center',
-            borderRadius: 0,
-        },
-        cardTitle: {
-            marginLeft: 5,
-        },
-        subtitle: {
-            marginLeft: 5,
-        },
-        header: {
-            marginTop: 10,
-            marginVertical: 10,
-            marginHorizontal: 10,
-        },
+  useEffect(() => {
+    getPlaylist("1LwKg8pkx71G83WgOfvlLZ").then((data) => {
+      console.log(data)
+      setTracks(trackItemMapper(data.items))
+    },
+    (err) => {
+      console.log(err)
     })
+  }, [])
 
-    const stop = async () => {
-        setIsPlaying(false)
-        await audioSoundRef.current.stopAsync()
-    }
-    const unload = async () => {
-        setIsPlaying(false)
-        await audioSoundRef.current.unloadAsync()
+  const BOTTOM_TAB_HEIGHT = 77.71
+  const PLAYBACK_HEIGHT = 40
+  const CARD_WIDTH = Dimensions.get('window').width
+  const CARD_HEIGHT = Dimensions.get('window').height - BOTTOM_TAB_HEIGHT - PLAYBACK_HEIGHT
+  const styles = StyleSheet.create({
+    cardContentStyle: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    cardStyle: {
+      width: CARD_WIDTH,
+      height: CARD_HEIGHT,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      // backgroundColor: 'teal',
+      borderRadius: 15
+    },
+    title: {
+      textAlign: 'center',
+    },
+    image: {
+      width: 256,
+      height: 256,
+      alignItems: 'center',
+      borderRadius: 0,
+    },
+    cardTitle: {
+      marginLeft: 5,
+    },
+    subtitle: {
+      marginLeft: 5,
+    },
+    header: {
+      marginTop: 10,
+      marginVertical: 10,
+      marginHorizontal: 10,
+    },
+  })
+
+  const stop = async () => {
+    setIsPlaying(false)
+    await audioSoundRef.current.stopAsync()
+  }
+  const unload = async () => {
+    setIsPlaying(false)
+    await audioSoundRef.current.unloadAsync() 
+  }
+
+  const pausePlay = async () => {
+    if (soundStatus && !soundStatus.isPlaying && soundStatus.isLoaded) {
+      setIsPlaying(true)
+      await audioSoundRef.current.playFromPositionAsync(soundStatus.positionMillis)
+    } else {
+      setIsPlaying(false)
+      await audioSoundRef.current.pauseAsync()
+
     }
 
     const pausePlay = async () => {
@@ -93,11 +100,16 @@ const Home = ({navigation}): JSX.Element => {
 
     const onViewableItemsChanged = useCallback(({viewableItems}) => {
 
-        if (viewableItems.length > 0) {
-            if (audioSoundRef) {
-                stop()
-            }
-            setSelectedTrack(viewableItems[0]['item'])
+
+    if (viewableItems.length > 0) {
+      audioSoundRef.current.getStatusAsync().then((status) => {
+        if (status.isLoaded) {
+          stop()
+        } 
+      })
+      
+      setSelectedTrack(viewableItems[0]['item'])
+
 
             if (viewableItems[0]['item']['preview_url']) {
 
@@ -123,8 +135,18 @@ const Home = ({navigation}): JSX.Element => {
                 console.log("too bad kid, theres no preview for this track.")
             }
 
-        }
-    }, [])
+
+        },
+        )
+        .then(({ sound }) => {
+          audioSoundRef.current = sound
+        })
+        .catch((err) => {
+          console.log("hit!?", err)
+        })
+      }
+    }
+  }, [])
 
     const LeftActions = (progress, dragX) => {
         let scale = dragX.interpolate({
