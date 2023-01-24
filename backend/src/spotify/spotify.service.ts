@@ -168,7 +168,6 @@ export class SpotifyService {
       ? url
       : `https://api.spotify.com/v1/search?type=track&q=\'${randomSearch}\'&offset=${randomOffset}`
 
-    console.log(spotifyUrl)
     return await firstValueFrom(
       this.httpService
         .get(spotifyUrl, {
@@ -181,7 +180,6 @@ export class SpotifyService {
         .pipe(
           map((response) => response.data),
           catchError((error) => {
-            console.log(error)
             throw error.response.data
           }),
         ),

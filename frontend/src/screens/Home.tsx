@@ -36,7 +36,7 @@ const Home = ({ }): JSX.Element => {
       })
     },
     (err) => {
-      console.log(err)
+      console.error(err)
     })
     setTimeout(() => {
       setRefreshing(false);
@@ -46,10 +46,7 @@ const Home = ({ }): JSX.Element => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    getRandomTracks().then((data) => {
-      
-      console.log(data)
-      
+    getRandomTracks().then((data) => {      
       setTracks(trackItemMapper(data.tracks.items))
       setTracksMeta({
         'limit': data.tracks.limit,
@@ -162,10 +159,8 @@ const Home = ({ }): JSX.Element => {
             audioSoundRef.current = sound
         })
         .catch((err) => {
-            console.log("hit!?", err)
+            console.error(err)
         })
-      } else {
-        console.log("too bad kid, theres no preview for this track.")
       }
     }
   }, [])
@@ -208,7 +203,7 @@ const Home = ({ }): JSX.Element => {
                 if (status.isLoaded) setSoundStatus(status)
             })
             .catch((error) => {
-                console.log(error)
+                console.error(error)
             })
     }
   }, [selectedTrack])
