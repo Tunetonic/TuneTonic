@@ -11,6 +11,7 @@ import { User } from '../user/user.entity'
 
 @Injectable()
 export class SpotifyService {
+
   constructor(
     private readonly httpService: HttpService,
     private readonly userService: UserService,

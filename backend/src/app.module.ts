@@ -9,6 +9,7 @@ import * as path from 'path'
 import { SpotifyModule } from './spotify/spotify.module'
 import { GenresModule } from './genres/genres.module';
 import { AuthModule } from './auth/auth.module'
+import {LikesModule} from "./likes/likes.module";
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AuthModule } from './auth/auth.module'
     SpotifyModule,
     GenresModule,
     AuthModule,
+    LikesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

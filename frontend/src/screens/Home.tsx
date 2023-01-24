@@ -1,10 +1,11 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { Image, StyleSheet, Dimensions, Platform, View, FlatList, TouchableHighlight } from 'react-native'
-import { Card, IconButton, Text } from 'react-native-paper'
-import { getPlaylist } from '../services/user.service'
-import { Track, trackItemMapper } from '../util/track'
-import { Audio, AVPlaybackStatusSuccess } from 'expo-av';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react'
+import {Image, StyleSheet, Dimensions, Platform, View, FlatList, TouchableHighlight, Animated} from 'react-native'
+import {Card, IconButton, Text} from 'react-native-paper'
+import {getPlaylist} from '../services/user.service'
+import {Track, trackItemMapper} from '../util/track'
+import {Audio, AVPlaybackStatusSuccess} from 'expo-av';
 import Slider from '@react-native-community/slider'
+
 import { themeContext } from '../providers/theme.provider'
 import { millisToHHMMSS } from '../../helpers'
 
@@ -84,11 +85,21 @@ const Home = ({ navigation }): JSX.Element => {
     } else {
       setIsPlaying(false)
       await audioSoundRef.current.pauseAsync()
+
     }
-  }
 
+    const pausePlay = async () => {
+        if (soundStatus && !soundStatus.isPlaying) {
+            setIsPlaying(true)
+            await audioSoundRef.current.playFromPositionAsync(soundStatus.positionMillis)
+        } else {
+            setIsPlaying(false)
+            await audioSoundRef.current.pauseAsync()
+        }
+    }
 
-  const onViewableItemsChanged = useCallback(({ viewableItems }) => {
+    const onViewableItemsChanged = useCallback(({viewableItems}) => {
+
 
     if (viewableItems.length > 0) {
       audioSoundRef.current.getStatusAsync().then((status) => {
@@ -99,20 +110,33 @@ const Home = ({ navigation }): JSX.Element => {
       
       setSelectedTrack(viewableItems[0]['item'])
 
-      if (viewableItems[0]['item']['preview_url']) {
 
-        Audio.Sound.createAsync(
-          { uri: viewableItems[0]['item']['preview_url'] },
-          { shouldPlay: false, isLooping: false },
-          (status) => {
-            if (status.isLoaded) {
-              setSoundStatus(status)
-              if (status.didJustFinish) {
-                unload()
-              }
+            if (viewableItems[0]['item']['preview_url']) {
+
+                Audio.Sound.createAsync(
+                    {uri: viewableItems[0]['item']['preview_url']},
+                    {shouldPlay: false, isLooping: false},
+                    (status) => {
+                        if (status.isLoaded) {
+                            setSoundStatus(status)
+                            if (status.didJustFinish) {
+                                unload()
+                            }
+                        }
+                    },
+                )
+                    .then(({sound}) => {
+                        audioSoundRef.current = sound
+                    })
+                    .catch((err) => {
+                        console.log("hit!?", err)
+                    })
+            } else {
+                console.log("too bad kid, theres no preview for this track.")
             }
 
-          },
+
+        },
         )
         .then(({ sound }) => {
           audioSoundRef.current = sound
@@ -124,81 +148,138 @@ const Home = ({ navigation }): JSX.Element => {
     }
   }, [])
 
-  useEffect(() => {
-    if (selectedTrack?.preview_url) {
-      audioSoundRef.current.getStatusAsync()
-        .then(status => {
-          if (status.isLoaded) setSoundStatus(status)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    }
-  }, [selectedTrack])
+    const LeftActions = (progress, dragX) => {
+        let scale = dragX.interpolate({
+            inputRange: [0, 100],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+        });
 
-  const _viewabilityConfig = useRef({
-    minimumViewTime: 200,
-    itemVisiblePercentThreshold: 50
-  })
+        return (
+            <View>
 
-  return (<>
-    <FlatList
-      decelerationRate={0.7}
-      snapToInterval={CARD_HEIGHT}
-      keyExtractor={item => item.id}
-      showsVerticalScrollIndicator={false}
-      viewabilityConfig={_viewabilityConfig.current}
-      onViewableItemsChanged={onViewableItemsChanged}
-      contentInset={{
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0
-      }}
-      snapToAlignment="start"
-      contentContainerStyle={{
-        paddingVertical: Platform.OS === 'android' ? 0 : 0
-      }}
-      data={tracks}
-      renderItem={({ item }) => (
-        <TouchableHighlight
-          key={item.id}
-        >
-          <Card key={item.id} style={styles.cardStyle}>
-            <Card.Content style={styles.cardContentStyle}>
-              <Image
-                source={{ uri: item.image }}
-                style={styles.image}
-              />
-              {/* <Text style={styles.title}>{item.id} | {CARD_HEIGHT} | {index}</Text> */}
-            </Card.Content>
-          </Card>
-        </TouchableHighlight>
-      )}
-    />
-    <View style={{ 'margin': 10 }}>
-      <View style={{ display: 'flex', 'justifyContent': 'space-between', 'flexDirection': 'row' }}>
-        <View style={{ 'flexDirection': 'column' }}>
-          <Text>{selectedTrack ? selectedTrack.name : ''}</Text>
-          <Text style={{ color: 'rgba(255,255,255, 0.6)' }}>{selectedTrack ? 'by ' + selectedTrack.artist_name : ''}</Text>
+                <Animated.Text style={[styles.actionText, {transform: [{scale}]}]}>
+                    👎
+                </Animated.Text>
+            </View>
+        );
+    };
+
+    const RightActions = (progress, dragX) => {
+        const scale = dragX.interpolate({
+            inputRange: [-100, 0],
+            outputRange: [1, 0],
+            extrapolate: 'clamp',
+        });
+        return (
+            <View>
+                <Animated.Text style={[styles.actionText, {transform: [{scale}]}]}>
+                    👍
+                </Animated.Text>
+            </View>
+        );
+    };
+
+
+    useEffect(() => {
+        if (selectedTrack?.preview_url) {
+            audioSoundRef.current.getStatusAsync()
+                .then(status => {
+                    if (status.isLoaded) setSoundStatus(status)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
+    }, [selectedTrack])
+
+    const _viewabilityConfig = useRef({
+        minimumViewTime: 200,
+        itemVisiblePercentThreshold: 50
+    })
+
+    return (<>
+        <FlatList
+            decelerationRate={0.7}
+            snapToInterval={CARD_HEIGHT}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+            viewabilityConfig={_viewabilityConfig.current}
+            onViewableItemsChanged={onViewableItemsChanged}
+            contentInset={{
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0
+            }}
+            snapToAlignment="start"
+            contentContainerStyle={{
+                paddingVertical: Platform.OS === 'android' ? 0 : 0
+            }}
+            data={tracks}
+            renderItem={({item}) => (
+                <TouchableHighlight
+                    key={item.id}
+                >
+
+                    <Card key={item.id} style={styles.cardStyle}>
+                        <Card.Content style={styles.cardContentStyle}>
+                            <GestureHandlerRootView>
+                            <Swipeable
+                                renderLeftActions={LeftActions}
+                                onSwipeableLeftOpen={() => {alert('you have disliked this song 👎');
+                                dislike(user?.id, item);
+                                }}
+
+                                renderRightActions={RightActions}
+                                onSwipeableRightOpen={() => {
+                                    alert('you have liked this song 👍')
+                                    addLike(user?.id, item);
+
+                                }}
+                            >
+                                <Image
+                                    source={{uri: item.image}}
+                                    style={styles.image}
+                                />
+                            </Swipeable>
+                            </GestureHandlerRootView>
+
+                            {/* <Text style={styles.title}>{item.id} | {CARD_HEIGHT} | {index}</Text> */}
+                        </Card.Content>
+                    </Card>
+                </TouchableHighlight>
+            )}
+        />
+        <View style={{'margin': 10}}>
+
+
+            <View style={{display: 'flex', 'justifyContent': 'space-between', 'flexDirection': 'row'}}>
+                <View style={{'flexDirection': 'column'}}>
+                    <Text>{selectedTrack ? selectedTrack.name : ''}</Text>
+                    <Text
+                        style={{color: 'rgba(255,255,255, 0.6)'}}>{selectedTrack ? 'by ' + selectedTrack.artist_name : ''}</Text>
+                </View>
+                <IconButton size={35} icon={isPlaying ? 'pause-circle-outline' : 'play-circle-outline'}
+                            disabled={!selectedTrack?.preview_url} onPress={pausePlay}></IconButton>
+            </View>
+            <Slider
+                style={{width: CARD_WIDTH - 20, height: 40}}
+                minimumValue={0}
+                maximumValue={soundStatus && soundStatus.isLoaded ? soundStatus?.durationMillis : 1}
+                value={soundStatus && soundStatus.isLoaded ? soundStatus?.positionMillis : 0}
+                minimumTrackTintColor="#FFFFFF"
+                step={0.5}
+                maximumTrackTintColor="#DBDBDB"
+                thumbTintColor={theme.colors.primary}
+            />
+            <View style={{'display': 'flex', 'justifyContent': 'space-between', 'flexDirection': 'row'}}>
+                <Text
+                    style={{'fontSize': 11}}>{soundStatus && selectedTrack?.preview_url ? millisToHHMMSS(soundStatus?.positionMillis) : '--:--'}</Text>
+                <Text
+                    style={{'fontSize': 11}}>{soundStatus && soundStatus.durationMillis && selectedTrack?.preview_url ? millisToHHMMSS(soundStatus?.durationMillis) : '--:--'}</Text>
+            </View>
         </View>
-        <IconButton size={35} icon={ isPlaying ? 'pause-circle-outline' : 'play-circle-outline' } disabled={!selectedTrack?.preview_url} onPress={pausePlay}></IconButton>
-      </View>
-      <Slider
-        style={{ width: CARD_WIDTH - 20, height: 40 }}
-        minimumValue={0}
-        maximumValue={soundStatus && soundStatus.isLoaded ? soundStatus?.durationMillis : 1}
-        value={soundStatus && soundStatus.isLoaded ? soundStatus?.positionMillis : 0}
-        minimumTrackTintColor="#FFFFFF"
-        step={0.5}
-        maximumTrackTintColor="#DBDBDB"
-        thumbTintColor={theme.colors.primary}
-      />
-      <View style={{ 'display': 'flex', 'justifyContent': 'space-between', 'flexDirection': 'row' }}>
-        <Text style={{ 'fontSize': 11 }}>{soundStatus && selectedTrack?.preview_url ? millisToHHMMSS(soundStatus?.positionMillis) : '--:--'}</Text>
-        <Text style={{ 'fontSize': 11 }}>{soundStatus && soundStatus.durationMillis && selectedTrack?.preview_url ? millisToHHMMSS(soundStatus?.durationMillis) : '--:--'}</Text>
-      </View>
-    </View>
-  </>)
+    </>)
 }
 export default Home
