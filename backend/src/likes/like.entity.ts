@@ -1,20 +1,21 @@
 
-import {Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, JoinTable, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn} from 'typeorm';
 import {User} from "../user/user.entity";
+import {Genre} from "../genres/entities/genre.entity";
 
 @Entity()
 export class Like {
-    @PrimaryGeneratedColumn()
-    id: string;
+    // @PrimaryGeneratedColumn()
+    // id: string;
 
-    @Column()
+    @PrimaryColumn()
     spotifyId: string;
 
-    @Column()
-    genres: string;
+    @ManyToMany(() => Genre, genre => genre.likes, {cascade:["insert","update"], eager: true}, )
+    @JoinTable()
+    genres: Genre[];
 
     @ManyToMany(() => User)
     @JoinTable()
     users: User[];
-
 }

@@ -8,7 +8,7 @@ import Slider from '@react-native-community/slider'
 import {themeContext} from '../providers/theme.provider'
 import {millisToHHMMSS} from '../../helpers'
 import {Swipeable} from 'react-native-gesture-handler';
-import {addLike} from "../services/like.service";
+import {addLike, dislike} from "../services/like.service";
 import {authContext} from "../providers/auth.provider";
 
 const Home = ({navigation}): JSX.Element => {
@@ -204,7 +204,9 @@ const Home = ({navigation}): JSX.Element => {
                         <Card.Content style={styles.cardContentStyle}>
                             <Swipeable
                                 renderLeftActions={LeftActions}
-                                onSwipeableLeftOpen={() => alert('you have disliked this song 👎')}
+                                onSwipeableLeftOpen={() => {alert('you have disliked this song 👎');
+                                dislike(user?.id, item);
+                                }}
 
                                 renderRightActions={RightActions}
                                 onSwipeableRightOpen={() => {

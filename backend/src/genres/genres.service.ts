@@ -29,7 +29,7 @@ export class GenresService {
             INSERT INTO genre_dist (id, user_id, ${columnsLst.toString()})
             VALUES ("${uuidv4()}", "${userId}", ${valuesLst.toString()})
         `
-        this.genreRepository.query(query)
+        await this.genreRepository.query(query);
     }
 
     findAll() {

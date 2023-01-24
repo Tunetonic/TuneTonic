@@ -1,5 +1,6 @@
 import {Like} from "../like.entity";
 import {User} from "../../user/user.entity";
+import {Genre} from "../../genres/entities/genre.entity";
 
 export type LikeDTO = {
     uri: string;
@@ -13,11 +14,10 @@ export type LikeDTO = {
     duration_ms: number;
 }
 
-export const likeDTOMapper = (likeDto: LikeDTO, genres: string, user: User): Like => {
+export const likeDTOMapper = (likeDto: LikeDTO, genres: Genre[], user: User): Like => {
     const like:Like = new Like();
-    like.genres = genres;
+    like.genres = [...genres];
     like.spotifyId = likeDto.id;
     like.users = [user];
-
     return like;
 }
