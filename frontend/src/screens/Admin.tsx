@@ -74,7 +74,6 @@ const Admin = (): JSX.Element => {
                 <Card
                   key={i}
                   style={styles.card}
-                  onPress={() => console.log(user.image)}
                 >
                   <Card.Title
                     title={user.name}

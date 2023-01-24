@@ -26,7 +26,6 @@ export const authRequest = async (
   const spotifyAccessToken = await getAsyncItem('spotify_access_token')
   const JWT = await getAsyncItem('jwt_access_token')
 
-  console.log("CHECKPOINT 2: ", body)
   return await fetch(url, {
     method: method,
     body: JSON.stringify(body),

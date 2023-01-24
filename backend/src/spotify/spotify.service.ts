@@ -11,7 +11,6 @@ import { User } from '../user/user.entity'
 
 @Injectable()
 export class SpotifyService {
-
   constructor(
     private readonly httpService: HttpService,
     private readonly userService: UserService,
@@ -132,6 +131,46 @@ export class SpotifyService {
     return await firstValueFrom(
       this.httpService
         .get<SpotifySong[]>(spotifyUrl, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        })
+        .pipe(
+          map((response) => response.data),
+          catchError((error) => {
+            throw error.response.data
+          }),
+        ),
+    )
+  }
+
+  async getRandomTracks(token: string, url?: string): Promise<any> {
+    const characters = 'abcdefghijklmnopqrstuvwxyz'
+    // Gets a random character from the characters string.
+    const randomCharacter = characters.charAt(
+      Math.floor(Math.random() * characters.length),
+    )
+    let randomSearch = ''
+    // Places the wildcard character at the beginning, or both beginning and end, randomly.
+    switch (Math.round(Math.random())) {
+      case 0:
+        randomSearch = randomCharacter + '%25' // %25 = % in URL Encoding
+        break
+      case 1:
+        randomSearch = '%25' + randomCharacter + '%25'
+        break
+    }
+    const randomOffset = Math.floor(Math.random() * 1000)
+
+    const spotifyUrl = url
+      ? url
+      : `https://api.spotify.com/v1/search?type=track&q=\'${randomSearch}\'&offset=${randomOffset}`
+
+    return await firstValueFrom(
+      this.httpService
+        .get(spotifyUrl, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',

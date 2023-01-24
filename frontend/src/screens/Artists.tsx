@@ -34,7 +34,7 @@ const Artists = ({ navigation, route }): JSX.Element => {
       setMasterDataSource(artists)
     },
     (err) => {
-      console.log(err)
+      console.error(err)
     });
   }, []);
 

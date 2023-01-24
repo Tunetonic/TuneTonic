@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Headers,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common'
+import { Controller, Get, Headers, NotFoundException } from '@nestjs/common'
 import { SpotifyService } from '../spotify/spotify.service'
 import { UserService } from '../user/user.service'
 import { AuthService } from './auth.service'
