@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react'
-import { Appbar, Button, IconButton, Text } from 'react-native-paper'
-import { View, ScrollView, Image, StyleSheet, Linking } from 'react-native'
+import { Appbar, IconButton, Text } from 'react-native-paper'
+import { View, ScrollView, Image, StyleSheet, Linking, RefreshControl } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { CommonActions } from '@react-navigation/native'
 import { themeContext } from '../providers/theme.provider'
@@ -11,10 +11,20 @@ import { SongCard } from '../components/cards/SongCard'
 const LibraryDetail = ({ navigation, route }): JSX.Element => {
   const { theme } = useContext(themeContext)
   const [songs, setSongs] = useState<SongProps[]>([])
+  const [refreshing, setRefreshing] = useState<boolean>(false)
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    handleGetSongs()
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     if (route.params.playlistId) {
-      handleGetSongs()
+      onRefresh()
     }
   }, [route.params.playlistId])
 
@@ -85,7 +95,10 @@ const LibraryDetail = ({ navigation, route }): JSX.Element => {
           }}
         />
       </Appbar.Header>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <LinearGradient
           colors={['rgba(255,255,255,1)', 'rgba(189,70,249,0.7)']}
           style={styles.firstChild}

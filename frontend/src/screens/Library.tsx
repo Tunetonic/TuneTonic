@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Image, TouchableHighlight, StyleSheet, ScrollView } from 'react-native'
-import { Appbar, Button, Card, IconButton } from 'react-native-paper'
-
+import { Image, TouchableHighlight, StyleSheet, ScrollView, RefreshControl } from 'react-native'
+import { Appbar, Card } from 'react-native-paper'
 import { capitalize } from '../../helpers'
 import { authContext } from '../providers/auth.provider'
 import { getUserPlaylist } from '../services/user.service'
@@ -10,6 +9,16 @@ import { playlistItemMapper, PlaylistProps } from '../util/playlist.util'
 const Library = ({ navigation, route }): JSX.Element => {
   const [playlistItems, setPlaylistItems] = useState<PlaylistProps[]>([])
   const { user } = useContext(authContext)
+  const [refreshing, setRefreshing] = useState<boolean>(false)
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    handleGetPlaylists()
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const handleGetPlaylists = () => {
     if (!user?.id) return
@@ -20,7 +29,7 @@ const Library = ({ navigation, route }): JSX.Element => {
   }
 
   useEffect(() => {
-    handleGetPlaylists()
+    onRefresh()
   }, [])
 
   return (
@@ -51,7 +60,10 @@ const Library = ({ navigation, route }): JSX.Element => {
           }
         />
       </Appbar.Header>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {playlistItems.length > 0 &&
           playlistItems.map((playlist, i: number) => {
             return (

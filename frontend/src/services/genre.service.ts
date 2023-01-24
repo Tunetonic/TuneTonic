@@ -16,5 +16,6 @@ export const postUserPreferenceGenres = async (genreBody: GenreBody) => {
   const postUrl = `${NEST_URI}/genres`
 
   console.log("CHECKPOINT 1: ", genreBody)
-  return await authRequest(postUrl, JSON.parse(JSON.stringify(genreBody).replaceAll('-', '_')), 'POST')
+  const genreBodyStr = JSON.stringify(genreBody).replace('/-/g', '_')
+  return await authRequest(postUrl, JSON.parse(genreBodyStr), 'POST')
 }

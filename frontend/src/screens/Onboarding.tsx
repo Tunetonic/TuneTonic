@@ -90,17 +90,15 @@ const OnboardingScreen = ({navigation}): JSX.Element => {
                     backgroundColor: theme.colors.background,
                     title: ' ',
                     subtitle: ' ',
-                    image: <TagView transferGenres={setGenres}></TagView>,
+                    image: <TagView transferGenres={setGenres}/>,
                 },
             ]}
             onSkip={() => {
                 navigation.navigate('home-tab-navigation')
             }}
-            onDone={() => {
-
-                console.log(genres.filter(data => data.isActive === true));
-                if (user?.id) setGenreBody({userId: user.id, genres: genres})
-                if (genreBody) postUserPreferenceGenres(genreBody)
+            onDone={async () => {
+                if (user && user.id && genres.length > 0) {setGenreBody({userId: user.id, genres: genres});}
+                if ({userId: user!.id, genres: genres}) await postUserPreferenceGenres({userId: user!.id, genres: genres})
                 navigation.navigate('home-tab-navigation')
             }}
         />
