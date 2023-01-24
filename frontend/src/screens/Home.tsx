@@ -7,7 +7,7 @@ import {Audio, AVPlaybackStatusSuccess} from 'expo-av';
 import Slider from '@react-native-community/slider'
 import {themeContext} from '../providers/theme.provider'
 import {millisToHHMMSS} from '../../helpers'
-import {Swipeable} from 'react-native-gesture-handler';
+import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
 import {addLike, dislike} from "../services/like.service";
 import {authContext} from "../providers/auth.provider";
 
@@ -202,6 +202,7 @@ const Home = ({navigation}): JSX.Element => {
 
                     <Card key={item.id} style={styles.cardStyle}>
                         <Card.Content style={styles.cardContentStyle}>
+                            <GestureHandlerRootView>
                             <Swipeable
                                 renderLeftActions={LeftActions}
                                 onSwipeableLeftOpen={() => {alert('you have disliked this song 👎');
@@ -220,6 +221,7 @@ const Home = ({navigation}): JSX.Element => {
                                     style={styles.image}
                                 />
                             </Swipeable>
+                            </GestureHandlerRootView>
 
                             {/* <Text style={styles.title}>{item.id} | {CARD_HEIGHT} | {index}</Text> */}
                         </Card.Content>

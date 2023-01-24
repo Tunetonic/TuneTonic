@@ -3,7 +3,7 @@ import {Column, Entity, JoinTable, ManyToMany, PrimaryColumn, PrimaryGeneratedCo
 import {User} from "../user/user.entity";
 import {Genre} from "../genres/entities/genre.entity";
 
-@Entity()
+@Entity('sentiment')
 export class Like {
     // @PrimaryGeneratedColumn()
     // id: string;

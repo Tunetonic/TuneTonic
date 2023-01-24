@@ -59,7 +59,7 @@ export const getFollowedArtists = async (): Promise<any> => {
  * @returns
  */
 export const saveUser = async (userBody: DatabaseUser): Promise<any> =>
-  await authRequest(`${NEST_URI}/user`, 'POST', userBody)
+  await authRequest(`${NEST_URI}/user`, userBody,'POST')
 
 /**
  * Updates an existing user
@@ -71,7 +71,7 @@ export const updateUser = async (
   id: string,
   updateUserBody: Partial<Omit<DatabaseUser, 'id'>>,
 ): Promise<any> =>
-  await authRequest(`${NEST_URI}/user/${id}`, 'PUT', updateUserBody)
+  await authRequest(`${NEST_URI}/user/${id}`, updateUserBody, 'PUT')
 
 /**
  * Deletes a user based on ID
