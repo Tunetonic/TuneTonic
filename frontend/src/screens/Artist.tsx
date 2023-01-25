@@ -1,10 +1,10 @@
 import { View, ScrollView, Image, StyleSheet } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
 import { Appbar, Text } from 'react-native-paper'
-import React, {useContext, useEffect, useState} from "react";
+import React, { useEffect, useState} from "react";
 import { getArtist, getArtistPlaylists} from '../services/spotify.service'
 import { LinearGradient } from 'expo-linear-gradient'
-import { albumItemMapper, playlistItemMapper, PlaylistProps } from '../util/playlist.util'
+import { albumItemMapper, PlaylistProps } from '../util/playlist.util'
 
 function Artist({ navigation, route }) {
     const artistId = route.params['artist'];
@@ -15,11 +15,7 @@ function Artist({ navigation, route }) {
         getArtist(artistId).then((data) => {
             setArtist(data)
         });
-    }, []);
-
-    useEffect(() => {
         getArtistPlaylists(artistId).then((playlist) => {
-            setPlaylistItems(playlistItemMapper(playlist.items))
             setPlaylistItems(albumItemMapper(playlist.items))
         })
     }, [])

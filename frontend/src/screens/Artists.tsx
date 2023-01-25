@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { FlatList, Image, StyleSheet, View, Alert } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { FlatList, StyleSheet, View, Alert, RefreshControl } from 'react-native'
 import {
   Text,
   DataTable,
-  ActivityIndicator,
   Searchbar,
   Avatar,
   Appbar,
@@ -11,7 +10,6 @@ import {
 } from 'react-native-paper'
 import { capitalize } from '../../helpers'
 import { CommonActions } from '@react-navigation/native'
-import { authContext } from '../providers/auth.provider'
 import { getFollowedArtists } from '../services/user.service'
 import { unfollowArtist } from '../services/spotify.service'
 
@@ -21,28 +19,27 @@ interface FriendsProps {
   image: string
 }
 
-const Artists = ({ navigation, route }): JSX.Element => {
+const Artists = ({ navigation }): JSX.Element => {
   const [search, setSearch] = useState('')
-  const [loading, setLoading] = useState(true)
   const [masterDataSource, setMasterDataSource] = useState <FriendsProps[] | null>(null)
   const [filteredDataSource, setFilteredDataSource] = useState<FriendsProps[]>([])
-  const { user } = useContext(authContext)
+  const [refreshing, setRefreshing] = useState<boolean>(false)
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getFollowedArtists().then((data) => {
+      const artists = data['artists']['items']
+      setRefreshing(false);
+      setFilteredDataSource(artists)
+      setMasterDataSource(artists)
+    },
+    (err) => {
+      console.error(err)
+    });
+  }, []);
 
   useEffect(() => {
-    getFollowedArtists().then(async (data) => {
-          try {
-            const artists = data['artists']['items']
-            setFilteredDataSource(artists)
-            setMasterDataSource(artists)
-          } catch (error) {
-            console.log(error)
-          }
-          setLoading(false)
-        },
-        (err) => {
-          console.log(err)
-        });
+    onRefresh()
   }, []);
 
     const handleSearchFilter = (text: string) => {
@@ -52,8 +49,6 @@ const Artists = ({ navigation, route }): JSX.Element => {
         : [],
     )
   }
-
-
 
   useEffect(() => {
     handleSearchFilter(search)
@@ -103,17 +98,14 @@ const Artists = ({ navigation, route }): JSX.Element => {
             style: 'cancel',
           },
           {text: 'OK', onPress: () =>
-                  unfollowArtist(artistId)
-                      .then((response) => {
-                          getFollowedArtists().then((data) => {
-                              const artists = data['artists']['items']
-                              setFilteredDataSource(artists)
-                              setMasterDataSource(artists)
-                          })
-                      })
-                      .catch((error) => {
-                          console.log(error)
-                      })
+                unfollowArtist(artistId).then((response) => {
+                  // The artist was successfully unfollowed, so update the master data source
+                  getFollowedArtists().then((data) => {
+                    const artists = data['artists']['items']
+                    setFilteredDataSource(artists)
+                    setMasterDataSource(artists)
+                  })
+                })
           },
         ],
         {cancelable: false},
@@ -123,15 +115,6 @@ const Artists = ({ navigation, route }): JSX.Element => {
 
   let content: React.ReactElement
 
-  if (loading) {
-    content = (
-      <ActivityIndicator
-        animating={true}
-        style={{ marginTop: 20 }}
-        size="large"
-      />
-    )
-  } else {
     content = (
       <>
         <Text style={styles.count}>
@@ -142,10 +125,12 @@ const Artists = ({ navigation, route }): JSX.Element => {
           data={filteredDataSource}
           keyExtractor={(item, index) => index.toString()}
           renderItem={ItemView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         />
       </>
     )
-  }
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,4 @@
 export interface CreateGenreDto {
-    isActive: boolean
-    tagNames: string[]
+  isActive: boolean
+  tagNames: string[]
 }

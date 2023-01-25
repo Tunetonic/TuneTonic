@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Image, StyleSheet, ScrollView } from 'react-native'
 import {
   Text,
@@ -74,7 +74,6 @@ const Admin = (): JSX.Element => {
                 <Card
                   key={i}
                   style={styles.card}
-                  onPress={() => console.log(user.image)}
                 >
                   <Card.Title
                     title={user.name}

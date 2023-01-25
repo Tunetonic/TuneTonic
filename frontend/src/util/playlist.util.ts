@@ -22,3 +22,13 @@ export const albumItemMapper = (arr: any[]): PlaylistProps[] => {
     totalTracks: item.total_tracks,
   }))
 }
+
+export const albumItemMapper = (arr: any[]): PlaylistProps[] => {
+  return arr.map((item) => ({
+    id: item.id,
+    name: item.name,
+    image: item.images[0].url,
+    totalTracks: item.total_tracks,
+  }))
+}
+

@@ -41,6 +41,16 @@ export const getUserPlaylist = async (): Promise<any> => {
 export const getPlaylist = async (id: string): Promise<Response> => {
   return await authFetch(`${NEST_URI}/spotify/playlist/${id}`)
 }
+export const getRandomTracks = async (url?: string): Promise<any> => {
+  if(url) {
+    return await authRequest(`${NEST_URI}/spotify/random/tracks`, {'url': url}, 'POST')
+  }
+  else {
+    return await authFetch(`${NEST_URI}/spotify/random/tracks`)
+  }
+}
+
+
 
 export const getPlaylistSongs = async (id: string): Promise<any> =>
   await authFetch(`${NEST_URI}/spotify/playlist/songs/${id}`)
@@ -59,7 +69,7 @@ export const getFollowedArtists = async (): Promise<any> => {
  * @returns
  */
 export const saveUser = async (userBody: DatabaseUser): Promise<any> =>
-  await authRequest(`${NEST_URI}/user`, 'POST', userBody)
+  await authRequest(`${NEST_URI}/user`, userBody,'POST')
 
 /**
  * Updates an existing user
@@ -71,7 +81,7 @@ export const updateUser = async (
   id: string,
   updateUserBody: Partial<Omit<DatabaseUser, 'id'>>,
 ): Promise<any> =>
-  await authRequest(`${NEST_URI}/user/${id}`, 'PUT', updateUserBody)
+  await authRequest(`${NEST_URI}/user/${id}`, updateUserBody, 'PUT')
 
 /**
  * Deletes a user based on ID

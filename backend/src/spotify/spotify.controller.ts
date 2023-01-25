@@ -5,6 +5,8 @@ import {
   UseGuards,
   Param,
   Delete,
+  Body,
+  Post,
 } from '@nestjs/common'
 import { SpotifyPlaylist } from './interface/spotify-playlist'
 import { SpotifyService } from './spotify.service'
@@ -16,6 +18,7 @@ import { Role } from '../enums/role.enum'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { RolesGuard } from '../auth/roles.guard'
 import { Roles } from '../auth/roles.decorator'
+import { SpotifyTrack } from './interface/spotify-track'
 
 @Controller('spotify')
 export class SpotifyController {
@@ -33,6 +36,21 @@ export class SpotifyController {
     @Headers('spotifyToken') token: string,
   ): Promise<SpotifyUser[]> {
     return this.spotifyService.getUsersFromSpotify(token)
+  }
+
+  @Get('/random/tracks')
+  async getRandomTracks(
+    @Headers('spotifyToken') token,
+  ): Promise<SpotifyTrack[]> {
+    return await this.spotifyService.getRandomTracks(token)
+  }
+
+  @Post('/random/tracks')
+  async getRandomTracksFromURL(
+    @Headers('spotifyToken') token,
+    @Body('url') url,
+  ): Promise<SpotifyTrack[]> {
+    return await this.spotifyService.getRandomTracks(token, url)
   }
 
   @Get('/playlist')
