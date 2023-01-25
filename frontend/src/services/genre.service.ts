@@ -6,7 +6,6 @@ export const getGenreSeeds = async (): Promise<any> => {
   return await authFetch(`${NEST_URI}/spotify/seeds`)
 }
 
-
 /**
  * Saves user's selected genres in our database.
  * @param userBody User data to save

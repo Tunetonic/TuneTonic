@@ -1,5 +1,5 @@
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { Button, Text } from 'react-native-paper'
 import { getGenreSeeds } from '../services/genre.service'
@@ -14,8 +14,6 @@ export interface GenreBody {
 }
 const TagView = ({ transferGenres }) => {
   const [genres, setGenres] = useState<Tag[]>([])
-
-
 
   const fetchGenres = (): void => {
     getGenreSeeds().then((res) =>
@@ -69,9 +67,7 @@ const TagView = ({ transferGenres }) => {
           </View>
         </ScrollView>
       </>
-
   )
-
 }
 
 const styles = StyleSheet.create({

@@ -19,7 +19,7 @@ interface FriendsProps {
   image: string
 }
 
-const Artists = ({ navigation, route }): JSX.Element => {
+const Artists = ({ navigation }): JSX.Element => {
   const [search, setSearch] = useState('')
   const [masterDataSource, setMasterDataSource] = useState <FriendsProps[] | null>(null)
   const [filteredDataSource, setFilteredDataSource] = useState<FriendsProps[]>([])

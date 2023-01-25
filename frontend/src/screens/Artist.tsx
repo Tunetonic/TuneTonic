@@ -1,4 +1,4 @@
-import { View, ScrollView, Image, StyleSheet, RefreshControl } from 'react-native'
+import { View, ScrollView, Image, StyleSheet } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
 import { Appbar, Text } from 'react-native-paper'
 import React, { useEffect, useState} from "react";
@@ -28,7 +28,6 @@ function Artist({ navigation, route }) {
         }
         return number;
     }
-
 
     return (
         <>
@@ -72,7 +71,10 @@ function Artist({ navigation, route }) {
                                             style={styles.playlistLogo}
                                             source={{ uri: data.image }}
                                         />
-                                        <Text style={styles.text}>{data.name}</Text>
+                                        <Text
+                                            numberOfLines={1}
+                                            ellipsizeMode="tail"
+                                            style={styles.width}>{data.name}</Text>
                                         <Text style={styles.text}>{data.totalTracks} songs</Text>
                                     </View>
                                 ),
@@ -118,7 +120,13 @@ const styles = StyleSheet.create({
     firstChild: {
         height: 140,
     },
-    text: { color: 'white' },
+    text: {
+        color: 'white'
+    },
+    width: {
+        color: 'white',
+        width: 100
+    },
     headerText: {
         color: 'white',
         fontSize: 25,

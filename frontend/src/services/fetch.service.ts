@@ -3,6 +3,8 @@ import { getAsyncItem } from './async-storage.service'
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 export const authFetch = async (url: string): Promise<Response> => {
+  const accessToken = await getAsyncItem('access_token')
+  console.log('Bearer ', accessToken)
   const spotifyAccessToken = await getAsyncItem('spotify_access_token')
   const JWT = await getAsyncItem('jwt_access_token')
   return await fetch(url, {
@@ -26,6 +28,7 @@ export const authRequest = async (
   const spotifyAccessToken = await getAsyncItem('spotify_access_token')
   const JWT = await getAsyncItem('jwt_access_token')
 
+  console.log("CHECKPOINT 2: ", body)
   return await fetch(url, {
     method: method,
     body: JSON.stringify(body),
