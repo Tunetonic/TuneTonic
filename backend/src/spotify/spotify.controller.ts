@@ -53,7 +53,7 @@ export class SpotifyController {
     return await this.spotifyService.getRandomTracks(token, url)
   }
 
-  @Get('/playlists')
+  @Get('/playlist')
   async getPlaylists(
     @Headers('spotifyToken') token,
   ): Promise<SpotifyPlaylist[]> {

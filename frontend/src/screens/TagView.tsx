@@ -20,7 +20,7 @@ const TagView = ({ transferGenres }) => {
   const fetchGenres = (): void => {
     getGenreSeeds().then((res) =>
         setGenres(
-            res.genres.map((genre) => ({ tagName: genre, isActive: false })),
+            res.genres.map((genre) => ({ tagName: genre.replace(/-/g, '_'), isActive: false })),
         ),
     )
   }
