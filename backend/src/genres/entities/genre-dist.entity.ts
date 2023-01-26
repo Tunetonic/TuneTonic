@@ -13,15 +13,15 @@ export class GenreDist {
   user_id: string
   @CreateDateColumn({ type: 'datetime' })
   created_at?: Date = new Date(Date.now())
-  @Column()
+  @Column({ type: 'decimal', precision: 10, scale: 7, default: 0 })
   acoustic: number
-  @Column()
+  @Column({ type: 'decimal', precision: 10, scale: 7, default: 0 })
   afrobeat: number
-  @Column()
+  @Column({ type: 'decimal', precision: 10, scale: 7, default: 0 })
   alt_rock: number
-  @Column()
+  @Column({ type: 'decimal', precision: 10, scale: 7, default: 0 })
   alternative: number
-  @Column()
+  @Column({ type: 'decimal', precision: 10, scale: 7, default: 0 })
   ambient: number
   @Column()
   anime: number

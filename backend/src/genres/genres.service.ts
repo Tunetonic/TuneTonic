@@ -17,17 +17,19 @@ export class GenresService {
   ): Promise<any> {
     const columnsLst = []
     const valuesLst = []
+    const falsepref = genres.filter(data => data.isActive.toString() === 'false').length;
+    const truepref = genres.filter(data => data.isActive.toString() === 'true').length;
+    const defaultWeight = 100 / 126;
 
     genres.map((genre) => {
-      genre.isActive = genre.isActive ? '1' : '0'
+      genre.isActive = genre.isActive ? (defaultWeight + 0.126).toString() : (defaultWeight - 0.001 * truepref).toString();
       columnsLst.push(genre.tagName)
       valuesLst.push(genre.isActive)
     })
 
-    const query = `
-            INSERT INTO genre_dist(id, user_id, ${columnsLst.toString()})
-            VALUES ("${uuidv4()}", "${userId}", ${valuesLst.toString()})
-        `
+    const query = `INSERT INTO genre_dist(id, user_id, ${columnsLst.toString()}) VALUES ("${uuidv4()}", "${userId}", ${valuesLst.toString()})`
+
+
     return await this.genreRepository.query(query)
   }
 
