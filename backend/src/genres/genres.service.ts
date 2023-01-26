@@ -14,7 +14,7 @@ export class GenresService {
   async create(
     genres: Record<string, string>[],
     userId: string,
-  ): Promise<void> {
+  ): Promise<any> {
     const columnsLst = []
     const valuesLst = []
 
@@ -25,7 +25,7 @@ export class GenresService {
     })
 
     const query = `
-            INSERT INTO genre_dist (id, user_id, ${columnsLst.toString()})
+            INSERT INTO genre_dist(id, user_id, ${columnsLst.toString()})
             VALUES ("${uuidv4()}", "${userId}", ${valuesLst.toString()})
         `
     return await this.genreRepository.query(query)
