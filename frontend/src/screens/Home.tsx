@@ -10,6 +10,8 @@ import { themeContext } from '../providers/theme.provider'
 import { millisToHHMMSS } from '../../helpers'
 import { addLike, dislike } from '../services/like.service'
 import { authContext } from '../providers/auth.provider'
+import { getAsyncItem } from '../services/async-storage.service'
+import { updateUserPreferenceGenres } from '../services/genre.service'
 
 const Home = ({ }): JSX.Element => {
   const { theme } = useContext(themeContext)
@@ -65,6 +67,7 @@ const Home = ({ }): JSX.Element => {
   }, []);
 
   useEffect(() => {
+    getAsyncItem('likeDislike').then(data => updateUserPreferenceGenres(user!.id, data));
     onRefresh()
   }, [])
 

@@ -18,16 +18,16 @@ export class GenresController {
   create(
     @Body('genres') genres: Record<string, string>[],
     @Body('userId') userId: string,
-  ) {
-    return this.genresService.create(genres, userId)
+  ) {return this.genresService.create(genres, userId)
   }
 
-  @Post('/update')
+  @Post('/update/:UserId')
   updateDistribution(
-    @Body('userId') userId: string,
-    @Body('userId') ratings: Rating[],
+    @Param('UserId') UserId: string,
+    @Body() ratings: Rating[],
   ) {
-    return this.genresService.calculateUpdateDistribution(userId, ratings)
+
+    return this.genresService.calculateUpdateDistribution(UserId.split(':')[1], ratings)
   }
 
   @Get()

@@ -35,7 +35,7 @@ export class GenresService {
       valuesLst.push(genre.isActive)
     })
 
-    const query = `INSERT INTO genre_dist(id, user_id, ${columnsLst.toString()}) VALUES ("${uuidv4()}", "${userId}", ${valuesLst.toString()})`
+    const query = `INSERT INTO genre_dist(user_id, ${columnsLst.toString()}) VALUES ("${userId}", ${valuesLst.toString()})`
 
     return await this.genreRepository.query(query)
   }
