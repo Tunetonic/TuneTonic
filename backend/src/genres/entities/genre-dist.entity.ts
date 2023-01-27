@@ -1,15 +1,9 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm'
+import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm'
 
 @Entity('genre_dist')
 export class GenreDist {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
   @Column()
+  @PrimaryColumn()
   user_id: string
   @CreateDateColumn({ type: 'datetime' })
   created_at?: Date = new Date(Date.now())
