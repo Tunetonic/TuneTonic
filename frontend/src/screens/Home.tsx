@@ -26,6 +26,7 @@ const Home = ({ }): JSX.Element => {
 
   const onEndReached = React.useCallback(() => {
     setRefreshing(true);
+    getAsyncItem('likeDislike').then(data => updateUserPreferenceGenres(user!.id, data))
 
     getRandomTracks(tracksMeta.next).then((data) => {      
       setTracks([...tracks, ...trackItemMapper(data.tracks.items)])
@@ -67,7 +68,6 @@ const Home = ({ }): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    getAsyncItem('likeDislike').then(data => updateUserPreferenceGenres(user!.id, data));
     onRefresh()
   }, [])
 
