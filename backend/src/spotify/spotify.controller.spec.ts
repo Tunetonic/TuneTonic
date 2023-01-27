@@ -113,9 +113,6 @@ describe('SpotifyController', () => {
       const result = await spotifyController.getRandomTracks('Bearer 123') // spotifyToken
       expect(spotifyService.getRandomTracks).toHaveBeenCalledWith('Bearer 123')
       expect(spotifyService.getRandomTracks).toHaveReturned()
-      expect(spotifyController.getRandomTracks).toReturnWith<SpotifyTrack[]>(
-        mockTracks,
-      )
       expect(result).toEqual(mockTracks)
     })
   })
