@@ -32,6 +32,7 @@ const OnboardingScreen = ({navigation}): JSX.Element => {
 
     return (
         <Onboarding
+            showSkip={false}
             pages={[
                 {
                     backgroundColor: theme.colors.background,
@@ -93,9 +94,6 @@ const OnboardingScreen = ({navigation}): JSX.Element => {
                     image: <TagView transferGenres={setGenres}/>,
                 },
             ]}
-            onSkip={() => {
-                navigation.navigate('home-tab-navigation')
-            }}
             onDone={async () => {
                 if (user && user.id && genres.length > 0) {setGenreBody({userId: user.id, genres: genres});}
                 if ({userId: user!.id, genres: genres}) await postUserPreferenceGenres({userId: user!.id, genres: genres})

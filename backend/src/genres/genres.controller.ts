@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common'
-import { GenresService } from './genres.service'
+import { GenresService, Rating } from './genres.service'
 import { UpdateGenreDto } from './dto/update-genre.dto'
 
 @Controller('genres')
@@ -18,8 +18,16 @@ export class GenresController {
   create(
     @Body('genres') genres: Record<string, string>[],
     @Body('userId') userId: string,
+  ) {return this.genresService.create(genres, userId)
+  }
+
+  @Post('/update/:UserId')
+  updateDistribution(
+    @Param('UserId') UserId: string,
+    @Body() ratings: Rating[],
   ) {
-    return this.genresService.create(genres, userId)
+
+    return this.genresService.calculateUpdateDistribution(UserId.split(':')[1], ratings)
   }
 
   @Get()
