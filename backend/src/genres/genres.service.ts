@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UpdateGenreDto } from './dto/update-genre.dto'
 import { GenreDist } from './entities/genre-dist.entity'
-import { v4 as uuidv4 } from 'uuid'
 
 export interface Rating {
   genre: string // tagname
@@ -90,6 +89,7 @@ export class GenresService {
 
       break
     }
+    return await this.genreRepository.save(currentDistribution)
   }
 
   findAll() {
