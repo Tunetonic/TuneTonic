@@ -22,7 +22,7 @@ export class GenresController {
     return this.genresService.create(genres, userId)
   }
 
-  @Post()
+  @Post('/update')
   updateDistribution(
     @Body('userId') userId: string,
     @Body('userId') ratings: Rating[],
