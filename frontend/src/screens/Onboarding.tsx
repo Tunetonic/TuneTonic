@@ -1,15 +1,17 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import Onboarding from 'react-native-onboarding-swiper'
 import {Image, StyleSheet} from 'react-native'
 import {Text, useTheme} from 'react-native-paper'
-import TagView from './TagView'
-import {updateUser} from "../services/user.service";
-import {authContext} from "../providers/auth.provider";
+import TagView, {GenreBody, Tag} from './TagView'
+import {postUserPreferenceGenres} from '../services/genre.service'
+import {authContext} from '../providers/auth.provider'
+
 
 const OnboardingScreen = ({navigation}): JSX.Element => {
     const theme = useTheme()
-
-    const {dbUser} = useContext(authContext)
+    const {user} = useContext(authContext)
+    const [genres, setGenres] = useState<Tag[]>([])
+    const [genreBody, setGenreBody] = useState<GenreBody>()
 
     const styles = StyleSheet.create({
         image: {
@@ -18,7 +20,7 @@ const OnboardingScreen = ({navigation}): JSX.Element => {
         },
         text: {
             fontSize: 14,
-            color: theme.colors.text,
+            color: theme.colors.accent,
             textAlign: 'center',
             margin: 20,
         },
@@ -30,6 +32,7 @@ const OnboardingScreen = ({navigation}): JSX.Element => {
 
     return (
         <Onboarding
+            showSkip={false}
             pages={[
                 {
                     backgroundColor: theme.colors.background,
@@ -66,21 +69,35 @@ const OnboardingScreen = ({navigation}): JSX.Element => {
                             />
                         </>
                     ),
+                }, {
+                    backgroundColor: theme.colors.background,
+                    title: ' ',
+                    subtitle: ' ',
+                    image: (
+                        <>
+                            <Text style={styles.title}>This is how you use the app</Text>
+                            <Text style={styles.text}>
+                                Do you love the song? swipe right!
+                                Do you hate it? No worries then swipe left.
+                            </Text>
+                            <Image
+                                source={require('../images/swipe.gif')}
+                                style={styles.image}
+                            />
+                        </>
+                    ),
                 },
                 {
                     backgroundColor: theme.colors.background,
                     title: ' ',
                     subtitle: ' ',
-                    image: <TagView></TagView>,
+                    image: <TagView transferGenres={setGenres}/>,
                 },
             ]}
-            onSkip={() => {
-
-                updateUser(dbUser?.id!, {isOnboarded: true}).then(() => navigation.navigate('home-tab-navigation')
-                )
-            }}
-            onDone={() => {
-                updateUser(dbUser?.id!, {isOnboarded: true}).then(() => navigation.navigate('home-tab-navigation'))
+            onDone={async () => {
+                if (user && user.id && genres.length > 0) {setGenreBody({userId: user.id, genres: genres});}
+                if ({userId: user!.id, genres: genres}) await postUserPreferenceGenres({userId: user!.id, genres: genres})
+                navigation.navigate('home-tab-navigation')
             }}
         />
     )
