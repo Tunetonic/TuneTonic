@@ -19,7 +19,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/axios": "^1.0.0",
+    "@nestjs/axios": "^2.0.0",
     "@nestjs/common": "^9.2.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
@@ -35,7 +35,7 @@
     "path": "^0.12.7",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.5.5",
-    "sqlite3": "^5.1.2",
+    "sqlite3": "^5.1.7",
     "typeorm": "^0.3.10",
     "uuid": "^9.0.0"
   },
